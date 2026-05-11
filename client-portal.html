@@ -209,12 +209,37 @@ canvas#bg{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-in
 </head>
 <body>
 <canvas id="bg"></canvas>
-<!-- Supabase SDK -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="bgx-data.js"></script>
 
-<!-- Auth guard placeholder — real check happens in JS below -->
-<div id="lp" style="display:none"></div>
+<!-- LOGIN -->
+<div id="lp">
+  <div class="lcard">
+    <div class="l-logo">
+      <svg viewBox="0 0 680 280" xmlns="http://www.w3.org/2000/svg" style="height:34px;width:auto">
+        <defs><linearGradient id="bG" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#0B1929"/><stop offset="100%" style="stop-color:#B8860B"/></linearGradient><linearGradient id="aG" x1="0%" y1="100%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#0B1929"/><stop offset="100%" style="stop-color:#B8860B"/></linearGradient></defs>
+        <g transform="translate(95,60)"><path d="M 12 108 C -10 70,-10 30,20 8" fill="none" stroke="url(#aG)" stroke-width="5" stroke-linecap="round"/><path d="M 20 8 L 48 0 L 36 26" fill="#B8860B"/><text x="0" y="105" font-family="Arial Black" font-size="108" font-weight="900" fill="url(#bG)">B</text></g>
+        <text x="168" y="155" font-family="Arial" font-size="96" font-weight="700" fill="url(#bG)">uygenix</text>
+        <text x="380" y="205" font-family="Arial" font-size="44" font-weight="400" fill="#4A6A8A">Solutions</text>
+      </svg>
+      <div style="font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--tl);font-family:'Space Grotesk'">Client Portal</div>
+    </div>
+    <div class="l-t">Welcome Back</div>
+    <p class="l-s">Sign in to access your leads, reports &amp; support</p>
+    <div class="err" id="err"></div>
+    <div class="fg"><label>Email Address</label><input type="email" id="l-em" placeholder="yourname@business.com"></div>
+    <div class="l-div"><hr><span>Verify with OTP</span><hr></div>
+    <div class="fg"><label>One-Time Password</label>
+      <div class="otp-row">
+        <input type="text" id="l-otp" placeholder="6-digit OTP" maxlength="6" inputmode="numeric">
+        <button class="btn-otp" id="otp-btn" onclick="sendOTP()">Send OTP</button>
+      </div>
+    </div>
+    <button class="btn-login" id="l-btn" onclick="doLogin()"><span id="l-txt">Access Dashboard →</span></button>
+    <p style="margin-top:11px;text-align:center;font-size:11px;color:var(--tl)">Demo accounts — any registered email, OTP: <strong style="color:var(--g)">123456</strong></p>
+    <p style="margin-top:5px;text-align:center;font-size:10.5px;color:var(--tl)">Try: rajesh@rstextiles.com · priya@priyaspice.com · kiran@handicrafts.com</p>
+    <div class="l-note" style="margin-top:14px">Not a member? <a href="membership.html">View Plans →</a> &nbsp;·&nbsp; <a href="https://wa.me/919818187246">WhatsApp</a></div>
+  </div>
+</div>
 
 <!-- PORTAL -->
 <div id="portal" style="display:none">
@@ -473,12 +498,43 @@ let CLIENT = null; // set on login
 const QT={hot:'🔥 Hot',warm:'⚡ Warm',new:'🆕 New',conv:'✅ Converted'};
 const QC={hot:'bh',warm:'bw',new:'bn',conv:'bc'};
 
-/* ═══════════════════════════════════════════════════
-   REAL SUPABASE AUTH — replaces all demo login logic
-═══════════════════════════════════════════════════ */
-const SUPABASE_URL  = 'https://qzaeshegpdoknsiuvidr.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF6YWVzaGVncGRva25zaXV2aWRyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc4NjIzMzcsImV4cCI6MjA5MzQzODMzN30.3TOujIaRbZPkvL_hewvJEONcOwApOIRQA5EjTdihW-s';
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+/* ─ LOGIN ─ */
+function sendOTP(){
+  const em=document.getElementById('l-em').value.trim();
+  if(!em||!em.includes('@')){showE('Enter a valid email address first.');return}
+  const c=BGX.getClientByEmail(em);
+  if(!c){showE('No account found for this email. Please contact BuyGenix.');return}
+  const btn=document.getElementById('otp-btn');
+  btn.textContent='Sent ✓';btn.disabled=true;
+}
+function showE(m){const e=document.getElementById('err');e.textContent='⚠ '+m;e.style.display='block';setTimeout(()=>e.style.display='none',3500)}
+function doLogin(){
+  const em=document.getElementById('l-em').value.trim();
+  const otp=document.getElementById('l-otp').value.trim();
+  const btn=document.getElementById('l-btn');
+  const txt=document.getElementById('l-txt');
+  if(!em||!em.includes('@')){showE('Enter a valid email.');return}
+  const c=BGX.getClientByEmail(em);
+  if(!c){showE('No account found. Contact BuyGenix support.');return}
+  if(otp!==c.otp){showE('Invalid OTP. Contact your RM if you need help.');return}
+  txt.innerHTML='<span class="spin"></span>Signing in…';btn.disabled=true;
+  setTimeout(()=>{
+    CLIENT=c;
+    document.getElementById('lp').style.display='none';
+    document.getElementById('portal').style.display='block';
+    initPortal();
+  },1100);
+}
+function doLogout(){
+  CLIENT=null;
+  document.getElementById('lp').style.display='flex';
+  document.getElementById('portal').style.display='none';
+  document.getElementById('l-txt').textContent='Access Dashboard →';
+  document.getElementById('l-btn').disabled=false;
+  document.getElementById('l-otp').value='';
+  document.getElementById('otp-btn').textContent='Send OTP';
+  document.getElementById('otp-btn').disabled=false;
+}
 
 /* ─ INIT ─ */
 function initPortal(){
@@ -783,51 +839,31 @@ function submitTk(){document.getElementById('tk-ok').style.display='block';setTi
 /* ─ COPY REF ─ */
 function copyRef(){const l=document.getElementById('ref-link-txt').textContent;navigator.clipboard?.writeText(l).then(()=>alert('✅ Referral link copied!')).catch(()=>alert('Link: '+l))}
 
-/* ─ AUTH GUARD — checks real Supabase session ─ */
-async function initAuth() {
-  const { data: { session } } = await _supabase.auth.getSession();
-  if (!session) {
-    window.location.replace('login.html');
-    return;
+/* ─ SESSION PICKUP — reads login.html sessionStorage ─ */
+document.addEventListener('DOMContentLoaded', function() {
+  const storedId = sessionStorage.getItem('bgx_client_id');
+  if (storedId) {
+    const c = BGX.getClient(storedId);
+    if (c) {
+      CLIENT = c;
+      document.getElementById('lp').style.display = 'none';
+      document.getElementById('portal').style.display = 'block';
+      initPortal();
+      return;
+    }
   }
-  const userEmail = session.user.email;
-  const { data: profile } = await _supabase
-    .from('clients')
-    .select('*')
-    .eq('email', userEmail)
-    .single();
-
-  if (!profile) {
-    await _supabase.auth.signOut();
-    window.location.replace('login.html?error=no_profile');
-    return;
-  }
-
-  CLIENT = profile;
-  sessionStorage.setItem('bgx_client_id',    profile.id);
-  sessionStorage.setItem('bgx_client_name',  profile.name);
-  sessionStorage.setItem('bgx_client_email', profile.email);
-  sessionStorage.setItem('bgx_client_plan',  profile.plan || 'starter');
-
-  document.getElementById('lp').style.display     = 'none';
-  document.getElementById('portal').style.display = 'block';
-  initPortal();
-}
-
-async function doLogout() {
-  await _supabase.auth.signOut();
-  sessionStorage.clear();
-  CLIENT = null;
-  window.location.replace('login.html');
-}
-
-_supabase.auth.onAuthStateChange((event, session) => {
-  if (event === 'SIGNED_OUT' || !session) {
-    window.location.replace('login.html');
-  }
+  /* No valid session — show inline login form as fallback */
+  document.getElementById('lp').style.display = 'flex';
 });
 
-document.addEventListener('DOMContentLoaded', initAuth);
+/* ─ OVERRIDE LOGOUT — redirect to login.html ─ */
+function doLogout() {
+  sessionStorage.removeItem('bgx_client_id');
+  sessionStorage.removeItem('bgx_client_name');
+  sessionStorage.removeItem('bgx_client_email');
+  CLIENT = null;
+  window.location.href = 'login.html';
+}
 </script>
 </body>
 </html>
