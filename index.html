@@ -9,18 +9,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/shared.css">
 <style>
-/* ── HERO ── */
-.hero{min-height:100vh;background:linear-gradient(150deg,var(--navy) 0%,#0F2035 45%,#0A1A2E 100%);display:flex;align-items:center;padding:var(--hero-pt) var(--pad-x) var(--hero-pb);position:relative;overflow:hidden;}
-.hero::before{content:'';position:absolute;top:-20%;right:-5%;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(30,95,168,0.15),transparent 70%);pointer-events:none;}
-.hero::after{content:'';position:absolute;bottom:-10%;left:10%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,0.08),transparent 70%);pointer-events:none;}
-.hero-inner{max-width:var(--page-max);margin:0 auto;width:100%;position:relative;z-index:2;}
-.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(184,134,11,0.15);border:1px solid rgba(184,134,11,0.35);color:var(--gold-light);padding:7px 18px;border-radius:100px;font-size:var(--fs-lbl);font-weight:700;letter-spacing:2px;text-transform:uppercase;margin-bottom:26px;font-family:'Space Grotesk',sans-serif;animation:fadeUp 0.7s ease both;}
-.hero h1{font-family:'Cormorant Garamond',serif;font-size:var(--fs-disp);font-weight:700;color:white;line-height:var(--lh-tight);margin-bottom:22px;animation:fadeUp 0.7s 0.1s ease both;}
-.hero h1 em{color:var(--gold-light);font-style:italic;display:block;}
-.hero-sub{font-size:16px;color:rgba(255,255,255,0.58);max-width:480px;line-height:1.85;margin-bottom:36px;animation:fadeUp 0.7s 0.2s ease both;}
-.hero-btns{display:flex;gap:14px;flex-wrap:wrap;animation:fadeUp 0.7s 0.3s ease both;}
-.hero-trust{display:flex;align-items:center;gap:16px;margin-top:36px;animation:fadeUp 0.7s 0.4s ease both;}
+/* ── HERO / FULL-WIDTH BANNER ── */
+.hero{
+  margin-top:var(--nav-h);
+  width:100%;
+  line-height:0;
+  overflow:hidden;
+}
+.hero-banner-img{
+  width:100%;
+  height:450px;
+  object-fit:cover;
+  object-position:center;
+  display:block;
+}
 .trust-avatars{display:flex;}
 .trust-avatars span{width:34px;height:34px;border-radius:50%;border:2px solid rgba(255,255,255,0.18);background:linear-gradient(135deg,var(--blue),var(--blue-mid));display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:white;margin-left:-8px;font-family:'Space Grotesk',sans-serif;}
 .trust-avatars span:first-child{margin-left:0;}
@@ -155,11 +157,7 @@
 
 <nav class="navbar" id="navbar">
   <a href="index.html" class="nav-logo">
-    <img src="assets/logo.png" alt="BuyGenix Solutions" onerror="this.style.display='none'">
-    <div class="nav-logo-text">
-      <span class="nav-logo-name">Buy<span>genix</span></span>
-      <span class="nav-logo-tag">B2B Export &amp; Import Platform</span>
-    </div>
+    <img src="assets/logo-new.png" alt="BuyGenix Solutions" style="height:48px;width:auto;object-fit:contain;">
   </a>
   <div class="nav-links">
     <a href="index.html" class="active">Home</a>
@@ -184,46 +182,9 @@
   <a href="login.html" class="m-cta m-cta-gold">Client Login →</a>
 </div>
 
-<!-- ═══ HERO ═══ -->
+<!-- ═══ HERO / FULL-WIDTH BANNER ═══ -->
 <section class="hero">
-  <div class="hero-inner">
-    <div class="hero-grid">
-      <div class="hero-left">
-        <div class="hero-eyebrow">🇮🇳 India's Growing B2B Platform</div>
-        <h1>Connect Indian Exporters with<br><em>Global Buyers</em></h1>
-        <p class="hero-sub">Verified buyer leads, dedicated relationship managers, digital catalogues and full export support — everything your business needs to grow internationally.</p>
-        <div class="hero-btns">
-          <a href="membership.html" class="btn-gold btn-lg">View Membership Plans →</a>
-          <a href="services.html"   class="btn-outline-white btn-lg">Explore Services</a>
-        </div>
-        <div class="hero-trust">
-          <div class="trust-avatars">
-            <span>RS</span><span>PV</span><span>KJ</span><span>SP</span><span>+</span>
-          </div>
-          <div class="trust-txt"><b>200+ exporters</b> trust BuyGenix Solutions</div>
-        </div>
-      </div>
-      <div class="hero-right">
-        <div class="hero-pill pill-top"><span class="pill-dot"></span>New lead: UAE — Basmati Rice 10 MT</div>
-        <div class="hero-card">
-          <div class="hc-top">
-            <span class="hc-label">📋 Live Buyer Leads</span>
-            <span class="hc-live">Live Feed</span>
-          </div>
-          <div class="lead-row"><span class="lr-flag">🇩🇪</span><div class="lr-info"><div class="lr-country">Germany</div><div class="lr-product">Organic Turmeric — 5 MT/month</div></div><span class="lr-status s-new">New</span></div>
-          <div class="lead-row"><span class="lr-flag">🇦🇪</span><div class="lr-info"><div class="lr-country">UAE</div><div class="lr-product">Basmati Rice — 10 MT/month</div></div><span class="lr-status s-hot">Hot</span></div>
-          <div class="lead-row"><span class="lr-flag">🇺🇸</span><div class="lr-info"><div class="lr-country">USA</div><div class="lr-product">Cotton Fabric — 2,000 metres</div></div><span class="lr-status s-ver">Verified</span></div>
-          <div class="lead-row"><span class="lr-flag">🇬🇧</span><div class="lr-info"><div class="lr-country">UK</div><div class="lr-product">Brass Handicrafts — 500 units</div></div><span class="lr-status s-new">New</span></div>
-          <div class="hc-foot">
-            <div class="hc-stat"><strong>50+</strong><span>Countries</span></div>
-            <div class="hc-stat"><strong>500+</strong><span>Leads/month</span></div>
-            <div class="hc-stat"><strong>12+</strong><span>Categories</span></div>
-          </div>
-        </div>
-        <div class="hero-pill pill-bot"><span style="font-size:16px;">✅</span> Lead verified — Singapore</div>
-      </div>
-    </div>
-  </div>
+  <img class="hero-banner-img" src="assets/spices-banner.png" alt="Cooking Spices and Masala">
 </section>
 
 <!-- ═══ STATS BAR ═══ -->

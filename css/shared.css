@@ -17,7 +17,7 @@
   --shadow-mid:   0 8px 32px rgba(11,25,41,0.12);
   --shadow-lg:    0 20px 60px rgba(11,25,41,0.16);
   --r-sm: 8px; --r-md: 12px; --r-lg: 16px; --r-xl: 22px; --r-2xl: 32px;
-  --nav-h:        72px;
+  --nav-h:        60px;
   --page-max:     1240px;
   --pad-x:        clamp(20px, 5vw, 80px);
   --sec-py:       80px;
@@ -76,7 +76,7 @@ input,textarea,select{font-family:inherit;}
 .nav-logo-name span{color:var(--gold-light);font-style:italic;}
 .nav-logo-tag{font-size:8.5px;letter-spacing:2px;color:rgba(255,255,255,0.3);text-transform:uppercase;font-family:'Space Grotesk',sans-serif;margin-top:3px;}
 .nav-links{display:flex;align-items:center;gap:2px;}
-.nav-links a{font-size:13px;font-weight:500;color:rgba(255,255,255,0.62);padding:8px 12px;border-radius:8px;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;white-space:nowrap;}
+.nav-links a{font-size:12px;font-weight:500;color:rgba(255,255,255,0.62);padding:7px 10px;border-radius:8px;transition:all 0.2s;font-family:'Space Grotesk',sans-serif;white-space:nowrap;}
 .nav-links a:hover{color:white;background:rgba(255,255,255,0.07);}
 .nav-links a.active{color:var(--gold-light);}
 .nav-cta-outline{background:rgba(184,134,11,0.12)!important;border:1px solid rgba(184,134,11,0.38)!important;color:var(--gold-light)!important;font-weight:600!important;}
