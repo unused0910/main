@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>About Us – BuyGenix Solutions</title>
+<meta name="description" content="Learn about BuyGenix Solutions — India's B2B export-import platform helping Indian exporters connect with verified global buyers across 50+ countries.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/shared.css">
+<style>
+/* ── STAT BAND ── */
+.stat-band{display:grid;grid-template-columns:repeat(4,1fr);background:white;border:1px solid var(--border-soft);border-radius:var(--r-2xl);overflow:hidden;box-shadow:var(--shadow-soft);}
+.sbi{padding:32px 20px;text-align:center;border-right:1px solid var(--border-soft);transition:background 0.3s;}
+.sbi:last-child{border-right:none;}
+.sbi:hover{background:var(--sky);}
+.sbi-num{font-family:'Cormorant Garamond',serif;font-size:50px;font-weight:700;color:var(--navy);line-height:1;display:block;}
+.sbi-num.gold{color:var(--gold);}
+.sbi-lbl{font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1.5px;font-family:'Space Grotesk',sans-serif;margin-top:5px;display:block;}
+
+/* ── WHO WE ARE 2-COL ── */
+.who-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap);}
+.info-panel{background:white;border:1px solid var(--border-soft);border-radius:var(--r-xl);padding:36px;box-shadow:var(--shadow-soft);}
+.info-panel h3{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:18px;}
+.info-panel p{font-size:13.5px;color:var(--text-mid);line-height:var(--lh);margin-bottom:12px;}
+.info-panel p:last-child{margin-bottom:0;}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--border-soft);font-size:13.5px;}
+.info-row:last-child{border-bottom:none;}
+.ir-key{color:var(--text-light);font-weight:500;}
+.ir-val{font-weight:600;color:var(--navy);text-align:right;}
+.india-badge{background:linear-gradient(135deg,var(--sky),#DCE9F8);border-radius:var(--r-lg);padding:18px 20px;display:flex;align-items:center;gap:14px;}
+.india-badge .flag{font-size:36px;}
+.india-badge h4{font-size:15px;font-weight:700;color:var(--navy);margin-bottom:2px;}
+.india-badge p{font-size:13px;color:var(--text-mid);margin:0;}
+
+/* ── MISSION BLOCK ── */
+.mission-block{background:linear-gradient(135deg,var(--navy),var(--navy-mid));border-radius:var(--r-2xl);padding:60px var(--pad-x);text-align:center;position:relative;overflow:hidden;}
+.mission-block::before{content:'';position:absolute;top:-30%;right:-5%;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(30,95,168,0.18),transparent 70%);}
+.mission-block::after{content:'';position:absolute;bottom:-20%;left:-5%;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(184,134,11,0.1),transparent 70%);}
+.mission-block h2{font-family:'Cormorant Garamond',serif;font-size:var(--fs-h3);color:white;margin-bottom:20px;position:relative;z-index:1;}
+.mission-block blockquote{font-family:'Cormorant Garamond',serif;font-size:22px;color:rgba(255,255,255,0.72);max-width:760px;margin:0 auto;line-height:1.75;font-style:italic;position:relative;z-index:1;}
+
+/* ── VALUES GRID ── */
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);}
+.val-card{background:white;border:1px solid var(--border-soft);border-radius:var(--r-xl);padding:32px;text-align:center;transition:all 0.3s;}
+.val-card:hover{box-shadow:var(--shadow-mid);transform:translateY(-4px);border-color:rgba(30,95,168,0.18);}
+.val-icon{font-size:38px;display:block;margin-bottom:16px;}
+.val-card h4{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+.val-card p{font-size:13.5px;color:var(--text-mid);line-height:var(--lh);}
+
+/* ── TEAM GRID ── */
+.team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gap);}
+.team-card{background:white;border:1px solid var(--border-soft);border-radius:var(--r-xl);padding:28px;text-align:center;transition:all 0.3s;}
+.team-card:hover{box-shadow:var(--shadow-mid);transform:translateY(-4px);}
+.team-av{width:68px;height:68px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;color:white;font-family:'Space Grotesk',sans-serif;margin:0 auto 16px;box-shadow:0 6px 20px rgba(11,25,41,0.15);}
+.team-name{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.team-role{font-size:11px;color:var(--text-light);font-family:'Space Grotesk',sans-serif;letter-spacing:0.5px;text-transform:uppercase;margin-bottom:10px;}
+.team-phone{font-size:13px;color:var(--blue);font-weight:600;margin-bottom:12px;}
+.team-card p{font-size:13px;color:var(--text-mid);line-height:1.72;}
+
+/* ── COUNTRIES DISPLAY ── */
+.countries-display{background:linear-gradient(135deg,var(--sky),#DCE9F8);border-radius:var(--r-2xl);padding:40px;text-align:center;}
+.countries-display h3{font-size:22px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.countries-display p{font-size:14px;color:var(--text-mid);margin-bottom:26px;}
+.country-flags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:740px;margin:0 auto;}
+.cflag{background:white;border-radius:10px;padding:8px 14px;font-size:13px;font-weight:500;color:var(--text-body);box-shadow:var(--shadow-xs);border:1px solid var(--border-soft);display:flex;align-items:center;gap:6px;transition:all 0.2s;}
+.cflag:hover{border-color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-soft);}
+
+@media(max-width:1024px){.values-grid{grid-template-columns:repeat(2,1fr);}.team-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:768px){.stat-band{grid-template-columns:1fr 1fr;}.sbi:nth-child(2){border-right:none;}.who-grid{grid-template-columns:1fr;}.values-grid{grid-template-columns:1fr;}.team-grid{grid-template-columns:1fr;}.mission-block blockquote{font-size:18px;}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="BuyGenix Solutions" onerror="this.style.display='none'"><div class="nav-logo-text"><span class="nav-logo-name">Buy<span>genix</span></span><span class="nav-logo-tag">B2B Export &amp; Import Platform</span></div></a>
+  <div class="nav-links"><a href="index.html">Home</a><a href="services.html">Services</a><a href="about.html" class="active">About Us</a><a href="gst.html">GST Registration</a><a href="contact.html">Contact</a><a href="membership.html" class="nav-cta-outline">Membership Plans</a><a href="login.html" class="nav-cta-solid">Client Login →</a></div>
+  <button class="nav-burger" id="navBurger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="services.html">Services</a><a href="about.html" class="active">About Us</a><a href="gst.html">GST Registration</a><a href="contact.html">Contact</a><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a><a href="membership.html" class="m-cta">Membership Plans →</a><a href="login.html" class="m-cta m-cta-gold">Client Login →</a></div>
+
+<div class="page-hero">
+  <div class="hero-badge">🇮🇳 About BuyGenix</div>
+  <h1>India's Growing B2B<br><span class="accent">Export Platform</span></h1>
+  <p>An independent B2B platform built to help Indian exporters connect with verified international buyers, grow their business globally, and navigate every step of the export journey with confidence.</p>
+</div>
+
+<!-- ═══ STAT BAND ═══ -->
+<section class="section-sm" style="background:white;">
+  <div class="section-inner">
+    <div class="stat-band reveal">
+      <div class="sbi"><span class="sbi-num gold" data-count="200" data-suffix="+">0+</span><span class="sbi-lbl">Active Members</span></div>
+      <div class="sbi"><span class="sbi-num" data-count="50" data-suffix="+">0+</span><span class="sbi-lbl">Countries Covered</span></div>
+      <div class="sbi"><span class="sbi-num gold" data-count="12" data-suffix="+">0+</span><span class="sbi-lbl">Product Categories</span></div>
+      <div class="sbi"><span class="sbi-num" data-count="5">0</span><span class="sbi-lbl">Expert Consultants</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ WHO WE ARE ═══ -->
+<section class="section" style="background:var(--sky);">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="eyebrow">Who We Are</div>
+      <h2>An Independent Platform Built <em>For Indian Exporters</em></h2>
+    </div>
+    <div class="who-grid">
+      <div class="info-panel reveal">
+        <h3>Our Story</h3>
+        <p>BuyGenix Solutions is an independent Indian B2B export-import platform founded to bridge the gap between Indian manufacturers and exporters and verified international buyers.</p>
+        <p>We provide verified buyer leads, dedicated relationship management, digital marketing support, and full export compliance assistance to help Indian businesses compete on the global stage.</p>
+        <p>We are not a marketplace or an aggregator. We are a growth partner — a team of export consultants who work directly with each member to understand their business and deliver measurable results.</p>
+      </div>
+      <div class="reveal" style="display:flex;flex-direction:column;gap:var(--gap);">
+        <div class="info-panel">
+          <h3>Company Details</h3>
+          <div class="info-row"><span class="ir-key">Founded</span><span class="ir-val">2024</span></div>
+          <div class="info-row"><span class="ir-key">Headquarters</span><span class="ir-val">Delhi, India</span></div>
+          <div class="info-row"><span class="ir-key">Phone</span><span class="ir-val">+91 98181 87246</span></div>
+          <div class="info-row"><span class="ir-key">Email</span><span class="ir-val" style="font-size:12px;">Buygenixsolutions@gmail.com</span></div>
+          <div class="info-row"><span class="ir-key">Active Countries</span><span class="ir-val">50+ worldwide</span></div>
+          <div class="info-row"><span class="ir-key">Product Categories</span><span class="ir-val">12+ sectors</span></div>
+          <div class="info-row"><span class="ir-key">Support Hours</span><span class="ir-val">Mon–Sat, 10am–6pm IST</span></div>
+        </div>
+        <div class="india-badge">
+          <div class="flag">🇮🇳</div>
+          <div>
+            <h4>Proudly Made in India</h4>
+            <p>Delhi-based team with deep expertise in Indian export industries — spices, textiles, handicrafts, engineering goods and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MISSION ═══ -->
+<div class="section-sm" style="background:white;">
+  <div class="section-inner">
+    <div class="mission-block reveal">
+      <h2>Our Mission</h2>
+      <blockquote>"To empower every Indian exporter — from a first-time seller to an established manufacturer — with the tools, connections, and support they need to build a thriving international business."</blockquote>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ VALUES ═══ -->
+<section class="section" style="background:var(--sky);">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="eyebrow">Our Values</div>
+      <h2>What Guides <em>Everything We Do</em></h2>
+      <p>Six principles that shape how we work, how we serve our members, and how we grow together.</p>
+    </div>
+    <div class="values-grid reveal-stagger">
+      <div class="val-card"><span class="val-icon">✅</span><h4>Verified Quality</h4><p>Every lead manually checked. We never send unqualified or cold leads. Our standard is verified, relevant, and ready-to-buy.</p></div>
+      <div class="val-card"><span class="val-icon">🤝</span><h4>Human Partnership</h4><p>Every member has a real named Relationship Manager — a person, not a system — dedicated to their success and available on WhatsApp.</p></div>
+      <div class="val-card"><span class="val-icon">🌍</span><h4>Global Ambition</h4><p>We want Indian products in every corner of the world. We continuously expand our buyer network across new countries and categories.</p></div>
+      <div class="val-card"><span class="val-icon">📈</span><h4>Measurable Results</h4><p>We track and report performance honestly. Members see exactly how many leads they received, from where, and what the outcomes were.</p></div>
+      <div class="val-card"><span class="val-icon">🔒</span><h4>Trust &amp; Privacy</h4><p>We treat every member's business information with complete confidentiality. We never sell data and operate with full transparency at all times.</p></div>
+      <div class="val-card"><span class="val-icon">🇮🇳</span><h4>India First</h4><p>Built by Indians, for Indian businesses. We understand the challenges of Indian exporters because we are part of the same ecosystem.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TEAM ═══ -->
+<section class="section" style="background:white;">
+  <div class="section-inner">
+    <div class="section-head reveal">
+      <div class="eyebrow">Our Team</div>
+      <h2>Meet Your <em>Relationship Managers</em></h2>
+      <p>Every BuyGenix member is assigned a dedicated RM who becomes their personal export consultant for the full membership duration.</p>
+    </div>
+    <div class="team-grid reveal-stagger">
+      <div class="team-card">
+        <div class="team-av" style="background:linear-gradient(135deg,var(--blue),var(--navy));">PM</div>
+        <div class="team-name">Priya Mehra</div>
+        <div class="team-role">Senior Export Consultant</div>
+        <div class="team-phone">+91 98181 87246</div>
+        <p>Specialises in textiles, handicrafts, and agricultural exports. 6+ years of export consulting experience across Europe and Middle East markets.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-av" style="background:linear-gradient(135deg,var(--gold),var(--gold-bright));">AK</div>
+        <div class="team-name">Arjun Kapoor</div>
+        <div class="team-role">Export Consultant</div>
+        <div class="team-phone">+91 98182 11111</div>
+        <p>Expert in spices, organic food, and garment exports to Middle East and European markets. Strong network of verified buyers in UAE and Germany.</p>
+      </div>
+      <div class="team-card">
+        <div class="team-av" style="background:linear-gradient(135deg,#5B3A8A,#8B5CF6);">DS</div>
+        <div class="team-name">Divya Singh</div>
+        <div class="team-role">Export Consultant</div>
+        <div class="team-phone">+91 98183 22222</div>
+        <p>Focuses on leather goods, engineering products, and chemical exports. Strong Asia-Pacific buyer connections in Singapore, Japan, and South Korea.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ COUNTRIES ═══ -->
+<section class="section-sm" style="background:var(--sky);">
+  <div class="section-inner">
+    <div class="countries-display reveal">
+      <h3>Our Global Buyer Network</h3>
+      <p>We work with verified buyers from 50+ countries. Here are some of our key markets.</p>
+      <div class="country-flags" id="countryFlags"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ CTA ═══ -->
+<section class="section" style="background:white;">
+  <div class="section-inner" style="text-align:center;">
+    <div class="reveal">
+      <div class="eyebrow" style="display:inline-flex;margin-bottom:20px;">Join Our Platform</div>
+      <h2 style="font-family:'Cormorant Garamond',serif;font-size:var(--fs-h2);font-weight:700;color:var(--navy);margin-bottom:14px;">Ready to Go <em style="font-style:italic;color:var(--blue);">Global?</em></h2>
+      <p style="font-size:15px;color:var(--text-mid);max-width:480px;margin:0 auto 28px;line-height:var(--lh);">Join 200+ Indian exporters growing their business with BuyGenix Solutions. Your first verified buyer lead is waiting.</p>
+      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;">
+        <a href="membership.html" class="btn-primary btn-lg">View Membership Plans →</a>
+        <a href="contact.html"   class="btn-outline btn-lg">Contact Our Team</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="footer-logo-name">Buy<span>genix</span> Solutions</div><p>India's growing B2B platform connecting exporters with verified buyers across 50+ countries.</p><div class="footer-social"><a href="https://instagram.com/buygenixsolutions" target="_blank" rel="noopener">📷</a><a href="https://facebook.com/buygenixsolutions" target="_blank" rel="noopener">📘</a><a href="https://wa.me/919818187246" target="_blank" rel="noopener">💬</a><a href="mailto:Buygenixsolutions@gmail.com">📧</a></div></div>
+    <div class="footer-col"><h4>Navigate</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html#leads">Buyer Leads</a></li><li><a href="services.html#catalogue">Digital Catalogue</a></li><li><a href="services.html#seo">SEO &amp; SMO</a></li><li><a href="gst.html">GST Registration</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="terms.html">Terms &amp; Conditions</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="login.html">Client Login</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 BuyGenix Solutions. All rights reserved. &nbsp;|&nbsp; Buygenixsolutions@gmail.com</p><p>🇮🇳 Made in India &nbsp;·&nbsp; Serving Exporters Globally</p></div>
+</footer>
+<a href="https://wa.me/919818187246" class="wa-float" target="_blank" rel="noopener">💬</a>
+
+<script src="js/bgx-data.js"></script>
+<script src="js/shared.js"></script>
+<script>
+const COUNTRIES = [["🇦🇪","UAE"],["🇺🇸","USA"],["🇩🇪","Germany"],["🇬🇧","UK"],["🇦🇺","Australia"],["🇯🇵","Japan"],["🇸🇬","Singapore"],["🇨🇦","Canada"],["🇸🇦","Saudi Arabia"],["🇧🇪","Belgium"],["🇫🇷","France"],["🇮🇹","Italy"],["🇳🇱","Netherlands"],["🇰🇷","South Korea"],["🇲🇾","Malaysia"],["🇿🇦","South Africa"],["🇧🇷","Brazil"],["🇳🇿","New Zealand"],["🇶🇦","Qatar"],["🇪🇸","Spain"],["🇸🇪","Sweden"],["🇳🇬","Nigeria"],["🇰🇪","Kenya"],["🇻🇳","Vietnam"],["🇵🇭","Philippines"],["🇧🇩","Bangladesh"],["🇱🇰","Sri Lanka"]];
+document.getElementById('countryFlags').innerHTML = COUNTRIES.map(([f,c]) => `<div class="cflag">${f} ${c}</div>`).join('');
+</script>
+</body>
+</html>

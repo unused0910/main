@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us – BuyGenix Solutions</title>
+<meta name="description" content="Get in touch with BuyGenix Solutions. Talk to our export consultants, ask about membership plans, or get help with your export business.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/shared.css">
+<style>
+.contact-wrap{max-width:var(--page-max);margin:0 auto;padding:56px var(--pad-x) 80px;}
+.contact-grid{display:grid;grid-template-columns:360px 1fr;gap:var(--gap);align-items:start;}
+
+/* LEFT — info cards */
+.info-stack{display:flex;flex-direction:column;gap:16px;}
+.info-card{background:white;border:1px solid var(--border-soft);border-radius:var(--r-xl);padding:26px;box-shadow:var(--shadow-soft);transition:all 0.3s;}
+.info-card:hover{box-shadow:var(--shadow-mid);transform:translateY(-2px);}
+.ic-icon{font-size:30px;margin-bottom:10px;display:block;}
+.ic-label{font-size:var(--fs-lbl);font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);font-family:'Space Grotesk',sans-serif;margin-bottom:5px;display:block;}
+.ic-value{font-size:16px;font-weight:700;color:var(--navy);margin-bottom:3px;}
+.ic-sub{font-size:13px;color:var(--text-light);}
+.ic-action{display:inline-flex;align-items:center;gap:7px;margin-top:12px;font-size:13px;font-weight:600;color:var(--blue);background:var(--sky);padding:8px 16px;border-radius:var(--r-md);transition:all 0.2s;}
+.ic-action:hover{background:var(--sky-mid);color:var(--navy);}
+.hours-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+.hour-item{background:var(--sky);border-radius:10px;padding:11px;}
+.hour-item .day{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:2px;font-family:'Space Grotesk',sans-serif;}
+.hour-item .time{font-size:11.5px;color:var(--text-mid);}
+.social-row{display:flex;gap:10px;margin-top:10px;}
+.social-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px;border-radius:var(--r-md);font-size:13px;font-weight:600;font-family:'Space Grotesk',sans-serif;border:1.5px solid var(--border-soft);color:var(--text-body);transition:all 0.2s;}
+.social-btn:hover{border-color:var(--blue);background:var(--sky);}
+
+/* RIGHT — form */
+.form-card{background:white;border:1px solid var(--border-soft);border-radius:var(--r-xl);padding:40px;box-shadow:var(--shadow-soft);}
+.form-card-title{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+.form-card-sub{font-size:14px;color:var(--text-mid);margin-bottom:28px;line-height:var(--lh);}
+.form-2col{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.form-2col .full{grid-column:1/-1;}
+.char-count{font-size:11.5px;color:var(--text-light);text-align:right;margin-top:4px;}
+.submit-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-top:8px;}
+.submit-note{font-size:12px;color:var(--text-light);max-width:240px;line-height:1.6;}
+.submit-note a{color:var(--blue);}
+.btn-submit{height:46px;padding:0 32px;background:linear-gradient(135deg,var(--blue),var(--blue-mid));color:white;border:none;border-radius:var(--r-lg);font-size:14px;font-weight:700;font-family:'Space Grotesk',sans-serif;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;gap:9px;box-shadow:0 4px 18px rgba(30,95,168,0.25);}
+.btn-submit:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(30,95,168,0.35);}
+.btn-submit:disabled{opacity:0.62;cursor:not-allowed;transform:none;}
+
+/* Success state */
+.form-success-screen{display:none;text-align:center;padding:48px 20px;}
+.success-icon{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;font-size:30px;margin:0 auto 20px;box-shadow:0 8px 24px rgba(16,185,129,0.25);}
+.form-success-screen h3{font-family:'Cormorant Garamond',serif;font-size:28px;color:var(--navy);margin-bottom:10px;}
+.form-success-screen p{font-size:14px;color:var(--text-mid);max-width:380px;margin:0 auto 24px;line-height:var(--lh);}
+
+/* Map strip */
+.map-strip{background:var(--sky);border-top:1px solid var(--border-soft);padding:52px var(--pad-x);text-align:center;}
+.map-strip h3{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+.map-strip p{font-size:14px;color:var(--text-mid);margin-bottom:24px;}
+.map-mock{max-width:880px;margin:0 auto;background:linear-gradient(135deg,#DCE9F8,#C8DCEF);border-radius:var(--r-xl);height:240px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border-soft);box-shadow:var(--shadow-soft);position:relative;overflow:hidden;}
+.map-pin{font-size:44px;animation:float 3s ease-in-out infinite;}
+.map-label{position:absolute;bottom:24px;left:50%;transform:translateX(-50%);background:white;border-radius:100px;padding:8px 22px;font-size:13px;font-weight:600;color:var(--navy);box-shadow:var(--shadow-soft);white-space:nowrap;}
+
+@media(max-width:900px){.contact-grid{grid-template-columns:1fr;}.form-2col{grid-template-columns:1fr;}.form-2col .full{grid-column:1;}.submit-row{flex-direction:column;align-items:stretch;}.btn-submit{width:100%;justify-content:center;}}
+</style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+
+<nav class="navbar" id="navbar">
+  <a href="index.html" class="nav-logo"><img src="assets/logo.png" alt="BuyGenix Solutions" onerror="this.style.display='none'"><div class="nav-logo-text"><span class="nav-logo-name">Buy<span>genix</span></span><span class="nav-logo-tag">B2B Export &amp; Import Platform</span></div></a>
+  <div class="nav-links"><a href="index.html">Home</a><a href="services.html">Services</a><a href="about.html">About Us</a><a href="gst.html">GST Registration</a><a href="contact.html" class="active">Contact</a><a href="membership.html" class="nav-cta-outline">Membership Plans</a><a href="login.html" class="nav-cta-solid">Client Login →</a></div>
+  <button class="nav-burger" id="navBurger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-nav" id="mobileNav"><a href="index.html">Home</a><a href="services.html">Services</a><a href="about.html">About Us</a><a href="gst.html">GST Registration</a><a href="contact.html" class="active">Contact</a><a href="terms.html">Terms &amp; Conditions</a><a href="privacy.html">Privacy Policy</a><a href="membership.html" class="m-cta">Membership Plans →</a><a href="login.html" class="m-cta m-cta-gold">Client Login →</a></div>
+
+<div class="page-hero">
+  <div class="hero-badge">📞 Get in Touch</div>
+  <h1>We're Here to<br><span class="accent">Help You Grow</span></h1>
+  <p>Whether you want to learn about membership plans, get export guidance, or ask us anything about your business — our team is ready to help.</p>
+</div>
+
+<div class="contact-wrap">
+  <div class="contact-grid">
+
+    <!-- LEFT — CONTACT INFO -->
+    <div class="info-stack">
+
+      <div class="info-card reveal">
+        <span class="ic-icon">💬</span>
+        <span class="ic-label">WhatsApp — Fastest Response</span>
+        <div class="ic-value">+91 98181 87246</div>
+        <div class="ic-sub">Available Mon–Sat, 10am–7pm IST</div>
+        <a href="https://wa.me/919818187246?text=Hello%20BuyGenix%2C%20I%20am%20interested%20in%20your%20export%20services." class="ic-action" target="_blank" rel="noopener">Open WhatsApp Chat →</a>
+      </div>
+
+      <div class="info-card reveal">
+        <span class="ic-icon">📧</span>
+        <span class="ic-label">Email</span>
+        <div class="ic-value" style="font-size:14px;">Buygenixsolutions@gmail.com</div>
+        <div class="ic-sub">We reply within 1–2 business days</div>
+        <a href="mailto:Buygenixsolutions@gmail.com" class="ic-action">Send Email →</a>
+      </div>
+
+      <div class="info-card reveal">
+        <span class="ic-icon">🕐</span>
+        <span class="ic-label">Support Hours</span>
+        <div class="hours-grid">
+          <div class="hour-item"><div class="day">Monday – Friday</div><div class="time">10:00 AM – 6:00 PM IST</div></div>
+          <div class="hour-item"><div class="day">Saturday</div><div class="time">10:00 AM – 4:00 PM IST</div></div>
+          <div class="hour-item"><div class="day">Sunday</div><div class="time">WhatsApp only</div></div>
+          <div class="hour-item"><div class="day">Response Time</div><div class="time">Within 24 hours</div></div>
+        </div>
+      </div>
+
+      <div class="info-card reveal">
+        <span class="ic-icon">📍</span>
+        <span class="ic-label">Location</span>
+        <div class="ic-value">Delhi, India 🇮🇳</div>
+        <div class="ic-sub">Serving exporters across all of India</div>
+      </div>
+
+      <div class="info-card reveal">
+        <span class="ic-icon">🌐</span>
+        <span class="ic-label">Follow Us</span>
+        <div class="social-row">
+          <a href="https://instagram.com/buygenixsolutions" class="social-btn" target="_blank" rel="noopener">📷 Instagram</a>
+          <a href="https://facebook.com/buygenixsolutions"  class="social-btn" target="_blank" rel="noopener">📘 Facebook</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- RIGHT — FORM -->
+    <div class="form-card reveal">
+      <div id="formWrap">
+        <div class="form-card-title">Send Us an Enquiry</div>
+        <p class="form-card-sub">Fill in the form below and a member of our team will respond within 24 hours. For the fastest response, use WhatsApp.</p>
+
+        <div class="form-feedback error" id="fErr"></div>
+
+        <div class="form-2col">
+          <div class="form-group">
+            <label for="fName">Full Name *</label>
+            <input type="text" id="fName" class="form-control" placeholder="Your full name" maxlength="80" autocomplete="name">
+          </div>
+          <div class="form-group">
+            <label for="fPhone">WhatsApp / Phone *</label>
+            <input type="tel" id="fPhone" class="form-control" placeholder="+91 98765 43210" maxlength="20" autocomplete="tel">
+          </div>
+          <div class="form-group">
+            <label for="fEmail">Email Address</label>
+            <input type="email" id="fEmail" class="form-control" placeholder="your@email.com" maxlength="120" autocomplete="email">
+          </div>
+          <div class="form-group">
+            <label for="fBiz">Business / Company Name *</label>
+            <input type="text" id="fBiz" class="form-control" placeholder="Your company name" maxlength="120" autocomplete="organization">
+          </div>
+          <div class="form-group full">
+            <label for="fProduct">Product Category *</label>
+            <select id="fProduct" class="form-control">
+              <option value="">Select your main product category</option>
+              <option>Textiles &amp; Fabrics</option>
+              <option>Spices &amp; Condiments</option>
+              <option>Rice &amp; Grains</option>
+              <option>Organic Food</option>
+              <option>Handicrafts &amp; Artware</option>
+              <option>Garments &amp; Apparel</option>
+              <option>Gems &amp; Jewellery</option>
+              <option>Chemicals &amp; Pharma</option>
+              <option>Engineering Goods</option>
+              <option>Leather Products</option>
+              <option>Fresh Produce</option>
+              <option>Processed Food</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="fPlan">Interested In</label>
+            <select id="fPlan" class="form-control">
+              <option value="">Select an option</option>
+              <option>Starter Plan (₹13,500/year)</option>
+              <option>Growth Plan (₹27,000/year)</option>
+              <option>Professional Plan (₹45,000/year)</option>
+              <option>Enterprise Plan (Custom)</option>
+              <option>GST Registration</option>
+              <option>General Information</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label for="fMsg">Your Message *</label>
+            <textarea id="fMsg" class="form-control" rows="5" placeholder="Tell us about your business, what you export, and what help you're looking for…" maxlength="1000"></textarea>
+            <div class="char-count"><span id="charCount">0</span> / 1000</div>
+          </div>
+        </div>
+
+        <div class="submit-row">
+          <p class="submit-note">By submitting you agree to our <a href="privacy.html">Privacy Policy</a>. We will never share your information.</p>
+          <button class="btn-submit" id="submitBtn" onclick="handleSubmit()">
+            <span id="submitTxt">Send Enquiry</span>
+            <span id="submitSpin" class="spinner" style="display:none;"></span>
+          </button>
+        </div>
+      </div>
+
+      <div class="form-success-screen" id="successScreen">
+        <div class="success-icon">✓</div>
+        <h3>Enquiry Received!</h3>
+        <p>Thank you for reaching out. A member of our team will contact you within 24 hours. For a faster response, reach us on WhatsApp.</p>
+        <a href="https://wa.me/919818187246" class="btn-gold" target="_blank" rel="noopener">💬 Continue on WhatsApp</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MAP STRIP -->
+<div class="map-strip">
+  <h3>Based in Delhi, Serving All of India</h3>
+  <p>Our team is headquartered in Delhi and works with exporters from every state across India.</p>
+  <div class="map-mock">
+    <span class="map-pin">📍</span>
+    <div class="map-label">🇮🇳 BuyGenix Solutions — Delhi, India</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-grid">
+    <div class="footer-brand"><div class="footer-logo-name">Buy<span>genix</span> Solutions</div><p>India's growing B2B platform connecting exporters with verified buyers across 50+ countries.</p><div class="footer-social"><a href="https://instagram.com/buygenixsolutions" target="_blank" rel="noopener">📷</a><a href="https://facebook.com/buygenixsolutions" target="_blank" rel="noopener">📘</a><a href="https://wa.me/919818187246" target="_blank" rel="noopener">💬</a><a href="mailto:Buygenixsolutions@gmail.com">📧</a></div></div>
+    <div class="footer-col"><h4>Navigate</h4><ul><li><a href="index.html">Home</a></li><li><a href="services.html">Services</a></li><li><a href="about.html">About Us</a></li><li><a href="membership.html">Membership</a></li><li><a href="contact.html">Contact</a></li></ul></div>
+    <div class="footer-col"><h4>Services</h4><ul><li><a href="services.html#leads">Buyer Leads</a></li><li><a href="services.html#catalogue">Digital Catalogue</a></li><li><a href="services.html#seo">SEO &amp; SMO</a></li><li><a href="gst.html">GST Registration</a></li></ul></div>
+    <div class="footer-col"><h4>Legal</h4><ul><li><a href="terms.html">Terms &amp; Conditions</a></li><li><a href="privacy.html">Privacy Policy</a></li><li><a href="login.html">Client Login</a></li></ul></div>
+  </div>
+  <div class="footer-bottom"><p>© 2025 BuyGenix Solutions. All rights reserved. &nbsp;|&nbsp; Buygenixsolutions@gmail.com</p><p>🇮🇳 Made in India &nbsp;·&nbsp; Serving Exporters Globally</p></div>
+</footer>
+<a href="https://wa.me/919818187246" class="wa-float" target="_blank" rel="noopener">💬</a>
+
+<script src="js/bgx-data.js"></script>
+<script src="js/shared.js"></script>
+<script>
+/* Char counter */
+document.getElementById('fMsg').addEventListener('input', function() {
+  document.getElementById('charCount').textContent = this.value.length;
+});
+
+/* Pre-fill plan from URL param */
+(function() {
+  const plan = new URLSearchParams(window.location.search).get('plan');
+  if (!plan) return;
+  const map = { starter:'Starter Plan (₹13,500/year)', growth:'Growth Plan (₹27,000/year)', professional:'Professional Plan (₹45,000/year)', enterprise:'Enterprise Plan (Custom)' };
+  const sel = document.getElementById('fPlan');
+  if (sel && map[plan]) {
+    for (let i = 0; i < sel.options.length; i++) {
+      if (sel.options[i].text === map[plan]) { sel.selectedIndex = i; break; }
+    }
+  }
+})();
+
+async function handleSubmit() {
+  const errEl = document.getElementById('fErr');
+  errEl.classList.remove('show');
+
+  const name    = document.getElementById('fName').value.trim();
+  const phone   = document.getElementById('fPhone').value.trim();
+  const biz     = document.getElementById('fBiz').value.trim();
+  const product = document.getElementById('fProduct').value;
+  const msg     = document.getElementById('fMsg').value.trim();
+  const email   = document.getElementById('fEmail').value.trim();
+  const plan    = document.getElementById('fPlan').value;
+
+  if (!name || !phone || !biz || !product || !msg) {
+    errEl.innerHTML = '<span>⚠</span><span>Please fill in all required fields (marked with *).</span>';
+    errEl.classList.add('show');
+    errEl.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+  if (phone.replace(/\D/g,'').length < 8) {
+    errEl.innerHTML = '<span>⚠</span><span>Please enter a valid phone number.</span>';
+    errEl.classList.add('show');
+    return;
+  }
+
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  document.getElementById('submitTxt').style.display = 'none';
+  document.getElementById('submitSpin').style.display = 'inline-block';
+
+  const payload = { full_name:name, phone, email:email||null, business_name:biz, product_category:product, interested_in:plan||null, message:msg, source:'contact_form', created_at:new Date().toISOString() };
+
+  try {
+    const res = await fetch(`${BGX_SUPABASE_URL}/rest/v1/enquiries`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json', 'apikey':BGX_SUPABASE_ANON, 'Authorization':`Bearer ${BGX_SUPABASE_ANON}`, 'Prefer':'return=minimal' },
+      body:JSON.stringify(payload)
+    });
+    if (!res.ok && res.status !== 201) throw new Error('submit failed');
+  } catch(e) {
+    /* fallback to WhatsApp if Supabase fails */
+    const waMsg = encodeURIComponent(`Hello BuyGenix,\nName: ${name}\nPhone: ${phone}\nBusiness: ${biz}\nProduct: ${product}\nPlan: ${plan}\n\n${msg}`);
+    setTimeout(()=> window.open(`https://wa.me/919818187246?text=${waMsg}`,'_blank'), 800);
+  }
+
+  btn.disabled = false;
+  document.getElementById('formWrap').style.display = 'none';
+  document.getElementById('successScreen').style.display = 'block';
+  window.scrollTo({ top: document.querySelector('.form-card').offsetTop - 100, behavior:'smooth' });
+}
+</script>
+</body>
+</html>
