@@ -161,239 +161,361 @@
 </div>
 
 <!-- SERVICE BLOCKS -->
-<div class="svc-blocks">
+<style>
+/* ── ONE SERVICE PER ROW ── */
+.srow-wrap{width:100%;background:#f8f9ff;}
+
+.srow{
+  display:grid;grid-template-columns:1fr 1fr;
+  min-height:440px;border-bottom:1px solid #e8ecf4;
+}
+.srow:last-of-type{border-bottom:none;}
+.srow.flip{direction:rtl;}
+.srow.flip > *{direction:ltr;}
+
+/* TEXT SIDE */
+.srow-text{
+  padding:64px 72px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:white;
+}
+.srow-num{font-size:10.5px;font-weight:800;letter-spacing:3px;color:#94a3b8;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;margin-bottom:20px;}
+.srow-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;}
+.srow-text h3{font-size:clamp(22px,2.2vw,30px);font-weight:800;color:#0f172a;line-height:1.25;margin-bottom:12px;font-family:'Plus Jakarta Sans','Segoe UI',sans-serif;}
+.srow-text p{font-size:14px;color:#64748b;line-height:1.8;margin-bottom:22px;max-width:480px;}
+.srow-feats{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:9px;}
+.srow-feats li{font-size:13px;color:#475569;display:flex;align-items:flex-start;gap:10px;line-height:1.55;}
+.srow-feats li::before{content:'→';color:#2563eb;font-weight:800;flex-shrink:0;}
+.srow-cta{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#2563eb;letter-spacing:.8px;text-decoration:none;text-transform:uppercase;padding:11px 0;border-bottom:2px solid #bfdbfe;transition:all .2s;font-family:'Space Grotesk',sans-serif;align-self:flex-start;}
+.srow-cta:hover{gap:12px;border-bottom-color:#2563eb;}
+
+/* VISUAL SIDE */
+.srow-visual{
+  display:flex;flex-direction:column;justify-content:center;
+  padding:56px 64px;
+  position:relative;overflow:hidden;
+}
+
+/* Accent line on left of each text block */
+.srow-text{border-left:4px solid transparent;transition:border-color .3s;}
+.srow:hover .srow-text{border-left-color:#2563eb;}
+.srow.flip .srow-text{border-left:none;border-right:4px solid transparent;}
+.srow.flip:hover .srow-text{border-right-color:#2563eb;}
+
+/* CTA ROW */
+.srow-cta-strip{
+  background:linear-gradient(135deg,#1e3a8a,#1e1b4b 50%,#4c1d95);
+  padding:72px 80px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;
+}
+.srow-cta-strip::before{content:'';position:absolute;top:-100px;right:-60px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.22),transparent 70%);}
+.srow-cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,42px);font-weight:700;color:white;line-height:1.2;margin-bottom:10px;position:relative;z-index:2;}
+.srow-cta-strip h2 em{color:#f59e0b;font-style:italic;}
+.srow-cta-strip p{font-size:14px;color:rgba(255,255,255,.55);max-width:480px;line-height:1.75;position:relative;z-index:2;}
+.srow-cta-btns{display:flex;flex-direction:column;gap:12px;min-width:220px;position:relative;z-index:2;}
+.srow-btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a1a;border:none;border-radius:12px;padding:15px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;text-decoration:none;text-align:center;box-shadow:0 8px 24px rgba(245,158,11,.35);}
+.srow-btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,158,11,.45);}
+.srow-btn-outline{background:rgba(255,255,255,.08);color:white;border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;text-decoration:none;text-align:center;}
+.srow-btn-outline:hover{background:rgba(255,255,255,.14);}
+
+@media(max-width:900px){
+  .srow,.srow.flip{grid-template-columns:1fr;direction:ltr;}
+  .srow-text{padding:40px 28px;border-left:4px solid #2563eb !important;border-right:none !important;}
+  .srow-visual{padding:36px 28px;}
+  .srow-cta-strip{padding:48px 28px;}
+}
+</style>
+
+<div class="srow-wrap">
 
   <!-- 01 BUYER LEADS -->
-  <div class="svc-block reveal" id="leads">
-    <div class="svc-accent"></div>
-    <div class="svc-inner">
-      <div>
-        <div class="svc-lbl">Service 01</div>
-        <h2>Verified Buyer Leads</h2>
-        <p class="svc-desc">Receive verified international buyer enquiries matched to your exact product category. Every lead is manually checked by our team before delivery — so you only connect with serious, interested buyers.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Leads matched to your specific product category and export readiness</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Delivered via WhatsApp and email within 24–48 hours of sourcing</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Indian domestic buyers and international buyers across 50+ countries</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Full buyer details: company name, country, quantity required, contact info</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Starter: 10 Indian leads · Growth: 15+10 intl · Professional: 20+20</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Lead tracking and delivery reports via your client portal</li>
-        </ul>
-        <a href="membership.html" class="btn-primary">Get Buyer Leads →</a>
+  <div class="srow" id="leads">
+    <div class="srow-text">
+      <div class="srow-num">Service 01</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#dbeafe,#ede9fe);">🎯</div>
+      <h3>Verified Buyer Leads</h3>
+      <p>Receive verified international buyer enquiries matched to your exact product category. Every lead is manually checked by our team before delivery — so you only connect with serious buyers.</p>
+      <ul class="srow-feats">
+        <li>Matched to your specific product category and export readiness</li>
+        <li>Delivered via WhatsApp and email within 24–48 hours</li>
+        <li>Buyers across 50+ countries — verified company details included</li>
+        <li>Lead tracking via your client portal dashboard</li>
+        <li>Starter: 10 Indian leads · Growth: 15+10 intl · Professional: 20+20</li>
+      </ul>
+      <a href="membership.html" class="srow-cta">Get Buyer Leads →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#0b1929,#1e3a5f);">
+      <div style="font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;">📋 Live Sample Leads</div>
+      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;">🇩🇪</span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">Germany</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Organic Turmeric — 5 MT/month</div></div>
+          <span style="background:#10b981;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">New</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;">🇦🇪</span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">UAE</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Basmati Rice — 10 MT/month</div></div>
+          <span style="background:#ef4444;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">Hot</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;">🇺🇸</span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">USA</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Cotton Fabric — 2,000 metres</div></div>
+          <span style="background:#2563eb;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">Verified</span>
+        </div>
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
+          <span style="font-size:24px;">🇬🇧</span>
+          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">UK</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Brass Handicrafts — 500 units</div></div>
+          <span style="background:#10b981;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">New</span>
+        </div>
       </div>
-      <div class="svc-visual vis-navy">
-        <div>
-          <h3>Sample Buyer Leads</h3>
-          <p style="margin-bottom:14px;">Real verified enquiries from global buyers</p>
-          <div class="lead-preview"><span class="lp-flag">🇩🇪</span><div style="flex:1"><div class="lp-name">Germany</div><div class="lp-prod">Organic Turmeric — 5 MT/month</div></div><span class="lp-tag tag-new">New</span></div>
-          <div class="lead-preview"><span class="lp-flag">🇦🇪</span><div style="flex:1"><div class="lp-name">UAE</div><div class="lp-prod">Basmati Rice — 10 MT/month</div></div><span class="lp-tag tag-hot">Hot</span></div>
-          <div class="lead-preview"><span class="lp-flag">🇺🇸</span><div style="flex:1"><div class="lp-name">USA</div><div class="lp-prod">Cotton Fabric — 2,000 metres</div></div><span class="lp-tag tag-ver">Verified</span></div>
-        </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>50+</strong><span>Countries</span></div>
-          <div class="vs"><strong>500+</strong><span>Leads/month</span></div>
-        </div>
+      <div style="display:flex;gap:32px;">
+        <div><div style="font-size:28px;font-weight:800;color:#60a5fa;line-height:1;">50+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Countries</div></div>
+        <div><div style="font-size:28px;font-weight:800;color:#a78bfa;line-height:1;">500+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Leads/Month</div></div>
       </div>
     </div>
   </div>
 
   <!-- 02 RELATIONSHIP MANAGER -->
-  <div class="svc-block reveal" id="rm">
-    <div class="svc-accent"></div>
-    <div class="svc-inner rev">
-      <div>
-        <div class="svc-lbl">Service 02</div>
-        <h2>Dedicated Relationship Manager</h2>
-        <p class="svc-desc">Every BuyGenix member is assigned a dedicated Relationship Manager — a real person who understands your business, coordinates lead delivery, and guides you through every step of your export journey.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Named RM assigned within 24 hours of membership activation</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Direct WhatsApp and email access to your RM at all times</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>RM coordinates lead selection, delivery, and follow-up on your behalf</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Guidance on buyer communication, pricing, and export documentation</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Quarterly strategy reviews included in Professional and Enterprise plans</li>
-        </ul>
-        <a href="about.html" class="btn-primary">Meet Our Team →</a>
-      </div>
-      <div class="svc-visual vis-sky">
-        <div>
-          <h3>Your Export Partner</h3>
-          <p>A dedicated human expert — not a chatbot — who knows your product, your target markets, and your goals.</p>
+  <div class="srow flip" id="rm">
+    <div class="srow-text">
+      <div class="srow-num">Service 02</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#dcfce7,#d1fae5);">🤝</div>
+      <h3>Dedicated Relationship Manager</h3>
+      <p>Every BuyGenix member is assigned a dedicated RM — a real person who understands your business, coordinates lead delivery, and guides you through every step of your export journey.</p>
+      <ul class="srow-feats">
+        <li>Named RM assigned within 24 hours of membership activation</li>
+        <li>Direct WhatsApp and email access at all times</li>
+        <li>RM coordinates lead selection, delivery and follow-up</li>
+        <li>Export documentation guidance and buyer communication</li>
+        <li>Quarterly strategy reviews (Professional & Enterprise)</li>
+      </ul>
+      <a href="about.html" class="srow-cta">Meet Our Team →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">5</div>
+          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Expert RMs</div>
         </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>5</strong><span>Expert RMs</span></div>
-          <div class="vs"><strong>24h</strong><span>Response</span></div>
-          <div class="vs"><strong>100%</strong><span>Human</span></div>
-          <div class="vs"><strong>12+</strong><span>Categories</span></div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">24h</div>
+          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Response Time</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">100%</div>
+          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Human Support</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
+          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">12+</div>
+          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Categories</div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- 03 DIGITAL CATALOGUE -->
-  <div class="svc-block reveal" id="catalogue">
-    <div class="svc-accent"></div>
-    <div class="svc-inner">
-      <div>
-        <div class="svc-lbl">Service 03</div>
-        <h2>Digital Product Catalogue</h2>
-        <p class="svc-desc">A professionally designed digital catalogue listing your products with images, full specifications, pricing guidance, and contact details — shareable with international buyers at trade fairs, via email, or WhatsApp.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Professional catalogue created by our in-house design team</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Each product listed with images, specifications, and category details</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Your branding, logo, and contact details prominently featured</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Shareable link for WhatsApp, email, trade fairs, and social media</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Growth: up to 10 products · Professional &amp; Enterprise: unlimited</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Updates available whenever your product range changes</li>
-        </ul>
-        <a href="membership.html" class="btn-primary">Get Your Catalogue →</a>
-      </div>
-      <div class="svc-visual vis-gold">
-        <div>
-          <h3>Professional Digital Catalogue</h3>
-          <p>Designed to impress international buyers and showcase your products at their best — from spices to textiles to engineering goods.</p>
+  <div class="srow" id="catalogue">
+    <div class="srow-text">
+      <div class="srow-num">Service 03</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">📖</div>
+      <h3>Digital Product Catalogue</h3>
+      <p>A professionally designed digital catalogue listing your products with images, specifications, pricing guidance, and contact details — shareable with international buyers at trade fairs, via email, or WhatsApp.</p>
+      <ul class="srow-feats">
+        <li>Professional catalogue created by our in-house design team</li>
+        <li>Your branding, logo, and contact details featured prominently</li>
+        <li>Shareable link for WhatsApp, email, trade fairs, and social media</li>
+        <li>Growth: up to 10 products · Professional & Enterprise: unlimited</li>
+        <li>Updates available whenever your product range changes</li>
+      </ul>
+      <a href="membership.html" class="srow-cta">Get Your Catalogue →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#fefce8,#fef9c3);">
+      <div style="background:white;border-radius:16px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
+        <div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">📘 Sample Catalogue</div>
+        <div style="height:3px;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:2px;margin-bottom:16px;"></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
+          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Spices & Masala</span>
+          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Cotton Fabric</span>
+          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Basmati Rice</span>
+          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Handicrafts</span>
         </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>10</strong><span>Products (Growth)</span></div>
-          <div class="vs"><strong>∞</strong><span>Products (Pro+)</span></div>
+        <div style="font-size:12px;color:#6b7280;line-height:1.7;">Professional catalogue designed to impress international buyers and showcase your products at their best — from spices to textiles to engineering goods.</div>
+        <div style="margin-top:18px;display:flex;gap:24px;">
+          <div><div style="font-size:20px;font-weight:800;color:#d97706;">10</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Products (Growth)</div></div>
+          <div><div style="font-size:20px;font-weight:800;color:#d97706;">∞</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Products (Pro+)</div></div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- 04 SEO & SMO -->
-  <div class="svc-block reveal" id="seo">
-    <div class="svc-accent"></div>
-    <div class="svc-inner rev">
-      <div>
-        <div class="svc-lbl">Service 04</div>
-        <h2>SEO &amp; Social Media Optimisation</h2>
-        <p class="svc-desc">We optimise your product pages on the BuyGenix platform for international search engines and manage social media promotion to build your brand among global buyers.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>SEO optimisation for your BuyGenix product pages and profile</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Keyword targeting for your specific product categories and export markets</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Social media promotion on Instagram and Facebook</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Growth plan: quarterly promotion · Professional plan: monthly promotion</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Brand building content to attract organic international buyer enquiries</li>
-        </ul>
-        <a href="membership.html" class="btn-primary">Get SEO &amp; SMO →</a>
-      </div>
-      <div class="svc-visual vis-blue">
-        <div>
-          <h3>Get Found by Global Buyers</h3>
-          <p>Optimised for international search results so buyers in Germany, UAE, and the USA find your products first.</p>
+  <div class="srow flip" id="seo">
+    <div class="srow-text">
+      <div class="srow-num">Service 04</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#e0e7ff,#ddd6fe);">📈</div>
+      <h3>SEO &amp; Social Media Optimisation</h3>
+      <p>We optimise your product pages on the BuyGenix platform for international search engines and manage social media promotion to build your brand among global buyers.</p>
+      <ul class="srow-feats">
+        <li>SEO optimisation for your BuyGenix product pages and profile</li>
+        <li>Keyword targeting for your product categories and export markets</li>
+        <li>Social media promotion on Instagram and Facebook</li>
+        <li>Growth plan: quarterly · Professional plan: monthly promotion</li>
+        <li>Brand content to attract organic international buyer enquiries</li>
+      </ul>
+      <a href="membership.html" class="srow-cta">Get SEO &amp; SMO →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#eef2ff,#ede9fe);">
+      <div style="display:flex;flex-direction:column;gap:12px;">
+        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔍</div>
+          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Search Engine Optimisation</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Rank higher on Google for export keywords</div></div>
         </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>50+</strong><span>Target Countries</span></div>
-          <div class="vs"><strong>Monthly</strong><span>Promotion (Pro)</span></div>
+        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#ec4899,#be185d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📷</div>
+          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Instagram Promotion</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Brand content reaching global buyers</div></div>
+        </div>
+        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
+          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📘</div>
+          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Facebook Marketing</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Targeted campaigns for export markets</div></div>
+        </div>
+        <div style="display:flex;gap:16px;margin-top:4px;">
+          <div style="background:white;border-radius:10px;padding:14px;flex:1;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);"><div style="font-size:18px;font-weight:800;color:#4f46e5;">50+</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Target Countries</div></div>
+          <div style="background:white;border-radius:10px;padding:14px;flex:1;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);"><div style="font-size:18px;font-weight:800;color:#7c3aed;">Monthly</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Pro Promotion</div></div>
         </div>
       </div>
     </div>
   </div>
 
   <!-- 05 VIRTUAL BUSINESS CARD -->
-  <div class="svc-block reveal" id="vcard">
-    <div class="svc-accent"></div>
-    <div class="svc-inner">
-      <div>
-        <div class="svc-lbl">Service 05</div>
-        <h2>Virtual Business Card</h2>
-        <p class="svc-desc">A professional digital business card with your company profile, key products, contact details, and a QR code. Share it instantly with buyers at trade fairs, over WhatsApp, or via email — no printing required.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Professional digital card with your branding and logo</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Lists your top products, company details, and contact information</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Unique QR code buyers can scan to access your full product catalogue</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Shareable via WhatsApp, email, or social media in seconds</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>1 card (Starter/Growth) · 3 cards (Professional) · Unlimited (Enterprise)</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Perfect for trade fairs, exhibitions, and international meetings</li>
-        </ul>
-        <a href="membership.html" class="btn-primary">Get Your Virtual Card →</a>
+  <div class="srow" id="vcard">
+    <div class="srow-text">
+      <div class="srow-num">Service 05</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#cffafe,#a5f3fc);">💳</div>
+      <h3>Virtual Business Card</h3>
+      <p>A professional digital business card with your company profile, key products, and a QR code. Share it instantly with buyers at trade fairs, over WhatsApp, or via email — no printing required.</p>
+      <ul class="srow-feats">
+        <li>Professional digital card with your branding and logo</li>
+        <li>Lists your top products, company details, and contact info</li>
+        <li>Unique QR code buyers scan to access your full catalogue</li>
+        <li>Shareable via WhatsApp, email, or social media instantly</li>
+        <li>1 card (Starter/Growth) · 3 cards (Pro) · Unlimited (Enterprise)</li>
+      </ul>
+      <a href="membership.html" class="srow-cta">Get Your Virtual Card →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#0f2744,#0b1929);display:flex;align-items:center;justify-content:center;">
+      <div style="background:linear-gradient(135deg,#0f2744,#1e3a5f);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:28px 30px;width:100%;max-width:320px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#f59e0b;text-transform:uppercase;margin-bottom:14px;">BuyGenix Solutions</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:white;margin-bottom:2px;">Rajesh Sharma</div>
+        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">RS Textiles Pvt Ltd</div>
+        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px;">
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>📍</span>Delhi, India</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>📱</span>+91 98765 43210</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>✉️</span>rajesh@rstextiles.com</div>
+        </div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,0.25);border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;">Cotton Fabric · Silk · Home Textiles</div>
+        <div style="position:absolute;bottom:20px;right:20px;width:44px;height:44px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
       </div>
-      <div class="svc-visual vis-teal">
-        <div class="vcard">
-          <div class="vcard-tag">BuyGenix Solutions</div>
-          <div class="vcard-name">Rajesh Sharma</div>
-          <div class="vcard-biz">RS Textiles Pvt Ltd</div>
-          <div class="vcard-row">📍 Delhi, India</div>
-          <div class="vcard-row">📱 +91 98765 43210</div>
-          <div class="vcard-row">✉️ rajesh@rstextiles.com</div>
-          <div class="vcard-cats">Cotton Fabric · Silk · Home Textiles</div>
-          <div class="vcard-qr">📱</div>
+    </div>
+  </div>
+
+  <!-- 06 REGISTRATIONS -->
+  <div class="srow flip" id="registration">
+    <div class="srow-text">
+      <div class="srow-num">Service 06</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);">📋</div>
+      <h3>Registration &amp; Compliance Assistance</h3>
+      <p>We guide you through every registration an Indian exporter needs — from GST to IEC to MSME — ensuring your business is fully compliant and ready to trade globally.</p>
+      <ul class="srow-feats">
+        <li>GST registration assistance — included in all plans</li>
+        <li>IEC (Import Export Code) registration support</li>
+        <li>MSME/Udyam registration for government scheme benefits</li>
+        <li>FSSAI licence assistance for food and agricultural exporters</li>
+        <li>Document checklist, application support, and status follow-up</li>
+      </ul>
+      <a href="gst.html" class="srow-cta">GST Registration Guide →</a>
+    </div>
+    <div class="srow-visual" style="background:#f8f9ff;">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <div style="background:white;border:1px solid #bbf7d0;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:32px;font-weight:900;color:#15803d;line-height:1;margin-bottom:6px;">GST</div>
+          <div style="font-size:10.5px;color:#166534;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
+          <div style="font-size:11px;color:#4ade80;font-weight:600;">✔ Included</div>
+        </div>
+        <div style="background:white;border:1px solid #bfdbfe;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:32px;font-weight:900;color:#1d4ed8;line-height:1;margin-bottom:6px;">IEC</div>
+          <div style="font-size:10.5px;color:#1e40af;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
+          <div style="font-size:11px;color:#60a5fa;font-weight:600;">✔ Included</div>
+        </div>
+        <div style="background:white;border:1px solid #e9d5ff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:32px;font-weight:900;color:#7e22ce;line-height:1;margin-bottom:6px;">MSME</div>
+          <div style="font-size:10.5px;color:#6b21a8;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
+          <div style="font-size:11px;color:#c084fc;font-weight:600;">✔ Included</div>
+        </div>
+        <div style="background:white;border:1px solid #fdba74;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
+          <div style="font-size:32px;font-weight:900;color:#c2410c;line-height:1;margin-bottom:6px;">FSSAI</div>
+          <div style="font-size:10.5px;color:#9a3412;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">Growth+</div>
+          <div style="font-size:11px;color:#fb923c;font-weight:600;">✔ Included</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 06 REGISTRATION -->
-  <div class="svc-block reveal" id="registration">
-    <div class="svc-accent"></div>
-    <div class="svc-inner rev">
-      <div>
-        <div class="svc-lbl">Service 06</div>
-        <h2>Registration &amp; Compliance Assistance</h2>
-        <p class="svc-desc">We guide you through every registration an Indian exporter needs — from GST to IEC to MSME — ensuring your business is fully compliant and ready to trade globally.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>GST registration assistance — included in all membership plans</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>IEC (Import Export Code) registration — essential for all exporters</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>MSME/Udyam registration for government scheme benefits</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>FSSAI licence assistance for food and agricultural exporters</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Document checklist, application support, and status follow-up</li>
-        </ul>
-        <a href="gst.html" class="btn-primary">GST Registration Guide →</a>
-      </div>
-      <div class="svc-visual vis-sky">
-        <div>
-          <h3>All Registrations Covered</h3>
-          <p>Every licence and registration your export business needs — handled with expert guidance from our compliance team.</p>
+  <!-- 07 PERFORMANCE REPORTS -->
+  <div class="srow" id="reports">
+    <div class="srow-text">
+      <div class="srow-num">Service 07</div>
+      <div class="srow-icon" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">📊</div>
+      <h3>Performance Reports &amp; Analytics</h3>
+      <p>Track your membership performance, lead delivery status, and business metrics through regular reports from your Relationship Manager and your real-time client portal dashboard.</p>
+      <ul class="srow-feats">
+        <li>Monthly performance reports for Professional and Enterprise members</li>
+        <li>On-request reports for Starter and Growth members</li>
+        <li>Lead delivery tracking: sent, viewed, and responded</li>
+        <li>Real-time dashboard access via your client portal</li>
+        <li>Export strategy consultation (Professional — quarterly)</li>
+      </ul>
+      <a href="login.html" class="srow-cta">Access Your Dashboard →</a>
+    </div>
+    <div class="srow-visual" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Monthly</div>
+          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Reports (Pro)</div>
         </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>GST</strong><span>All Plans</span></div>
-          <div class="vs"><strong>IEC</strong><span>All Plans</span></div>
-          <div class="vs"><strong>MSME</strong><span>All Plans</span></div>
-          <div class="vs"><strong>FSSAI</strong><span>Growth+</span></div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Live</div>
+          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Dashboard</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Quarterly</div>
+          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Strategy Call</div>
+        </div>
+        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
+          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">100%</div>
+          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Transparent</div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 07 REPORTS -->
-  <div class="svc-block reveal" id="reports">
-    <div class="svc-accent"></div>
-    <div class="svc-inner">
-      <div>
-        <div class="svc-lbl">Service 07</div>
-        <h2>Performance Reports &amp; Analytics</h2>
-        <p class="svc-desc">Track your membership performance, lead delivery status, and business metrics through regular reports from your Relationship Manager and your client portal dashboard.</p>
-        <ul class="svc-feats">
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Monthly performance reports for Professional and Enterprise members</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>On-request reports for Starter and Growth members</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Lead delivery tracking: sent, viewed, and responded</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Real-time dashboard access via your client portal</li>
-          <li class="svc-feat"><span class="svc-feat-check">✔</span>Export strategy consultation included in Professional plan (quarterly)</li>
-        </ul>
-        <a href="login.html" class="btn-primary">Access Your Dashboard →</a>
-      </div>
-      <div class="svc-visual vis-navy">
-        <div>
-          <h3>Track Your Growth</h3>
-          <p>Full visibility into your leads, performance, and membership usage — all in one place.</p>
-        </div>
-        <div class="vis-stats">
-          <div class="vs"><strong>Monthly</strong><span>Reports (Pro)</span></div>
-          <div class="vs"><strong>Real-time</strong><span>Dashboard</span></div>
-        </div>
-      </div>
+  <!-- CTA STRIP -->
+  <div class="srow-cta-strip">
+    <div>
+      <h2>All Services Bundled in Your<br><em>Membership Plan</em></h2>
+      <p>Choose the plan that fits your stage of growth — every service above is included. No hidden fees. No complexity. Just results.</p>
+    </div>
+    <div class="srow-cta-btns">
+      <a href="membership.html" class="srow-btn-gold">View All Plans &amp; Pricing →</a>
+      <a href="contact.html" class="srow-btn-outline">Talk to Our Team</a>
     </div>
   </div>
 
-  <!-- CTA -->
-  <div class="reveal" style="text-align:center;padding:20px 0 10px;">
-    <div class="eyebrow" style="display:inline-flex;margin-bottom:20px;">Ready to Start?</div>
-    <h2 style="font-family:'Cormorant Garamond',serif;font-size:var(--fs-h2);font-weight:700;color:var(--navy);margin-bottom:14px;">All Services Bundled in Your <em style="color:var(--blue);font-style:italic;">Membership Plan</em></h2>
-    <p style="font-size:15px;color:var(--text-mid);max-width:480px;margin:0 auto 28px;line-height:var(--lh);">Choose the plan that fits your stage of growth — every service above is included.</p>
-    <a href="membership.html" class="btn-primary btn-lg">View All Plans &amp; Pricing →</a>
-  </div>
+</div><!-- /srow-wrap -->
 
-</div><!-- /svc-blocks -->
+
+
+
 
 <footer class="footer">
   <div class="footer-grid">
