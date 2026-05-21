@@ -162,468 +162,529 @@
 
 <!-- SERVICE BLOCKS -->
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+/* ══ RESET & BASE ══ */
+.s7-wrap{width:100%;background:#f6f7fb;font-family:'Plus Jakarta Sans','Inter',sans-serif;}
 
-/* ── BASE ── */
-.srv-wrap{width:100%;background:#f0f2f8;font-family:'Inter',sans-serif;}
+/* ══ SECTION CONTAINER ══ */
+.s7-section{
+  max-width:1180px;margin:0 auto;
+  padding:80px 40px;
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:64px;align-items:center;
+  border-bottom:1px solid #e4e8f0;
+}
+.s7-section:last-of-type{border-bottom:none;}
+.s7-section.rev .s7-text{order:2;}
+.s7-section.rev .s7-visual{order:1;}
 
-/* ── EACH ROW ── */
-.srv-row{display:grid;grid-template-columns:1fr 1fr;min-height:520px;position:relative;}
-.srv-row:nth-child(odd) .srv-text{order:1;}
-.srv-row:nth-child(odd) .srv-vis{order:2;}
-.srv-row:nth-child(even) .srv-text{order:2;}
-.srv-row:nth-child(even) .srv-vis{order:1;}
-
-/* ── TEXT PANEL ── */
-.srv-text{
-  background:white;
-  padding:72px 64px;
-  display:flex;flex-direction:column;justify-content:center;
-  position:relative;overflow:hidden;
+/* ══ TEXT SIDE ══ */
+.s7-text{display:flex;flex-direction:column;gap:0;}
+.s7-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  font-size:10px;font-weight:700;letter-spacing:2.5px;
+  text-transform:uppercase;color:#6366f1;
+  margin-bottom:16px;
 }
-.srv-text::after{
-  content:'';position:absolute;
-  bottom:-60px;right:-60px;
-  width:180px;height:180px;border-radius:50%;
-  background:radial-gradient(circle,rgba(37,99,235,0.05),transparent 70%);
+.s7-tag::before{
+  content:'';width:20px;height:2px;
+  background:linear-gradient(90deg,#6366f1,#8b5cf6);
+  border-radius:2px;display:inline-block;
 }
-.srv-num{
-  display:inline-flex;align-items:center;gap:8px;
-  font-size:10px;font-weight:800;letter-spacing:3px;color:#94a3b8;
-  text-transform:uppercase;margin-bottom:20px;
+.s7-text h3{
+  font-size:clamp(22px,2.2vw,30px);
+  font-weight:800;color:#0d1117;
+  line-height:1.25;letter-spacing:-0.5px;
+  margin-bottom:14px;
 }
-.srv-num span{display:inline-block;width:24px;height:1px;background:#cbd5e1;}
-.srv-icon-wrap{
-  width:56px;height:56px;border-radius:18px;
+.s7-text p{
+  font-size:14.5px;color:#5a6478;
+  line-height:1.85;margin-bottom:22px;
+}
+.s7-list{
+  list-style:none;padding:0;margin:0 0 28px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.s7-list li{
+  font-size:13.5px;color:#374151;
+  display:flex;align-items:flex-start;gap:10px;
+  line-height:1.6;
+}
+.s7-list li::before{
+  content:'✓';
+  width:20px;height:20px;border-radius:6px;
+  background:linear-gradient(135deg,#6366f1,#8b5cf6);
+  color:white;font-size:10px;font-weight:900;
   display:flex;align-items:center;justify-content:center;
-  font-size:26px;margin-bottom:22px;
-  box-shadow:0 8px 24px rgba(0,0,0,0.08);
-  transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);
-}
-.srv-row:hover .srv-icon-wrap{transform:scale(1.1) rotate(-4deg);}
-.srv-text h3{
-  font-size:clamp(24px,2.5vw,34px);font-weight:800;
-  color:#0a0f1e;line-height:1.2;margin-bottom:14px;
-  letter-spacing:-0.5px;
-}
-.srv-text p{font-size:14.5px;color:#64748b;line-height:1.85;margin-bottom:24px;max-width:460px;}
-.srv-bullets{list-style:none;padding:0;margin:0 0 30px;display:flex;flex-direction:column;gap:10px;}
-.srv-bullets li{
-  font-size:13px;color:#475569;
-  display:flex;align-items:flex-start;gap:10px;line-height:1.6;
-}
-.srv-bullets li::before{
-  content:'';display:inline-block;
-  width:18px;height:18px;border-radius:50%;
-  background:linear-gradient(135deg,#2563eb,#7c3aed);
   flex-shrink:0;margin-top:1px;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:center;background-size:65%;
 }
-.srv-btn{
+.s7-cta{
   display:inline-flex;align-items:center;gap:8px;
-  background:linear-gradient(135deg,#2563eb,#4f46e5);
-  color:white;text-decoration:none;
-  padding:13px 26px;border-radius:12px;
-  font-size:13px;font-weight:700;letter-spacing:.3px;
-  align-self:flex-start;
-  transition:all 0.25s cubic-bezier(.4,0,.2,1);
-  box-shadow:0 4px 16px rgba(37,99,235,0.3);
+  background:#0d1117;color:white;
+  padding:12px 24px;border-radius:10px;
+  font-size:13px;font-weight:700;
+  text-decoration:none;align-self:flex-start;
+  transition:all 0.2s ease;
+  letter-spacing:0.2px;
 }
-.srv-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.4);}
-.srv-btn-arrow{transition:transform 0.2s;}
-.srv-btn:hover .srv-btn-arrow{transform:translateX(4px);}
+.s7-cta:hover{background:#1a237e;transform:translateY(-1px);box-shadow:0 6px 20px rgba(13,17,23,0.2);}
+.s7-cta-arr{transition:transform 0.2s;}
+.s7-cta:hover .s7-cta-arr{transform:translateX(3px);}
 
-/* ── VISUAL PANEL ── */
-.srv-vis{
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  min-height:520px;
+/* ══ VISUAL SIDE ══ */
+.s7-visual{
+  border-radius:20px;overflow:hidden;
+  position:relative;background:#e8eaf6;
 }
-.srv-vis-img{
+.s7-visual img{
+  width:100%;height:360px;
+  object-fit:cover;display:block;
+  transition:transform 0.5s cubic-bezier(.4,0,.2,1);
+}
+.s7-section:hover .s7-visual img{transform:scale(1.03);}
+
+/* Image overlay gradient */
+.s7-img-overlay{
   position:absolute;inset:0;
-  width:100%;height:100%;object-fit:cover;
-  transition:transform 0.6s cubic-bezier(.4,0,.2,1);
-}
-.srv-row:hover .srv-vis-img{transform:scale(1.04);}
-.srv-vis-overlay{
-  position:absolute;inset:0;
-  display:flex;flex-direction:column;justify-content:flex-end;
-  padding:40px;
-  background:linear-gradient(to top,rgba(5,10,30,0.85) 0%,rgba(5,10,30,0.3) 60%,transparent 100%);
+  background:linear-gradient(to top,rgba(10,14,30,0.5) 0%,transparent 55%);
 }
 
-/* ── FLOATING CARDS (on visuals) ── */
-.srv-float-card{
-  background:rgba(255,255,255,0.12);
-  backdrop-filter:blur(16px);
-  border:1px solid rgba(255,255,255,0.18);
-  border-radius:16px;padding:16px 20px;
-  animation:floatUp 3s ease-in-out infinite alternate;
+/* ══ LIVE LEADS PANEL ══ */
+.s7-leads{
+  background:linear-gradient(145deg,#08111f,#0d2040);
+  border-radius:20px;padding:32px;
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 24px 60px rgba(0,0,0,0.25);
 }
-@keyframes floatUp{from{transform:translateY(0);}to{transform:translateY(-8px);}}
-.srv-float-card2{animation-delay:1.5s;}
-.srv-float-tag{
-  display:inline-flex;align-items:center;gap:6px;
-  font-size:10px;font-weight:700;letter-spacing:1.5px;
-  text-transform:uppercase;color:rgba(255,255,255,0.6);
-  margin-bottom:10px;
-}
-.srv-float-stat{font-size:26px;font-weight:900;color:white;line-height:1;}
-.srv-float-label{font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;}
-
-/* LEADS PANEL */
-.leads-panel{
-  background:linear-gradient(160deg,#060d1f 0%,#0d1f3c 50%,#0a1628 100%);
-  padding:48px 44px;
-  display:flex;flex-direction:column;justify-content:center;
-  gap:0;
-}
-.leads-header{
+.s7-leads-head{
   display:flex;align-items:center;gap:8px;
+  margin-bottom:22px;
+}
+.s7-live-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#22c55e;
+  box-shadow:0 0 0 3px rgba(34,197,94,0.2);
+  animation:pulse 2s infinite;
+  flex-shrink:0;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(34,197,94,0.4);}
+  70%{box-shadow:0 0 0 8px rgba(34,197,94,0);}
+  100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
+}
+.s7-leads-title{
   font-size:10px;font-weight:800;letter-spacing:2px;
-  color:#3b82f6;text-transform:uppercase;margin-bottom:24px;
+  color:#64748b;text-transform:uppercase;
+  font-family:'Space Grotesk',sans-serif;
 }
-.leads-header::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:blink 1.5s infinite;}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
-.lead-item{
-  display:flex;align-items:center;gap:14px;
+.s7-lead{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;border-radius:12px;
   background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.07);
-  border-radius:14px;padding:14px 18px;
-  margin-bottom:10px;
+  border:1px solid rgba(255,255,255,0.06);
+  margin-bottom:8px;
   transition:all 0.2s;
-  cursor:default;
 }
-.lead-item:hover{background:rgba(255,255,255,0.08);border-color:rgba(59,130,246,0.3);transform:translateX(4px);}
-.lead-flag{font-size:26px;flex-shrink:0;}
-.lead-info{flex:1;}
-.lead-country{font-size:13.5px;font-weight:700;color:white;margin-bottom:2px;}
-.lead-product{font-size:11.5px;color:rgba(255,255,255,0.45);}
-.lead-badge{font-size:9.5px;font-weight:800;padding:5px 11px;border-radius:7px;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;}
-.badge-new{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
-.badge-hot{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
-.badge-ver{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
-.leads-stats{display:flex;gap:0;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;}
-.lead-stat{flex:1;text-align:center;}
-.lead-stat:first-child{border-right:1px solid rgba(255,255,255,0.06);}
-.lead-stat-num{font-size:30px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
-.lead-stat-lbl{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;}
+.s7-lead:last-of-type{margin-bottom:0;}
+.s7-lead:hover{background:rgba(255,255,255,0.07);transform:translateX(3px);}
+.s7-lead-flag{font-size:22px;flex-shrink:0;line-height:1;}
+.s7-lead-country{font-size:13px;font-weight:700;color:#f1f5f9;line-height:1.2;}
+.s7-lead-product{font-size:11px;color:rgba(255,255,255,0.35);margin-top:2px;}
+.s7-lead-badge{
+  margin-left:auto;flex-shrink:0;
+  font-size:9px;font-weight:800;
+  padding:4px 10px;border-radius:6px;
+  letter-spacing:0.8px;text-transform:uppercase;
+}
+.lb-new{background:rgba(34,197,94,0.12);color:#4ade80;border:1px solid rgba(34,197,94,0.15);}
+.lb-hot{background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.15);}
+.lb-ver{background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.2);}
+.s7-leads-footer{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:1px;background:rgba(255,255,255,0.05);
+  border-radius:12px;overflow:hidden;
+  margin-top:20px;
+}
+.s7-leads-stat{
+  background:#08111f;
+  padding:16px;text-align:center;
+}
+.s7-leads-stat strong{
+  display:block;font-size:26px;font-weight:900;
+  background:linear-gradient(135deg,#818cf8,#60a5fa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;
+}
+.s7-leads-stat span{
+  font-size:9.5px;color:rgba(255,255,255,0.25);
+  letter-spacing:2px;text-transform:uppercase;
+  margin-top:4px;display:block;
+}
 
-/* ── CTA STRIP ── */
-.srv-cta{
-  background:linear-gradient(135deg,#0b1929 0%,#1e3a8a 40%,#1e1b4b 70%,#2d1b69 100%);
-  padding:80px 80px;
-  display:grid;grid-template-columns:1fr auto;
-  align-items:center;gap:60px;
+/* ══ METRIC GRID (used in several services) ══ */
+.s7-metric-grid{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+}
+.s7-metric{
+  background:white;border-radius:14px;
+  padding:20px;text-align:center;
+  border:1px solid #e8ecf5;
+  box-shadow:0 2px 8px rgba(0,0,0,0.04);
+  transition:all 0.2s;
+}
+.s7-metric:hover{box-shadow:0 8px 24px rgba(99,102,241,0.1);border-color:#c7d2fe;transform:translateY(-2px);}
+.s7-metric strong{
+  display:block;font-size:24px;font-weight:900;
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  line-height:1;margin-bottom:5px;
+}
+.s7-metric span{font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1.5px;font-weight:600;}
+
+/* ══ BADGE GRID (registrations) ══ */
+.s7-badge-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.s7-badge{
+  border-radius:16px;padding:22px;text-align:center;
+  transition:all 0.2s;cursor:default;
+}
+.s7-badge:hover{transform:translateY(-3px);}
+.s7-badge-code{font-size:28px;font-weight:900;line-height:1;margin-bottom:5px;}
+.s7-badge-plan{font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px;}
+.s7-badge-tick{font-size:11px;font-weight:700;}
+
+/* ══ FEATURE PILLS ══ */
+.s7-pills{display:flex;flex-direction:column;gap:10px;}
+.s7-pill{
+  display:flex;align-items:center;gap:14px;
+  background:white;border-radius:14px;
+  padding:14px 18px;
+  border:1px solid #e8ecf5;
+  box-shadow:0 2px 8px rgba(0,0,0,0.03);
+  transition:all 0.2s;
+}
+.s7-pill:hover{border-color:#c7d2fe;box-shadow:0 4px 16px rgba(99,102,241,0.1);transform:translateX(4px);}
+.s7-pill-icon{
+  width:40px;height:40px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.s7-pill-title{font-size:13px;font-weight:700;color:#0d1117;margin-bottom:2px;}
+.s7-pill-sub{font-size:11.5px;color:#64748b;}
+
+/* ══ VCARD MOCKUP ══ */
+.s7-vcard{
+  background:linear-gradient(145deg,#0f172a,#1e3a5f);
+  border-radius:18px;padding:28px;
+  border:1px solid rgba(255,255,255,0.07);
+  box-shadow:0 24px 60px rgba(0,0,0,0.3);
   position:relative;overflow:hidden;
 }
-.srv-cta::before{content:'';position:absolute;top:-120px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 70%);}
-.srv-cta::after{content:'';position:absolute;bottom:-80px;right:200px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.12),transparent 70%);}
-.srv-cta-text{position:relative;z-index:2;}
-.srv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;color:#818cf8;text-transform:uppercase;margin-bottom:14px;}
-.srv-cta-text h2{font-size:clamp(28px,3vw,44px);font-weight:800;color:white;line-height:1.2;margin-bottom:12px;letter-spacing:-0.5px;}
-.srv-cta-text h2 em{color:#f59e0b;font-style:italic;font-family:'Cormorant Garamond',serif;}
-.srv-cta-text p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.75;}
-.srv-cta-actions{display:flex;flex-direction:column;gap:12px;min-width:230px;position:relative;z-index:2;flex-shrink:0;}
-.cta-btn-main{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a1a;border:none;border-radius:14px;padding:16px 32px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;text-align:center;transition:all .25s;box-shadow:0 8px 24px rgba(245,158,11,.35);letter-spacing:.2px;}
-.cta-btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,158,11,.5);}
-.cta-btn-ghost{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:15px 32px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;text-align:center;transition:all .25s;}
-.cta-btn-ghost:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);}
+.s7-vcard::before{
+  content:'';position:absolute;
+  top:-50px;right:-50px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(245,158,11,0.12),transparent);
+}
+.s7-vcard-brand{font-size:9.5px;font-weight:700;letter-spacing:2px;color:#f59e0b;text-transform:uppercase;margin-bottom:16px;}
+.s7-vcard-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:white;margin-bottom:2px;}
+.s7-vcard-role{font-size:12px;color:rgba(255,255,255,0.35);margin-bottom:18px;}
+.s7-vcard-row{display:flex;align-items:center;gap:9px;font-size:12px;color:rgba(255,255,255,0.6);margin-bottom:7px;}
+.s7-vcard-divider{height:1px;background:rgba(255,255,255,0.06);margin:14px 0;}
+.s7-vcard-footer{display:flex;align-items:center;justify-content:space-between;}
+.s7-vcard-cats{font-size:10.5px;color:rgba(255,255,255,0.2);}
+.s7-vcard-qr{width:44px;height:44px;background:white;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:20px;}
 
-@media(max-width:960px){
-  .srv-row{grid-template-columns:1fr;}
-  .srv-row:nth-child(odd) .srv-text,.srv-row:nth-child(even) .srv-text{order:2;}
-  .srv-row:nth-child(odd) .srv-vis,.srv-row:nth-child(even) .srv-vis{order:1;min-height:300px;}
-  .srv-text{padding:44px 28px;}
-  .leads-panel{padding:36px 24px;}
-  .srv-cta{grid-template-columns:1fr;padding:56px 28px;}
+/* ══ CTA BANNER ══ */
+.s7-cta-banner{
+  background:linear-gradient(135deg,#0f172a 0%,#1e3a8a 45%,#312e81 100%);
+  padding:72px 60px;
+  display:flex;align-items:center;justify-content:space-between;
+  gap:48px;flex-wrap:wrap;
+  position:relative;overflow:hidden;
+}
+.s7-cta-banner::before{
+  content:'';position:absolute;
+  top:-100px;right:-60px;
+  width:400px;height:400px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,102,241,0.18),transparent 65%);
+}
+.s7-cta-banner::after{
+  content:'';position:absolute;
+  bottom:-80px;left:200px;
+  width:300px;height:300px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,0.12),transparent 65%);
+}
+.s7-cta-left{position:relative;z-index:2;max-width:520px;}
+.s7-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;color:#818cf8;text-transform:uppercase;margin-bottom:12px;}
+.s7-cta-left h2{font-size:clamp(26px,3vw,40px);font-weight:800;color:white;line-height:1.2;margin-bottom:12px;letter-spacing:-0.5px;}
+.s7-cta-left h2 em{color:#f59e0b;font-style:italic;font-family:'Cormorant Garamond',serif;}
+.s7-cta-left p{font-size:14.5px;color:rgba(255,255,255,0.5);line-height:1.8;}
+.s7-cta-right{display:flex;flex-direction:column;gap:12px;min-width:210px;position:relative;z-index:2;}
+.s7-btn-gold{
+  background:linear-gradient(135deg,#f59e0b,#d97706);
+  color:#1a1100;border:none;border-radius:12px;
+  padding:15px 28px;font-size:14px;font-weight:800;
+  cursor:pointer;font-family:inherit;
+  text-decoration:none;text-align:center;
+  transition:all .25s;
+  box-shadow:0 6px 20px rgba(245,158,11,0.35);
+  letter-spacing:0.2px;
+}
+.s7-btn-gold:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(245,158,11,0.45);}
+.s7-btn-ghost{
+  background:rgba(255,255,255,0.07);
+  color:rgba(255,255,255,0.8);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:12px;padding:14px 28px;
+  font-size:14px;font-weight:600;
+  cursor:pointer;font-family:inherit;
+  text-decoration:none;text-align:center;
+  transition:all .25s;
+}
+.s7-btn-ghost:hover{background:rgba(255,255,255,0.12);}
+
+/* ══ RESPONSIVE ══ */
+@media(max-width:900px){
+  .s7-section{grid-template-columns:1fr;gap:36px;padding:56px 24px;}
+  .s7-section.rev .s7-text{order:1;}
+  .s7-section.rev .s7-visual{order:2;}
+  .s7-visual img{height:260px;}
+  .s7-cta-banner{padding:48px 24px;}
+  .s7-badge-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 
-<div class="srv-wrap">
+<div class="s7-wrap">
 
-<!-- ══ SERVICE 01 — BUYER LEADS ══ -->
-<div class="srv-row" id="leads">
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 01</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#dbeafe,#ede9fe);">🎯</div>
-    <h3>Verified Buyer Leads</h3>
-    <p>Receive verified international buyer enquiries matched to your exact product category — manually checked by our team before delivery, so you only connect with serious buyers.</p>
-    <ul class="srv-bullets">
+<!-- ════ 01 BUYER LEADS ════ -->
+<div class="s7-section" id="leads">
+  <div class="s7-text">
+    <div class="s7-tag">Service 01</div>
+    <h3>Verified International<br>Buyer Leads</h3>
+    <p>Receive verified buyer enquiries matched to your exact product category. Every lead is manually reviewed before delivery — so you only speak with serious, ready-to-buy international buyers.</p>
+    <ul class="s7-list">
       <li>Matched to your product category and export readiness</li>
-      <li>Delivered via WhatsApp and email within 24–48 hours</li>
+      <li>Delivered via WhatsApp & email within 24–48 hours</li>
       <li>50+ countries — verified company details included</li>
-      <li>Lead tracking via your real-time client portal</li>
+      <li>Full tracking via your real-time client portal</li>
       <li>Starter: 10 leads · Growth: 25 · Professional: 40+</li>
     </ul>
-    <a href="membership.html" class="srv-btn">Get Buyer Leads <span class="srv-btn-arrow">→</span></a>
+    <a href="membership.html" class="s7-cta">Get Buyer Leads <span class="s7-cta-arr">→</span></a>
   </div>
-  <div class="leads-panel">
-    <div class="leads-header">🟢 Live Buyer Feed</div>
-    <div class="lead-item">
-      <div class="lead-flag">🇩🇪</div>
-      <div class="lead-info"><div class="lead-country">Germany</div><div class="lead-product">Organic Turmeric — 5 MT/month</div></div>
-      <span class="lead-badge badge-new">New</span>
+  <div class="s7-leads">
+    <div class="s7-leads-head">
+      <div class="s7-live-dot"></div>
+      <span class="s7-leads-title">Live Buyer Feed</span>
     </div>
-    <div class="lead-item">
-      <div class="lead-flag">🇦🇪</div>
-      <div class="lead-info"><div class="lead-country">UAE</div><div class="lead-product">Basmati Rice — 10 MT/month</div></div>
-      <span class="lead-badge badge-hot">Hot</span>
-    </div>
-    <div class="lead-item">
-      <div class="lead-flag">🇺🇸</div>
-      <div class="lead-info"><div class="lead-country">USA</div><div class="lead-product">Cotton Fabric — 2,000 metres</div></div>
-      <span class="lead-badge badge-ver">Verified</span>
-    </div>
-    <div class="lead-item">
-      <div class="lead-flag">🇬🇧</div>
-      <div class="lead-info"><div class="lead-country">UK</div><div class="lead-product">Brass Handicrafts — 500 units</div></div>
-      <span class="lead-badge badge-new">New</span>
-    </div>
-    <div class="lead-item">
-      <div class="lead-flag">🇸🇬</div>
-      <div class="lead-info"><div class="lead-country">Singapore</div><div class="lead-product">Spices & Masala — 2 MT/month</div></div>
-      <span class="lead-badge badge-ver">Verified</span>
-    </div>
-    <div class="leads-stats">
-      <div class="lead-stat"><div class="lead-stat-num">50+</div><div class="lead-stat-lbl">Countries</div></div>
-      <div class="lead-stat"><div class="lead-stat-num">500+</div><div class="lead-stat-lbl">Leads/Month</div></div>
+    <div class="s7-lead"><div class="s7-lead-flag">🇩🇪</div><div style="flex:1"><div class="s7-lead-country">Germany</div><div class="s7-lead-product">Organic Turmeric — 5 MT/month</div></div><span class="s7-lead-badge lb-new">New</span></div>
+    <div class="s7-lead"><div class="s7-lead-flag">🇦🇪</div><div style="flex:1"><div class="s7-lead-country">UAE</div><div class="s7-lead-product">Basmati Rice — 10 MT/month</div></div><span class="s7-lead-badge lb-hot">Hot</span></div>
+    <div class="s7-lead"><div class="s7-lead-flag">🇺🇸</div><div style="flex:1"><div class="s7-lead-country">USA</div><div class="s7-lead-product">Cotton Fabric — 2,000 metres</div></div><span class="s7-lead-badge lb-ver">Verified</span></div>
+    <div class="s7-lead"><div class="s7-lead-flag">🇬🇧</div><div style="flex:1"><div class="s7-lead-country">UK</div><div class="s7-lead-product">Brass Handicrafts — 500 units</div></div><span class="s7-lead-badge lb-new">New</span></div>
+    <div class="s7-lead"><div class="s7-lead-flag">🇸🇬</div><div style="flex:1"><div class="s7-lead-country">Singapore</div><div class="s7-lead-product">Spices & Masala — 2 MT/month</div></div><span class="s7-lead-badge lb-ver">Verified</span></div>
+    <div class="s7-leads-footer">
+      <div class="s7-leads-stat"><strong>50+</strong><span>Countries</span></div>
+      <div class="s7-leads-stat"><strong>500+</strong><span>Leads / Month</span></div>
     </div>
   </div>
 </div>
 
-<!-- ══ SERVICE 02 — RELATIONSHIP MANAGER ══ -->
-<div class="srv-row" id="rm">
-  <div class="srv-vis">
-    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=85" alt="Relationship Manager">
-    <div class="srv-vis-overlay">
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <div class="srv-float-card">
-          <div class="srv-float-tag">⚡ Response Time</div>
-          <div class="srv-float-stat">Under 2h</div>
-          <div class="srv-float-label">Average reply speed</div>
-        </div>
-        <div class="srv-float-card srv-float-card2">
-          <div class="srv-float-tag">🤝 Support</div>
-          <div class="srv-float-stat">100%</div>
-          <div class="srv-float-label">Human — no bots</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 02</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);">🤝</div>
-    <h3>Dedicated Relationship Manager</h3>
-    <p>Every BuyGenix member gets a real, named Relationship Manager who coordinates your leads, guides your export journey, and is available on WhatsApp whenever you need them.</p>
-    <ul class="srv-bullets">
+<!-- ════ 02 RELATIONSHIP MANAGER ════ -->
+<div class="s7-section rev" id="rm">
+  <div class="s7-text">
+    <div class="s7-tag">Service 02</div>
+    <h3>Dedicated Relationship<br>Manager</h3>
+    <p>Every BuyGenix member gets a named Relationship Manager — a real person available on WhatsApp who coordinates your leads and guides you through every step of exporting.</p>
+    <ul class="s7-list">
       <li>Named RM assigned within 24 hours of activation</li>
-      <li>Direct WhatsApp + email access at all times</li>
-      <li>Coordinates lead selection, delivery and follow-up</li>
-      <li>Export documentation guidance and buyer communication</li>
-      <li>Quarterly strategy reviews (Professional & Enterprise)</li>
+      <li>Direct WhatsApp & email access at all times</li>
+      <li>Coordinates lead selection, delivery & follow-up</li>
+      <li>Export documentation guidance & buyer communication</li>
+      <li>Quarterly strategy reviews for Professional & Enterprise</li>
     </ul>
-    <a href="about.html" class="srv-btn">Meet Our Team <span class="srv-btn-arrow">→</span></a>
+    <a href="about.html" class="s7-cta">Meet Our Team <span class="s7-cta-arr">→</span></a>
+  </div>
+  <div class="s7-visual">
+    <img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=800&q=85" alt="Relationship Manager">
+    <div class="s7-img-overlay"></div>
+    <div class="s7-metric-grid" style="position:absolute;bottom:20px;left:20px;right:20px;">
+      <div class="s7-metric"><strong>24h</strong><span>Assignment</span></div>
+      <div class="s7-metric"><strong>100%</strong><span>Human Support</span></div>
+    </div>
   </div>
 </div>
 
-<!-- ══ SERVICE 03 — DIGITAL CATALOGUE ══ -->
-<div class="srv-row" id="catalogue">
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 03</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">📖</div>
-    <h3>Digital Product Catalogue</h3>
-    <p>A professionally designed digital catalogue with your products, images, specifications and contact details — shareable globally via WhatsApp, email, or at trade fairs with a single link.</p>
-    <ul class="srv-bullets">
+<!-- ════ 03 DIGITAL CATALOGUE ════ -->
+<div class="s7-section" id="catalogue">
+  <div class="s7-text">
+    <div class="s7-tag">Service 03</div>
+    <h3>Professional Digital<br>Product Catalogue</h3>
+    <p>A professionally designed digital catalogue showcasing your products with images, specs and contact details — shareable with global buyers via WhatsApp, email or at trade fairs.</p>
+    <ul class="s7-list">
       <li>Created by our in-house design team with your branding</li>
-      <li>Shareable link — WhatsApp, email, exhibitions, social media</li>
-      <li>Growth: up to 10 products · Professional & Enterprise: unlimited</li>
+      <li>Single shareable link — WhatsApp, email, exhibitions</li>
+      <li>Growth: up to 10 products · Pro & Enterprise: unlimited</li>
       <li>Updated whenever your product range changes</li>
-      <li>QR-code ready for trade fair handouts</li>
+      <li>QR-code ready for trade fair and event use</li>
     </ul>
-    <a href="membership.html" class="srv-btn">Get Your Catalogue <span class="srv-btn-arrow">→</span></a>
+    <a href="membership.html" class="s7-cta">Get Your Catalogue <span class="s7-cta-arr">→</span></a>
   </div>
-  <div class="srv-vis">
-    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=900&q=85" alt="Digital Catalogue">
-    <div class="srv-vis-overlay">
-      <div style="display:flex;gap:14px;">
-        <div class="srv-float-card">
-          <div class="srv-float-tag">📦 Products</div>
-          <div class="srv-float-stat">Unlimited</div>
-          <div class="srv-float-label">Pro & Enterprise plans</div>
-        </div>
-      </div>
+  <div class="s7-visual">
+    <img src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=800&q=85" alt="Digital Catalogue">
+    <div class="s7-img-overlay"></div>
+    <div class="s7-metric-grid" style="position:absolute;bottom:20px;left:20px;right:20px;">
+      <div class="s7-metric"><strong>∞</strong><span>Products (Pro+)</span></div>
+      <div class="s7-metric"><strong>10</strong><span>Products (Growth)</span></div>
     </div>
   </div>
 </div>
 
-<!-- ══ SERVICE 04 — SEO & SMO ══ -->
-<div class="srv-row" id="seo">
-  <div class="srv-vis">
-    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=85" alt="SEO & SMO">
-    <div class="srv-vis-overlay">
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <div class="srv-float-card">
-          <div class="srv-float-tag">📈 Reach</div>
-          <div class="srv-float-stat">50+</div>
-          <div class="srv-float-label">Target markets</div>
-        </div>
-        <div class="srv-float-card srv-float-card2">
-          <div class="srv-float-tag">🔄 Frequency</div>
-          <div class="srv-float-stat">Monthly</div>
-          <div class="srv-float-label">Professional plan</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 04</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#e0e7ff,#ddd6fe);">📈</div>
-    <h3>SEO &amp; Social Media Optimisation</h3>
-    <p>We optimise your BuyGenix profile for international search engines and manage social media promotion to build your brand among global buyers — bringing organic enquiries to you.</p>
-    <ul class="srv-bullets">
+<!-- ════ 04 SEO & SMO ════ -->
+<div class="s7-section rev" id="seo">
+  <div class="s7-text">
+    <div class="s7-tag">Service 04</div>
+    <h3>SEO &amp; Social Media<br>Optimisation</h3>
+    <p>We optimise your profile for international search engines and run social media campaigns to grow your brand among global buyers — bringing organic enquiries directly to you.</p>
+    <ul class="s7-list">
       <li>SEO for your BuyGenix product pages and profile</li>
       <li>Keyword targeting for your categories and export markets</li>
       <li>Instagram and Facebook brand promotion campaigns</li>
       <li>Growth: quarterly promotion · Professional: monthly</li>
-      <li>Content designed to attract international buyer enquiries</li>
+      <li>Content crafted to attract international buyer enquiries</li>
     </ul>
-    <a href="membership.html" class="srv-btn">Get SEO &amp; SMO <span class="srv-btn-arrow">→</span></a>
+    <a href="membership.html" class="s7-cta">Get SEO &amp; SMO <span class="s7-cta-arr">→</span></a>
+  </div>
+  <div class="s7-visual">
+    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=85" alt="SEO Analytics">
+    <div class="s7-img-overlay"></div>
+    <div class="s7-pills" style="position:absolute;bottom:20px;left:20px;right:20px;">
+      <div class="s7-pill">
+        <div class="s7-pill-icon" style="background:rgba(99,102,241,0.15);">🔍</div>
+        <div><div class="s7-pill-title">Search Engine Optimisation</div><div class="s7-pill-sub">Rank for export keywords globally</div></div>
+      </div>
+      <div class="s7-pill">
+        <div class="s7-pill-icon" style="background:rgba(236,72,153,0.12);">📱</div>
+        <div><div class="s7-pill-title">Instagram & Facebook</div><div class="s7-pill-sub">Monthly brand promotion campaigns</div></div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══ SERVICE 05 — VIRTUAL BUSINESS CARD ══ -->
-<div class="srv-row" id="vcard">
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 05</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#cffafe,#a5f3fc);">💳</div>
-    <h3>Virtual Business Card</h3>
-    <p>A premium digital business card with your brand, products, and a scannable QR code — share it instantly at trade fairs, over WhatsApp, or via email. No printing, no hassle.</p>
-    <ul class="srv-bullets">
-      <li>Professional card with your logo and branding</li>
+<!-- ════ 05 VIRTUAL BUSINESS CARD ════ -->
+<div class="s7-section" id="vcard">
+  <div class="s7-text">
+    <div class="s7-tag">Service 05</div>
+    <h3>Virtual Business Card<br>&amp; QR Profile</h3>
+    <p>A premium digital business card with your brand, products, and a scannable QR code. Share it instantly at trade fairs, over WhatsApp, or by email — no printing required.</p>
+    <ul class="s7-list">
+      <li>Premium card with your logo, products & contact info</li>
       <li>QR code links directly to your full product catalogue</li>
       <li>Shareable via WhatsApp, email, or LinkedIn instantly</li>
-      <li>Starter & Growth: 1 card · Professional: 3 · Enterprise: unlimited</li>
-      <li>Updated whenever your details change</li>
+      <li>Starter & Growth: 1 · Professional: 3 · Enterprise: unlimited</li>
+      <li>Updated whenever your business details change</li>
     </ul>
-    <a href="membership.html" class="srv-btn">Get Your Card <span class="srv-btn-arrow">→</span></a>
+    <a href="membership.html" class="s7-cta">Get Your Card <span class="s7-cta-arr">→</span></a>
   </div>
-  <div class="srv-vis" style="background:linear-gradient(160deg,#060d1f,#0d1f3c);display:flex;align-items:center;justify-content:center;padding:48px;">
-    <div style="width:100%;max-width:340px;">
-      <!-- Card mockup -->
-      <div style="background:linear-gradient(135deg,#0f2744,#1a3a6b);border-radius:20px;padding:28px 30px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);">
-        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.12),transparent);"></div>
-        <div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.12),transparent);"></div>
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#f59e0b;text-transform:uppercase;margin-bottom:16px;position:relative;z-index:1;">BuyGenix Solutions</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:white;margin-bottom:2px;position:relative;z-index:1;">Rajesh Sharma</div>
-        <div style="font-size:12.5px;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;">Export Manager · RS Textiles Pvt Ltd</div>
-        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;position:relative;z-index:1;">
-          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">📍</span>New Delhi, India</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">📱</span>+91 98765 43210</div>
-          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">✉️</span>rajesh@rstextiles.com</div>
-        </div>
-        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
-          <div style="font-size:11px;color:rgba(255,255,255,0.25);">Cotton · Silk · Home Textiles</div>
-          <div style="width:46px;height:46px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
-        </div>
+  <div style="background:linear-gradient(145deg,#08111f,#0d2040);border-radius:20px;padding:36px;display:flex;flex-direction:column;gap:20px;">
+    <div class="s7-vcard">
+      <div class="s7-vcard-brand">BuyGenix Solutions</div>
+      <div class="s7-vcard-name">Rajesh Sharma</div>
+      <div class="s7-vcard-role">Export Manager · RS Textiles Pvt Ltd</div>
+      <div class="s7-vcard-row"><span>📍</span>New Delhi, India</div>
+      <div class="s7-vcard-row"><span>📱</span>+91 98765 43210</div>
+      <div class="s7-vcard-row"><span>✉️</span>rajesh@rstextiles.com</div>
+      <div class="s7-vcard-divider"></div>
+      <div class="s7-vcard-footer">
+        <div class="s7-vcard-cats">Cotton · Silk · Home Textiles</div>
+        <div class="s7-vcard-qr">📱</div>
       </div>
-      <!-- Scan prompt -->
-      <div style="text-align:center;margin-top:18px;font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:1px;">SCAN TO VIEW FULL CATALOGUE</div>
     </div>
+    <div style="text-align:center;font-size:10.5px;color:rgba(255,255,255,0.2);letter-spacing:2px;text-transform:uppercase;">Scan QR to View Full Catalogue</div>
   </div>
 </div>
 
-<!-- ══ SERVICE 06 — REGISTRATIONS ══ -->
-<div class="srv-row" id="registration">
-  <div class="srv-vis">
-    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85" alt="Registration Assistance">
-    <div class="srv-vis-overlay">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;">
-        <div class="srv-float-card" style="text-align:center;padding:14px;">
-          <div style="font-size:22px;font-weight:900;color:#34d399;line-height:1;">GST</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
-        </div>
-        <div class="srv-float-card" style="text-align:center;padding:14px;">
-          <div style="font-size:22px;font-weight:900;color:#60a5fa;line-height:1;">IEC</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
-        </div>
-        <div class="srv-float-card" style="text-align:center;padding:14px;">
-          <div style="font-size:22px;font-weight:900;color:#c084fc;line-height:1;">MSME</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
-        </div>
-        <div class="srv-float-card" style="text-align:center;padding:14px;">
-          <div style="font-size:22px;font-weight:900;color:#fb923c;line-height:1;">FSSAI</div>
-          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">GROWTH+</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 06</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);">📋</div>
-    <h3>Registration &amp; Compliance Assistance</h3>
-    <p>We guide you through every registration an Indian exporter needs — GST, IEC, MSME, FSSAI — ensuring your business is fully compliant and ready to trade internationally.</p>
-    <ul class="srv-bullets">
-      <li>GST registration assistance — included in all plans</li>
+<!-- ════ 06 REGISTRATIONS ════ -->
+<div class="s7-section rev" id="registration">
+  <div class="s7-text">
+    <div class="s7-tag">Service 06</div>
+    <h3>Registration &amp;<br>Compliance Assistance</h3>
+    <p>We guide you through every registration an Indian exporter needs — GST, IEC, MSME and FSSAI — ensuring your business is fully compliant and ready to trade globally.</p>
+    <ul class="s7-list">
+      <li>GST registration assistance — all plans included</li>
       <li>IEC (Import Export Code) registration support</li>
-      <li>MSME/Udyam for government scheme benefits</li>
+      <li>MSME / Udyam registration for government benefits</li>
       <li>FSSAI licence for food and agricultural exporters</li>
-      <li>Document checklist, application support, status follow-up</li>
+      <li>Document checklist, application & status follow-up</li>
     </ul>
-    <a href="gst.html" class="srv-btn">GST Registration Guide <span class="srv-btn-arrow">→</span></a>
+    <a href="gst.html" class="s7-cta">GST Registration Guide <span class="s7-cta-arr">→</span></a>
+  </div>
+  <div class="s7-visual">
+    <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=85" alt="Registration">
+    <div class="s7-img-overlay"></div>
+    <div class="s7-badge-grid" style="position:absolute;bottom:20px;left:20px;right:20px;">
+      <div class="s7-badge" style="background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.2);">
+        <div class="s7-badge-code" style="color:#4ade80;">GST</div>
+        <div class="s7-badge-plan" style="color:rgba(255,255,255,0.4);">All Plans</div>
+        <div class="s7-badge-tick" style="color:#4ade80;">✔ Included</div>
+      </div>
+      <div class="s7-badge" style="background:rgba(99,102,241,0.12);border:1px solid rgba(99,102,241,0.2);">
+        <div class="s7-badge-code" style="color:#818cf8;">IEC</div>
+        <div class="s7-badge-plan" style="color:rgba(255,255,255,0.4);">All Plans</div>
+        <div class="s7-badge-tick" style="color:#818cf8;">✔ Included</div>
+      </div>
+      <div class="s7-badge" style="background:rgba(192,132,252,0.12);border:1px solid rgba(192,132,252,0.2);">
+        <div class="s7-badge-code" style="color:#c084fc;">MSME</div>
+        <div class="s7-badge-plan" style="color:rgba(255,255,255,0.4);">All Plans</div>
+        <div class="s7-badge-tick" style="color:#c084fc;">✔ Included</div>
+      </div>
+      <div class="s7-badge" style="background:rgba(251,146,60,0.12);border:1px solid rgba(251,146,60,0.2);">
+        <div class="s7-badge-code" style="color:#fb923c;">FSSAI</div>
+        <div class="s7-badge-plan" style="color:rgba(255,255,255,0.4);">Growth+</div>
+        <div class="s7-badge-tick" style="color:#fb923c;">✔ Included</div>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- ══ SERVICE 07 — PERFORMANCE REPORTS ══ -->
-<div class="srv-row" id="reports">
-  <div class="srv-text">
-    <div class="srv-num"><span></span>Service 07</div>
-    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">📊</div>
-    <h3>Performance Reports &amp; Analytics</h3>
-    <p>Track every aspect of your membership — lead delivery, engagement, and business metrics — through your real-time client portal and regular reports from your Relationship Manager.</p>
-    <ul class="srv-bullets">
-      <li>Monthly performance reports for Professional and Enterprise</li>
+<!-- ════ 07 PERFORMANCE REPORTS ════ -->
+<div class="s7-section" id="reports">
+  <div class="s7-text">
+    <div class="s7-tag">Service 07</div>
+    <h3>Performance Reports<br>&amp; Analytics</h3>
+    <p>Track your membership, lead delivery status and business metrics through your real-time client portal and regular reports from your Relationship Manager.</p>
+    <ul class="s7-list">
+      <li>Monthly performance reports for Professional & Enterprise</li>
       <li>On-request reports for Starter and Growth members</li>
-      <li>Lead tracking: sent, viewed, and responded</li>
+      <li>Lead tracking: sent, viewed and responded</li>
       <li>Real-time dashboard via your client portal login</li>
       <li>Quarterly export strategy consultation (Professional)</li>
     </ul>
-    <a href="login.html" class="srv-btn">Access Dashboard <span class="srv-btn-arrow">→</span></a>
+    <a href="login.html" class="s7-cta">Access Dashboard <span class="s7-cta-arr">→</span></a>
   </div>
-  <div class="srv-vis">
-    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=85" alt="Performance Reports">
-    <div class="srv-vis-overlay">
-      <div style="display:flex;gap:14px;flex-wrap:wrap;">
-        <div class="srv-float-card">
-          <div class="srv-float-tag">📊 Reporting</div>
-          <div class="srv-float-stat">Monthly</div>
-          <div class="srv-float-label">Pro & Enterprise</div>
-        </div>
-        <div class="srv-float-card srv-float-card2">
-          <div class="srv-float-tag">🖥️ Dashboard</div>
-          <div class="srv-float-stat">Live</div>
-          <div class="srv-float-label">Real-time access</div>
-        </div>
-      </div>
+  <div class="s7-visual">
+    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=85" alt="Analytics Dashboard">
+    <div class="s7-img-overlay"></div>
+    <div class="s7-metric-grid" style="position:absolute;bottom:20px;left:20px;right:20px;">
+      <div class="s7-metric"><strong>Live</strong><span>Dashboard</span></div>
+      <div class="s7-metric"><strong>Monthly</strong><span>Reports (Pro)</span></div>
     </div>
   </div>
 </div>
 
-<!-- ══ CTA STRIP ══ -->
-<div class="srv-cta">
-  <div class="srv-cta-text">
-    <div class="srv-cta-eyebrow">Ready to Start?</div>
-    <h2>All 7 Services Bundled in<br>Your <em>Membership Plan</em></h2>
-    <p>One plan. Every service. No hidden fees. No complexity. Choose the plan that fits your stage of growth and start connecting with global buyers today.</p>
+<!-- ════ CTA BANNER ════ -->
+<div class="s7-cta-banner">
+  <div class="s7-cta-left">
+    <div class="s7-cta-eyebrow">Ready to Start?</div>
+    <h2>All 7 Services Included<br>in Your <em>Membership Plan</em></h2>
+    <p>One plan. Every service above. No hidden fees — just results. Choose the plan that fits your stage of growth and start connecting with global buyers today.</p>
   </div>
-  <div class="srv-cta-actions">
-    <a href="membership.html" class="cta-btn-main">View All Plans & Pricing →</a>
-    <a href="contact.html" class="cta-btn-ghost">Talk to Our Team</a>
+  <div class="s7-cta-right">
+    <a href="membership.html" class="s7-btn-gold">View All Plans & Pricing →</a>
+    <a href="contact.html" class="s7-btn-ghost">Talk to Our Team</a>
   </div>
 </div>
 
-</div><!-- /srv-wrap -->
+</div><!-- /s7-wrap -->
+
+
 
 
 
