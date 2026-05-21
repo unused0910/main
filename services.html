@@ -162,356 +162,470 @@
 
 <!-- SERVICE BLOCKS -->
 <style>
-/* ── ONE SERVICE PER ROW ── */
-.srow-wrap{width:100%;background:#f8f9ff;}
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
 
-.srow{
-  display:grid;grid-template-columns:1fr 1fr;
-  min-height:440px;border-bottom:1px solid #e8ecf4;
-}
-.srow:last-of-type{border-bottom:none;}
-.srow.flip{direction:rtl;}
-.srow.flip > *{direction:ltr;}
+/* ── BASE ── */
+.srv-wrap{width:100%;background:#f0f2f8;font-family:'Inter',sans-serif;}
 
-/* TEXT SIDE */
-.srow-text{
-  padding:64px 72px;
-  display:flex;flex-direction:column;justify-content:center;
+/* ── EACH ROW ── */
+.srv-row{display:grid;grid-template-columns:1fr 1fr;min-height:520px;position:relative;}
+.srv-row:nth-child(odd) .srv-text{order:1;}
+.srv-row:nth-child(odd) .srv-vis{order:2;}
+.srv-row:nth-child(even) .srv-text{order:2;}
+.srv-row:nth-child(even) .srv-vis{order:1;}
+
+/* ── TEXT PANEL ── */
+.srv-text{
   background:white;
-}
-.srow-num{font-size:10.5px;font-weight:800;letter-spacing:3px;color:#94a3b8;font-family:'Space Grotesk',sans-serif;text-transform:uppercase;margin-bottom:20px;}
-.srow-icon{width:54px;height:54px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:24px;margin-bottom:18px;}
-.srow-text h3{font-size:clamp(22px,2.2vw,30px);font-weight:800;color:#0f172a;line-height:1.25;margin-bottom:12px;font-family:'Plus Jakarta Sans','Segoe UI',sans-serif;}
-.srow-text p{font-size:14px;color:#64748b;line-height:1.8;margin-bottom:22px;max-width:480px;}
-.srow-feats{list-style:none;padding:0;margin:0 0 28px;display:flex;flex-direction:column;gap:9px;}
-.srow-feats li{font-size:13px;color:#475569;display:flex;align-items:flex-start;gap:10px;line-height:1.55;}
-.srow-feats li::before{content:'→';color:#2563eb;font-weight:800;flex-shrink:0;}
-.srow-cta{display:inline-flex;align-items:center;gap:7px;font-size:12px;font-weight:700;color:#2563eb;letter-spacing:.8px;text-decoration:none;text-transform:uppercase;padding:11px 0;border-bottom:2px solid #bfdbfe;transition:all .2s;font-family:'Space Grotesk',sans-serif;align-self:flex-start;}
-.srow-cta:hover{gap:12px;border-bottom-color:#2563eb;}
-
-/* VISUAL SIDE */
-.srow-visual{
+  padding:72px 64px;
   display:flex;flex-direction:column;justify-content:center;
-  padding:56px 64px;
   position:relative;overflow:hidden;
 }
-
-/* Accent line on left of each text block */
-.srow-text{border-left:4px solid transparent;transition:border-color .3s;}
-.srow:hover .srow-text{border-left-color:#2563eb;}
-.srow.flip .srow-text{border-left:none;border-right:4px solid transparent;}
-.srow.flip:hover .srow-text{border-right-color:#2563eb;}
-
-/* CTA ROW */
-.srow-cta-strip{
-  background:linear-gradient(135deg,#1e3a8a,#1e1b4b 50%,#4c1d95);
-  padding:72px 80px;
-  display:flex;align-items:center;justify-content:space-between;
-  gap:40px;flex-wrap:wrap;position:relative;overflow:hidden;
+.srv-text::after{
+  content:'';position:absolute;
+  bottom:-60px;right:-60px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,0.05),transparent 70%);
 }
-.srow-cta-strip::before{content:'';position:absolute;top:-100px;right:-60px;width:380px;height:380px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.22),transparent 70%);}
-.srow-cta-strip h2{font-family:'Cormorant Garamond',serif;font-size:clamp(26px,3vw,42px);font-weight:700;color:white;line-height:1.2;margin-bottom:10px;position:relative;z-index:2;}
-.srow-cta-strip h2 em{color:#f59e0b;font-style:italic;}
-.srow-cta-strip p{font-size:14px;color:rgba(255,255,255,.55);max-width:480px;line-height:1.75;position:relative;z-index:2;}
-.srow-cta-btns{display:flex;flex-direction:column;gap:12px;min-width:220px;position:relative;z-index:2;}
-.srow-btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a1a;border:none;border-radius:12px;padding:15px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;text-decoration:none;text-align:center;box-shadow:0 8px 24px rgba(245,158,11,.35);}
-.srow-btn-gold:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(245,158,11,.45);}
-.srow-btn-outline{background:rgba(255,255,255,.08);color:white;border:1.5px solid rgba(255,255,255,.2);border-radius:12px;padding:14px 32px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .25s;text-decoration:none;text-align:center;}
-.srow-btn-outline:hover{background:rgba(255,255,255,.14);}
+.srv-num{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:800;letter-spacing:3px;color:#94a3b8;
+  text-transform:uppercase;margin-bottom:20px;
+}
+.srv-num span{display:inline-block;width:24px;height:1px;background:#cbd5e1;}
+.srv-icon-wrap{
+  width:56px;height:56px;border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;margin-bottom:22px;
+  box-shadow:0 8px 24px rgba(0,0,0,0.08);
+  transition:transform 0.3s cubic-bezier(.34,1.56,.64,1);
+}
+.srv-row:hover .srv-icon-wrap{transform:scale(1.1) rotate(-4deg);}
+.srv-text h3{
+  font-size:clamp(24px,2.5vw,34px);font-weight:800;
+  color:#0a0f1e;line-height:1.2;margin-bottom:14px;
+  letter-spacing:-0.5px;
+}
+.srv-text p{font-size:14.5px;color:#64748b;line-height:1.85;margin-bottom:24px;max-width:460px;}
+.srv-bullets{list-style:none;padding:0;margin:0 0 30px;display:flex;flex-direction:column;gap:10px;}
+.srv-bullets li{
+  font-size:13px;color:#475569;
+  display:flex;align-items:flex-start;gap:10px;line-height:1.6;
+}
+.srv-bullets li::before{
+  content:'';display:inline-block;
+  width:18px;height:18px;border-radius:50%;
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+  flex-shrink:0;margin-top:1px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:center;background-size:65%;
+}
+.srv-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  background:linear-gradient(135deg,#2563eb,#4f46e5);
+  color:white;text-decoration:none;
+  padding:13px 26px;border-radius:12px;
+  font-size:13px;font-weight:700;letter-spacing:.3px;
+  align-self:flex-start;
+  transition:all 0.25s cubic-bezier(.4,0,.2,1);
+  box-shadow:0 4px 16px rgba(37,99,235,0.3);
+}
+.srv-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,99,235,0.4);}
+.srv-btn-arrow{transition:transform 0.2s;}
+.srv-btn:hover .srv-btn-arrow{transform:translateX(4px);}
 
-@media(max-width:900px){
-  .srow,.srow.flip{grid-template-columns:1fr;direction:ltr;}
-  .srow-text{padding:40px 28px;border-left:4px solid #2563eb !important;border-right:none !important;}
-  .srow-visual{padding:36px 28px;}
-  .srow-cta-strip{padding:48px 28px;}
+/* ── VISUAL PANEL ── */
+.srv-vis{
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  min-height:520px;
+}
+.srv-vis-img{
+  position:absolute;inset:0;
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.6s cubic-bezier(.4,0,.2,1);
+}
+.srv-row:hover .srv-vis-img{transform:scale(1.04);}
+.srv-vis-overlay{
+  position:absolute;inset:0;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:40px;
+  background:linear-gradient(to top,rgba(5,10,30,0.85) 0%,rgba(5,10,30,0.3) 60%,transparent 100%);
+}
+
+/* ── FLOATING CARDS (on visuals) ── */
+.srv-float-card{
+  background:rgba(255,255,255,0.12);
+  backdrop-filter:blur(16px);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:16px;padding:16px 20px;
+  animation:floatUp 3s ease-in-out infinite alternate;
+}
+@keyframes floatUp{from{transform:translateY(0);}to{transform:translateY(-8px);}}
+.srv-float-card2{animation-delay:1.5s;}
+.srv-float-tag{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:rgba(255,255,255,0.6);
+  margin-bottom:10px;
+}
+.srv-float-stat{font-size:26px;font-weight:900;color:white;line-height:1;}
+.srv-float-label{font-size:11px;color:rgba(255,255,255,0.5);margin-top:3px;}
+
+/* LEADS PANEL */
+.leads-panel{
+  background:linear-gradient(160deg,#060d1f 0%,#0d1f3c 50%,#0a1628 100%);
+  padding:48px 44px;
+  display:flex;flex-direction:column;justify-content:center;
+  gap:0;
+}
+.leads-header{
+  display:flex;align-items:center;gap:8px;
+  font-size:10px;font-weight:800;letter-spacing:2px;
+  color:#3b82f6;text-transform:uppercase;margin-bottom:24px;
+}
+.leads-header::before{content:'';display:inline-block;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:blink 1.5s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.lead-item{
+  display:flex;align-items:center;gap:14px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:14px;padding:14px 18px;
+  margin-bottom:10px;
+  transition:all 0.2s;
+  cursor:default;
+}
+.lead-item:hover{background:rgba(255,255,255,0.08);border-color:rgba(59,130,246,0.3);transform:translateX(4px);}
+.lead-flag{font-size:26px;flex-shrink:0;}
+.lead-info{flex:1;}
+.lead-country{font-size:13.5px;font-weight:700;color:white;margin-bottom:2px;}
+.lead-product{font-size:11.5px;color:rgba(255,255,255,0.45);}
+.lead-badge{font-size:9.5px;font-weight:800;padding:5px 11px;border-radius:7px;letter-spacing:.5px;text-transform:uppercase;flex-shrink:0;}
+.badge-new{background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.2);}
+.badge-hot{background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.2);}
+.badge-ver{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.leads-stats{display:flex;gap:0;margin-top:8px;border-top:1px solid rgba(255,255,255,0.06);padding-top:20px;}
+.lead-stat{flex:1;text-align:center;}
+.lead-stat:first-child{border-right:1px solid rgba(255,255,255,0.06);}
+.lead-stat-num{font-size:30px;font-weight:900;background:linear-gradient(135deg,#60a5fa,#818cf8);-webkit-background-clip:text;-webkit-text-fill-color:transparent;line-height:1;margin-bottom:4px;}
+.lead-stat-lbl{font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:2px;text-transform:uppercase;}
+
+/* ── CTA STRIP ── */
+.srv-cta{
+  background:linear-gradient(135deg,#0b1929 0%,#1e3a8a 40%,#1e1b4b 70%,#2d1b69 100%);
+  padding:80px 80px;
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;gap:60px;
+  position:relative;overflow:hidden;
+}
+.srv-cta::before{content:'';position:absolute;top:-120px;left:-60px;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,0.15),transparent 70%);}
+.srv-cta::after{content:'';position:absolute;bottom:-80px;right:200px;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.12),transparent 70%);}
+.srv-cta-text{position:relative;z-index:2;}
+.srv-cta-eyebrow{font-size:10px;font-weight:700;letter-spacing:3px;color:#818cf8;text-transform:uppercase;margin-bottom:14px;}
+.srv-cta-text h2{font-size:clamp(28px,3vw,44px);font-weight:800;color:white;line-height:1.2;margin-bottom:12px;letter-spacing:-0.5px;}
+.srv-cta-text h2 em{color:#f59e0b;font-style:italic;font-family:'Cormorant Garamond',serif;}
+.srv-cta-text p{font-size:15px;color:rgba(255,255,255,0.5);line-height:1.75;}
+.srv-cta-actions{display:flex;flex-direction:column;gap:12px;min-width:230px;position:relative;z-index:2;flex-shrink:0;}
+.cta-btn-main{background:linear-gradient(135deg,#f59e0b,#d97706);color:#1a1a1a;border:none;border-radius:14px;padding:16px 32px;font-size:14px;font-weight:800;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;text-align:center;transition:all .25s;box-shadow:0 8px 24px rgba(245,158,11,.35);letter-spacing:.2px;}
+.cta-btn-main:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(245,158,11,.5);}
+.cta-btn-ghost{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);border:1px solid rgba(255,255,255,0.15);border-radius:14px;padding:15px 32px;font-size:14px;font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;text-decoration:none;text-align:center;transition:all .25s;}
+.cta-btn-ghost:hover{background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.25);}
+
+@media(max-width:960px){
+  .srv-row{grid-template-columns:1fr;}
+  .srv-row:nth-child(odd) .srv-text,.srv-row:nth-child(even) .srv-text{order:2;}
+  .srv-row:nth-child(odd) .srv-vis,.srv-row:nth-child(even) .srv-vis{order:1;min-height:300px;}
+  .srv-text{padding:44px 28px;}
+  .leads-panel{padding:36px 24px;}
+  .srv-cta{grid-template-columns:1fr;padding:56px 28px;}
 }
 </style>
 
-<div class="srow-wrap">
+<div class="srv-wrap">
 
-  <!-- 01 BUYER LEADS -->
-  <div class="srow" id="leads">
-    <div class="srow-text">
-      <div class="srow-num">Service 01</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#dbeafe,#ede9fe);">🎯</div>
-      <h3>Verified Buyer Leads</h3>
-      <p>Receive verified international buyer enquiries matched to your exact product category. Every lead is manually checked by our team before delivery — so you only connect with serious buyers.</p>
-      <ul class="srow-feats">
-        <li>Matched to your specific product category and export readiness</li>
-        <li>Delivered via WhatsApp and email within 24–48 hours</li>
-        <li>Buyers across 50+ countries — verified company details included</li>
-        <li>Lead tracking via your client portal dashboard</li>
-        <li>Starter: 10 Indian leads · Growth: 15+10 intl · Professional: 20+20</li>
-      </ul>
-      <a href="membership.html" class="srow-cta">Get Buyer Leads →</a>
+<!-- ══ SERVICE 01 — BUYER LEADS ══ -->
+<div class="srv-row" id="leads">
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 01</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#dbeafe,#ede9fe);">🎯</div>
+    <h3>Verified Buyer Leads</h3>
+    <p>Receive verified international buyer enquiries matched to your exact product category — manually checked by our team before delivery, so you only connect with serious buyers.</p>
+    <ul class="srv-bullets">
+      <li>Matched to your product category and export readiness</li>
+      <li>Delivered via WhatsApp and email within 24–48 hours</li>
+      <li>50+ countries — verified company details included</li>
+      <li>Lead tracking via your real-time client portal</li>
+      <li>Starter: 10 leads · Growth: 25 · Professional: 40+</li>
+    </ul>
+    <a href="membership.html" class="srv-btn">Get Buyer Leads <span class="srv-btn-arrow">→</span></a>
+  </div>
+  <div class="leads-panel">
+    <div class="leads-header">🟢 Live Buyer Feed</div>
+    <div class="lead-item">
+      <div class="lead-flag">🇩🇪</div>
+      <div class="lead-info"><div class="lead-country">Germany</div><div class="lead-product">Organic Turmeric — 5 MT/month</div></div>
+      <span class="lead-badge badge-new">New</span>
     </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#0b1929,#1e3a5f);">
-      <div style="font-size:11px;font-weight:700;color:#60a5fa;letter-spacing:2px;text-transform:uppercase;margin-bottom:18px;">📋 Live Sample Leads</div>
-      <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:28px;">
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <span style="font-size:24px;">🇩🇪</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">Germany</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Organic Turmeric — 5 MT/month</div></div>
-          <span style="background:#10b981;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">New</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <span style="font-size:24px;">🇦🇪</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">UAE</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Basmati Rice — 10 MT/month</div></div>
-          <span style="background:#ef4444;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">Hot</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <span style="font-size:24px;">🇺🇸</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">USA</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Cotton Fabric — 2,000 metres</div></div>
-          <span style="background:#2563eb;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">Verified</span>
-        </div>
-        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px;">
-          <span style="font-size:24px;">🇬🇧</span>
-          <div style="flex:1"><div style="font-size:13px;font-weight:700;color:white;">UK</div><div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:2px;">Brass Handicrafts — 500 units</div></div>
-          <span style="background:#10b981;color:white;font-size:10px;font-weight:700;padding:4px 10px;border-radius:6px;">New</span>
-        </div>
-      </div>
-      <div style="display:flex;gap:32px;">
-        <div><div style="font-size:28px;font-weight:800;color:#60a5fa;line-height:1;">50+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Countries</div></div>
-        <div><div style="font-size:28px;font-weight:800;color:#a78bfa;line-height:1;">500+</div><div style="font-size:10px;color:rgba(255,255,255,0.35);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px;">Leads/Month</div></div>
-      </div>
+    <div class="lead-item">
+      <div class="lead-flag">🇦🇪</div>
+      <div class="lead-info"><div class="lead-country">UAE</div><div class="lead-product">Basmati Rice — 10 MT/month</div></div>
+      <span class="lead-badge badge-hot">Hot</span>
+    </div>
+    <div class="lead-item">
+      <div class="lead-flag">🇺🇸</div>
+      <div class="lead-info"><div class="lead-country">USA</div><div class="lead-product">Cotton Fabric — 2,000 metres</div></div>
+      <span class="lead-badge badge-ver">Verified</span>
+    </div>
+    <div class="lead-item">
+      <div class="lead-flag">🇬🇧</div>
+      <div class="lead-info"><div class="lead-country">UK</div><div class="lead-product">Brass Handicrafts — 500 units</div></div>
+      <span class="lead-badge badge-new">New</span>
+    </div>
+    <div class="lead-item">
+      <div class="lead-flag">🇸🇬</div>
+      <div class="lead-info"><div class="lead-country">Singapore</div><div class="lead-product">Spices & Masala — 2 MT/month</div></div>
+      <span class="lead-badge badge-ver">Verified</span>
+    </div>
+    <div class="leads-stats">
+      <div class="lead-stat"><div class="lead-stat-num">50+</div><div class="lead-stat-lbl">Countries</div></div>
+      <div class="lead-stat"><div class="lead-stat-num">500+</div><div class="lead-stat-lbl">Leads/Month</div></div>
     </div>
   </div>
+</div>
 
-  <!-- 02 RELATIONSHIP MANAGER -->
-  <div class="srow flip" id="rm">
-    <div class="srow-text">
-      <div class="srow-num">Service 02</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#dcfce7,#d1fae5);">🤝</div>
-      <h3>Dedicated Relationship Manager</h3>
-      <p>Every BuyGenix member is assigned a dedicated RM — a real person who understands your business, coordinates lead delivery, and guides you through every step of your export journey.</p>
-      <ul class="srow-feats">
-        <li>Named RM assigned within 24 hours of membership activation</li>
-        <li>Direct WhatsApp and email access at all times</li>
-        <li>RM coordinates lead selection, delivery and follow-up</li>
-        <li>Export documentation guidance and buyer communication</li>
-        <li>Quarterly strategy reviews (Professional & Enterprise)</li>
-      </ul>
-      <a href="about.html" class="srow-cta">Meet Our Team →</a>
-    </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">5</div>
-          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Expert RMs</div>
+<!-- ══ SERVICE 02 — RELATIONSHIP MANAGER ══ -->
+<div class="srv-row" id="rm">
+  <div class="srv-vis">
+    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=900&q=85" alt="Relationship Manager">
+    <div class="srv-vis-overlay">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div class="srv-float-card">
+          <div class="srv-float-tag">⚡ Response Time</div>
+          <div class="srv-float-stat">Under 2h</div>
+          <div class="srv-float-label">Average reply speed</div>
         </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">24h</div>
-          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Response Time</div>
-        </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">100%</div>
-          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Human Support</div>
-        </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.06);">
-          <div style="font-size:30px;font-weight:900;color:#15803d;line-height:1;">12+</div>
-          <div style="font-size:10px;color:#4b5563;font-weight:600;letter-spacing:1px;text-transform:uppercase;margin-top:5px;">Categories</div>
+        <div class="srv-float-card srv-float-card2">
+          <div class="srv-float-tag">🤝 Support</div>
+          <div class="srv-float-stat">100%</div>
+          <div class="srv-float-label">Human — no bots</div>
         </div>
       </div>
     </div>
   </div>
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 02</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#dcfce7,#bbf7d0);">🤝</div>
+    <h3>Dedicated Relationship Manager</h3>
+    <p>Every BuyGenix member gets a real, named Relationship Manager who coordinates your leads, guides your export journey, and is available on WhatsApp whenever you need them.</p>
+    <ul class="srv-bullets">
+      <li>Named RM assigned within 24 hours of activation</li>
+      <li>Direct WhatsApp + email access at all times</li>
+      <li>Coordinates lead selection, delivery and follow-up</li>
+      <li>Export documentation guidance and buyer communication</li>
+      <li>Quarterly strategy reviews (Professional & Enterprise)</li>
+    </ul>
+    <a href="about.html" class="srv-btn">Meet Our Team <span class="srv-btn-arrow">→</span></a>
+  </div>
+</div>
 
-  <!-- 03 DIGITAL CATALOGUE -->
-  <div class="srow" id="catalogue">
-    <div class="srow-text">
-      <div class="srow-num">Service 03</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">📖</div>
-      <h3>Digital Product Catalogue</h3>
-      <p>A professionally designed digital catalogue listing your products with images, specifications, pricing guidance, and contact details — shareable with international buyers at trade fairs, via email, or WhatsApp.</p>
-      <ul class="srow-feats">
-        <li>Professional catalogue created by our in-house design team</li>
-        <li>Your branding, logo, and contact details featured prominently</li>
-        <li>Shareable link for WhatsApp, email, trade fairs, and social media</li>
-        <li>Growth: up to 10 products · Professional & Enterprise: unlimited</li>
-        <li>Updates available whenever your product range changes</li>
-      </ul>
-      <a href="membership.html" class="srow-cta">Get Your Catalogue →</a>
-    </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#fefce8,#fef9c3);">
-      <div style="background:white;border-radius:16px;padding:28px;box-shadow:0 8px 32px rgba(0,0,0,0.08);">
-        <div style="font-size:11px;font-weight:700;color:#b45309;letter-spacing:2px;text-transform:uppercase;margin-bottom:14px;">📘 Sample Catalogue</div>
-        <div style="height:3px;background:linear-gradient(90deg,#f59e0b,#d97706);border-radius:2px;margin-bottom:16px;"></div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;">
-          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Spices & Masala</span>
-          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Cotton Fabric</span>
-          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Basmati Rice</span>
-          <span style="background:#fef3c7;color:#92400e;padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;">Handicrafts</span>
-        </div>
-        <div style="font-size:12px;color:#6b7280;line-height:1.7;">Professional catalogue designed to impress international buyers and showcase your products at their best — from spices to textiles to engineering goods.</div>
-        <div style="margin-top:18px;display:flex;gap:24px;">
-          <div><div style="font-size:20px;font-weight:800;color:#d97706;">10</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Products (Growth)</div></div>
-          <div><div style="font-size:20px;font-weight:800;color:#d97706;">∞</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;">Products (Pro+)</div></div>
+<!-- ══ SERVICE 03 — DIGITAL CATALOGUE ══ -->
+<div class="srv-row" id="catalogue">
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 03</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#fef3c7,#fde68a);">📖</div>
+    <h3>Digital Product Catalogue</h3>
+    <p>A professionally designed digital catalogue with your products, images, specifications and contact details — shareable globally via WhatsApp, email, or at trade fairs with a single link.</p>
+    <ul class="srv-bullets">
+      <li>Created by our in-house design team with your branding</li>
+      <li>Shareable link — WhatsApp, email, exhibitions, social media</li>
+      <li>Growth: up to 10 products · Professional & Enterprise: unlimited</li>
+      <li>Updated whenever your product range changes</li>
+      <li>QR-code ready for trade fair handouts</li>
+    </ul>
+    <a href="membership.html" class="srv-btn">Get Your Catalogue <span class="srv-btn-arrow">→</span></a>
+  </div>
+  <div class="srv-vis">
+    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=900&q=85" alt="Digital Catalogue">
+    <div class="srv-vis-overlay">
+      <div style="display:flex;gap:14px;">
+        <div class="srv-float-card">
+          <div class="srv-float-tag">📦 Products</div>
+          <div class="srv-float-stat">Unlimited</div>
+          <div class="srv-float-label">Pro & Enterprise plans</div>
         </div>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- 04 SEO & SMO -->
-  <div class="srow flip" id="seo">
-    <div class="srow-text">
-      <div class="srow-num">Service 04</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#e0e7ff,#ddd6fe);">📈</div>
-      <h3>SEO &amp; Social Media Optimisation</h3>
-      <p>We optimise your product pages on the BuyGenix platform for international search engines and manage social media promotion to build your brand among global buyers.</p>
-      <ul class="srow-feats">
-        <li>SEO optimisation for your BuyGenix product pages and profile</li>
-        <li>Keyword targeting for your product categories and export markets</li>
-        <li>Social media promotion on Instagram and Facebook</li>
-        <li>Growth plan: quarterly · Professional plan: monthly promotion</li>
-        <li>Brand content to attract organic international buyer enquiries</li>
-      </ul>
-      <a href="membership.html" class="srow-cta">Get SEO &amp; SMO →</a>
-    </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#eef2ff,#ede9fe);">
-      <div style="display:flex;flex-direction:column;gap:12px;">
-        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">🔍</div>
-          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Search Engine Optimisation</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Rank higher on Google for export keywords</div></div>
+<!-- ══ SERVICE 04 — SEO & SMO ══ -->
+<div class="srv-row" id="seo">
+  <div class="srv-vis">
+    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=900&q=85" alt="SEO & SMO">
+    <div class="srv-vis-overlay">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div class="srv-float-card">
+          <div class="srv-float-tag">📈 Reach</div>
+          <div class="srv-float-stat">50+</div>
+          <div class="srv-float-label">Target markets</div>
         </div>
-        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#ec4899,#be185d);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📷</div>
-          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Instagram Promotion</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Brand content reaching global buyers</div></div>
-        </div>
-        <div style="background:white;border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px;box-shadow:0 2px 8px rgba(0,0,0,0.05);">
-          <div style="width:40px;height:40px;border-radius:10px;background:linear-gradient(135deg,#2563eb,#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;">📘</div>
-          <div><div style="font-size:13px;font-weight:700;color:#1e1b4b;">Facebook Marketing</div><div style="font-size:11.5px;color:#6b7280;margin-top:2px;">Targeted campaigns for export markets</div></div>
-        </div>
-        <div style="display:flex;gap:16px;margin-top:4px;">
-          <div style="background:white;border-radius:10px;padding:14px;flex:1;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);"><div style="font-size:18px;font-weight:800;color:#4f46e5;">50+</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Target Countries</div></div>
-          <div style="background:white;border-radius:10px;padding:14px;flex:1;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05);"><div style="font-size:18px;font-weight:800;color:#7c3aed;">Monthly</div><div style="font-size:10px;color:#9ca3af;text-transform:uppercase;letter-spacing:1px;margin-top:2px;">Pro Promotion</div></div>
+        <div class="srv-float-card srv-float-card2">
+          <div class="srv-float-tag">🔄 Frequency</div>
+          <div class="srv-float-stat">Monthly</div>
+          <div class="srv-float-label">Professional plan</div>
         </div>
       </div>
     </div>
   </div>
-
-  <!-- 05 VIRTUAL BUSINESS CARD -->
-  <div class="srow" id="vcard">
-    <div class="srow-text">
-      <div class="srow-num">Service 05</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#cffafe,#a5f3fc);">💳</div>
-      <h3>Virtual Business Card</h3>
-      <p>A professional digital business card with your company profile, key products, and a QR code. Share it instantly with buyers at trade fairs, over WhatsApp, or via email — no printing required.</p>
-      <ul class="srow-feats">
-        <li>Professional digital card with your branding and logo</li>
-        <li>Lists your top products, company details, and contact info</li>
-        <li>Unique QR code buyers scan to access your full catalogue</li>
-        <li>Shareable via WhatsApp, email, or social media instantly</li>
-        <li>1 card (Starter/Growth) · 3 cards (Pro) · Unlimited (Enterprise)</li>
-      </ul>
-      <a href="membership.html" class="srow-cta">Get Your Virtual Card →</a>
-    </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#0f2744,#0b1929);display:flex;align-items:center;justify-content:center;">
-      <div style="background:linear-gradient(135deg,#0f2744,#1e3a5f);border:1px solid rgba(255,255,255,0.1);border-radius:18px;padding:28px 30px;width:100%;max-width:320px;position:relative;box-shadow:0 20px 60px rgba(0,0,0,0.4);">
-        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#f59e0b;text-transform:uppercase;margin-bottom:14px;">BuyGenix Solutions</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:700;color:white;margin-bottom:2px;">Rajesh Sharma</div>
-        <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-bottom:16px;">RS Textiles Pvt Ltd</div>
-        <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:16px;">
-          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>📍</span>Delhi, India</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>📱</span>+91 98765 43210</div>
-          <div style="font-size:12px;color:rgba(255,255,255,0.6);display:flex;gap:8px;"><span>✉️</span>rajesh@rstextiles.com</div>
-        </div>
-        <div style="font-size:10.5px;color:rgba(255,255,255,0.25);border-top:1px solid rgba(255,255,255,0.08);padding-top:12px;">Cotton Fabric · Silk · Home Textiles</div>
-        <div style="position:absolute;bottom:20px;right:20px;width:44px;height:44px;background:white;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
-      </div>
-    </div>
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 04</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#e0e7ff,#ddd6fe);">📈</div>
+    <h3>SEO &amp; Social Media Optimisation</h3>
+    <p>We optimise your BuyGenix profile for international search engines and manage social media promotion to build your brand among global buyers — bringing organic enquiries to you.</p>
+    <ul class="srv-bullets">
+      <li>SEO for your BuyGenix product pages and profile</li>
+      <li>Keyword targeting for your categories and export markets</li>
+      <li>Instagram and Facebook brand promotion campaigns</li>
+      <li>Growth: quarterly promotion · Professional: monthly</li>
+      <li>Content designed to attract international buyer enquiries</li>
+    </ul>
+    <a href="membership.html" class="srv-btn">Get SEO &amp; SMO <span class="srv-btn-arrow">→</span></a>
   </div>
+</div>
 
-  <!-- 06 REGISTRATIONS -->
-  <div class="srow flip" id="registration">
-    <div class="srow-text">
-      <div class="srow-num">Service 06</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);">📋</div>
-      <h3>Registration &amp; Compliance Assistance</h3>
-      <p>We guide you through every registration an Indian exporter needs — from GST to IEC to MSME — ensuring your business is fully compliant and ready to trade globally.</p>
-      <ul class="srow-feats">
-        <li>GST registration assistance — included in all plans</li>
-        <li>IEC (Import Export Code) registration support</li>
-        <li>MSME/Udyam registration for government scheme benefits</li>
-        <li>FSSAI licence assistance for food and agricultural exporters</li>
-        <li>Document checklist, application support, and status follow-up</li>
-      </ul>
-      <a href="gst.html" class="srow-cta">GST Registration Guide →</a>
-    </div>
-    <div class="srow-visual" style="background:#f8f9ff;">
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
-        <div style="background:white;border:1px solid #bbf7d0;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-          <div style="font-size:32px;font-weight:900;color:#15803d;line-height:1;margin-bottom:6px;">GST</div>
-          <div style="font-size:10.5px;color:#166534;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
-          <div style="font-size:11px;color:#4ade80;font-weight:600;">✔ Included</div>
+<!-- ══ SERVICE 05 — VIRTUAL BUSINESS CARD ══ -->
+<div class="srv-row" id="vcard">
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 05</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#cffafe,#a5f3fc);">💳</div>
+    <h3>Virtual Business Card</h3>
+    <p>A premium digital business card with your brand, products, and a scannable QR code — share it instantly at trade fairs, over WhatsApp, or via email. No printing, no hassle.</p>
+    <ul class="srv-bullets">
+      <li>Professional card with your logo and branding</li>
+      <li>QR code links directly to your full product catalogue</li>
+      <li>Shareable via WhatsApp, email, or LinkedIn instantly</li>
+      <li>Starter & Growth: 1 card · Professional: 3 · Enterprise: unlimited</li>
+      <li>Updated whenever your details change</li>
+    </ul>
+    <a href="membership.html" class="srv-btn">Get Your Card <span class="srv-btn-arrow">→</span></a>
+  </div>
+  <div class="srv-vis" style="background:linear-gradient(160deg,#060d1f,#0d1f3c);display:flex;align-items:center;justify-content:center;padding:48px;">
+    <div style="width:100%;max-width:340px;">
+      <!-- Card mockup -->
+      <div style="background:linear-gradient(135deg,#0f2744,#1a3a6b);border-radius:20px;padding:28px 30px;position:relative;overflow:hidden;box-shadow:0 32px 80px rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.08);">
+        <div style="position:absolute;top:-40px;right:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle,rgba(245,158,11,0.12),transparent);"></div>
+        <div style="position:absolute;bottom:-30px;left:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.12),transparent);"></div>
+        <div style="font-size:10px;font-weight:700;letter-spacing:2px;color:#f59e0b;text-transform:uppercase;margin-bottom:16px;position:relative;z-index:1;">BuyGenix Solutions</div>
+        <div style="font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:700;color:white;margin-bottom:2px;position:relative;z-index:1;">Rajesh Sharma</div>
+        <div style="font-size:12.5px;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;">Export Manager · RS Textiles Pvt Ltd</div>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:20px;position:relative;z-index:1;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">📍</span>New Delhi, India</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">📱</span>+91 98765 43210</div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:12.5px;color:rgba(255,255,255,0.65);"><span style="width:20px;text-align:center;">✉️</span>rajesh@rstextiles.com</div>
         </div>
-        <div style="background:white;border:1px solid #bfdbfe;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-          <div style="font-size:32px;font-weight:900;color:#1d4ed8;line-height:1;margin-bottom:6px;">IEC</div>
-          <div style="font-size:10.5px;color:#1e40af;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
-          <div style="font-size:11px;color:#60a5fa;font-weight:600;">✔ Included</div>
-        </div>
-        <div style="background:white;border:1px solid #e9d5ff;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-          <div style="font-size:32px;font-weight:900;color:#7e22ce;line-height:1;margin-bottom:6px;">MSME</div>
-          <div style="font-size:10.5px;color:#6b21a8;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">All Plans</div>
-          <div style="font-size:11px;color:#c084fc;font-weight:600;">✔ Included</div>
-        </div>
-        <div style="background:white;border:1px solid #fdba74;border-radius:16px;padding:24px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.04);">
-          <div style="font-size:32px;font-weight:900;color:#c2410c;line-height:1;margin-bottom:6px;">FSSAI</div>
-          <div style="font-size:10.5px;color:#9a3412;font-weight:700;letter-spacing:.5px;margin-bottom:6px;">Growth+</div>
-          <div style="font-size:11px;color:#fb923c;font-weight:600;">✔ Included</div>
+        <div style="border-top:1px solid rgba(255,255,255,0.07);padding-top:14px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1;">
+          <div style="font-size:11px;color:rgba(255,255,255,0.25);">Cotton · Silk · Home Textiles</div>
+          <div style="width:46px;height:46px;background:white;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:22px;">📱</div>
         </div>
       </div>
+      <!-- Scan prompt -->
+      <div style="text-align:center;margin-top:18px;font-size:12px;color:rgba(255,255,255,0.25);letter-spacing:1px;">SCAN TO VIEW FULL CATALOGUE</div>
     </div>
   </div>
+</div>
 
-  <!-- 07 PERFORMANCE REPORTS -->
-  <div class="srow" id="reports">
-    <div class="srow-text">
-      <div class="srow-num">Service 07</div>
-      <div class="srow-icon" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">📊</div>
-      <h3>Performance Reports &amp; Analytics</h3>
-      <p>Track your membership performance, lead delivery status, and business metrics through regular reports from your Relationship Manager and your real-time client portal dashboard.</p>
-      <ul class="srow-feats">
-        <li>Monthly performance reports for Professional and Enterprise members</li>
-        <li>On-request reports for Starter and Growth members</li>
-        <li>Lead delivery tracking: sent, viewed, and responded</li>
-        <li>Real-time dashboard access via your client portal</li>
-        <li>Export strategy consultation (Professional — quarterly)</li>
-      </ul>
-      <a href="login.html" class="srow-cta">Access Your Dashboard →</a>
-    </div>
-    <div class="srow-visual" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">
-      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:14px;">
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
-          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Monthly</div>
-          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Reports (Pro)</div>
+<!-- ══ SERVICE 06 — REGISTRATIONS ══ -->
+<div class="srv-row" id="registration">
+  <div class="srv-vis">
+    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=900&q=85" alt="Registration Assistance">
+    <div class="srv-vis-overlay">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;">
+        <div class="srv-float-card" style="text-align:center;padding:14px;">
+          <div style="font-size:22px;font-weight:900;color:#34d399;line-height:1;">GST</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
         </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
-          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Live</div>
-          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Dashboard</div>
+        <div class="srv-float-card" style="text-align:center;padding:14px;">
+          <div style="font-size:22px;font-weight:900;color:#60a5fa;line-height:1;">IEC</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
         </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
-          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Quarterly</div>
-          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Strategy Call</div>
+        <div class="srv-float-card" style="text-align:center;padding:14px;">
+          <div style="font-size:22px;font-weight:900;color:#c084fc;line-height:1;">MSME</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">ALL PLANS</div>
         </div>
-        <div style="background:white;border-radius:14px;padding:22px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.05);">
-          <div style="font-size:20px;font-weight:800;background:linear-gradient(135deg,#2563eb,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">100%</div>
-          <div style="font-size:10px;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;margin-top:4px;">Transparent</div>
+        <div class="srv-float-card" style="text-align:center;padding:14px;">
+          <div style="font-size:22px;font-weight:900;color:#fb923c;line-height:1;">FSSAI</div>
+          <div style="font-size:10px;color:rgba(255,255,255,0.4);margin-top:4px;letter-spacing:1px;">GROWTH+</div>
         </div>
       </div>
     </div>
   </div>
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 06</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#fce7f3,#fbcfe8);">📋</div>
+    <h3>Registration &amp; Compliance Assistance</h3>
+    <p>We guide you through every registration an Indian exporter needs — GST, IEC, MSME, FSSAI — ensuring your business is fully compliant and ready to trade internationally.</p>
+    <ul class="srv-bullets">
+      <li>GST registration assistance — included in all plans</li>
+      <li>IEC (Import Export Code) registration support</li>
+      <li>MSME/Udyam for government scheme benefits</li>
+      <li>FSSAI licence for food and agricultural exporters</li>
+      <li>Document checklist, application support, status follow-up</li>
+    </ul>
+    <a href="gst.html" class="srv-btn">GST Registration Guide <span class="srv-btn-arrow">→</span></a>
+  </div>
+</div>
 
-  <!-- CTA STRIP -->
-  <div class="srow-cta-strip">
-    <div>
-      <h2>All Services Bundled in Your<br><em>Membership Plan</em></h2>
-      <p>Choose the plan that fits your stage of growth — every service above is included. No hidden fees. No complexity. Just results.</p>
-    </div>
-    <div class="srow-cta-btns">
-      <a href="membership.html" class="srow-btn-gold">View All Plans &amp; Pricing →</a>
-      <a href="contact.html" class="srow-btn-outline">Talk to Our Team</a>
+<!-- ══ SERVICE 07 — PERFORMANCE REPORTS ══ -->
+<div class="srv-row" id="reports">
+  <div class="srv-text">
+    <div class="srv-num"><span></span>Service 07</div>
+    <div class="srv-icon-wrap" style="background:linear-gradient(135deg,#f0fdf4,#dcfce7);">📊</div>
+    <h3>Performance Reports &amp; Analytics</h3>
+    <p>Track every aspect of your membership — lead delivery, engagement, and business metrics — through your real-time client portal and regular reports from your Relationship Manager.</p>
+    <ul class="srv-bullets">
+      <li>Monthly performance reports for Professional and Enterprise</li>
+      <li>On-request reports for Starter and Growth members</li>
+      <li>Lead tracking: sent, viewed, and responded</li>
+      <li>Real-time dashboard via your client portal login</li>
+      <li>Quarterly export strategy consultation (Professional)</li>
+    </ul>
+    <a href="login.html" class="srv-btn">Access Dashboard <span class="srv-btn-arrow">→</span></a>
+  </div>
+  <div class="srv-vis">
+    <img class="srv-vis-img" src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=900&q=85" alt="Performance Reports">
+    <div class="srv-vis-overlay">
+      <div style="display:flex;gap:14px;flex-wrap:wrap;">
+        <div class="srv-float-card">
+          <div class="srv-float-tag">📊 Reporting</div>
+          <div class="srv-float-stat">Monthly</div>
+          <div class="srv-float-label">Pro & Enterprise</div>
+        </div>
+        <div class="srv-float-card srv-float-card2">
+          <div class="srv-float-tag">🖥️ Dashboard</div>
+          <div class="srv-float-stat">Live</div>
+          <div class="srv-float-label">Real-time access</div>
+        </div>
+      </div>
     </div>
   </div>
+</div>
 
-</div><!-- /srow-wrap -->
+<!-- ══ CTA STRIP ══ -->
+<div class="srv-cta">
+  <div class="srv-cta-text">
+    <div class="srv-cta-eyebrow">Ready to Start?</div>
+    <h2>All 7 Services Bundled in<br>Your <em>Membership Plan</em></h2>
+    <p>One plan. Every service. No hidden fees. No complexity. Choose the plan that fits your stage of growth and start connecting with global buyers today.</p>
+  </div>
+  <div class="srv-cta-actions">
+    <a href="membership.html" class="cta-btn-main">View All Plans & Pricing →</a>
+    <a href="contact.html" class="cta-btn-ghost">Talk to Our Team</a>
+  </div>
+</div>
+
+</div><!-- /srv-wrap -->
+
+
 
 
 
