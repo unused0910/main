@@ -32,7 +32,7 @@
 .ct-pill.wa:hover{background:rgba(37,211,102,0.2);}
 
 /* ── MAIN GRID ── */
-.ct-main{max-width:1180px;margin:0 auto;padding:64px 40px 80px;display:grid;grid-template-columns:360px 1fr;gap:28px;align-items:start;}
+.ct-main{max-width:1180px;margin:0 auto;padding:64px 40px 80px;}
 
 /* ── LEFT INFO COLUMN ── */
 .ct-info{display:flex;flex-direction:column;gap:16px;}
@@ -129,8 +129,9 @@ select.ct-input{cursor:pointer;}
 @keyframes spin{to{transform:rotate(360deg);}}
 
 /* RESPONSIVE */
-@media(max-width:960px){.ct-main{grid-template-columns:1fr;padding:48px 24px 64px;}.ct-faq-grid{grid-template-columns:1fr;}.ct-faq{padding:0 24px 64px;}}
-@media(max-width:640px){.ct-form-grid{grid-template-columns:1fr;}.ct-form-grid .span2{grid-column:1;}.ct-submit-row{flex-direction:column;align-items:stretch;}.ct-submit-btn{justify-content:center;}.ct-hero{padding:72px 24px 60px;}.ct-hero-pills{flex-direction:column;align-items:center;}}
+@media(max-width:960px){.ct-main{padding:48px 24px 64px;}.ct-faq-grid{grid-template-columns:1fr;}.ct-faq{padding:0 24px 64px;}}
+@media(max-width:860px){.ct-strip-grid{grid-template-columns:repeat(2,1fr) !important;}}
+@media(max-width:640px){.ct-strip-grid{grid-template-columns:1fr !important;}.ct-form-grid{grid-template-columns:1fr;}.ct-form-grid .span2{grid-column:1;}.ct-submit-row{flex-direction:column;align-items:stretch;}.ct-submit-btn{justify-content:center;}.ct-hero{padding:72px 24px 60px;}.ct-hero-pills{flex-direction:column;align-items:center;}}
 </style>
 </head>
 <body>
@@ -161,56 +162,50 @@ select.ct-input{cursor:pointer;}
 <!-- MAIN CONTENT -->
 <div class="ct-main">
 
-  <!-- LEFT — CONTACT INFO -->
-  <div class="ct-info">
+  <!-- TOP — QUICK CONTACT STRIP -->
+  <div class="ct-strip-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;">
 
-    <div class="ct-info-card">
+    <div class="ct-info-card" style="padding:22px;">
       <span class="ct-ic-icon">💬</span>
-      <div class="ct-ic-label">WhatsApp — Fastest Response</div>
-      <div class="ct-ic-value">+91 98181 87246</div>
-      <div class="ct-ic-sub">Available Mon–Sat, 10am–7pm IST<br>Typically replies within 2 hours</div>
-      <a href="https://wa.me/919818187246?text=Hello%20BuyGenix%2C%20I%20am%20interested%20in%20your%20export%20services." class="ct-ic-btn wa-btn" target="_blank" rel="noopener">Open WhatsApp Chat →</a>
+      <div class="ct-ic-label">WhatsApp</div>
+      <div class="ct-ic-value" style="font-size:15px;">+91 98181 87246</div>
+      <div class="ct-ic-sub">Mon–Sat, 10am–7pm IST</div>
+      <a href="https://wa.me/919818187246?text=Hello%20BuyGenix%2C%20I%20am%20interested%20in%20your%20export%20services." class="ct-ic-btn wa-btn" style="margin-top:12px;" target="_blank" rel="noopener">Chat Now →</a>
     </div>
 
-    <div class="ct-info-card">
+    <div class="ct-info-card" style="padding:22px;">
       <span class="ct-ic-icon">📧</span>
       <div class="ct-ic-label">Email</div>
-      <div class="ct-ic-value" style="font-size:14px;word-break:break-all;">Buygenixsolutions@gmail.com</div>
-      <div class="ct-ic-sub">We reply within 1–2 business days</div>
-      <a href="mailto:Buygenixsolutions@gmail.com" class="ct-ic-btn email-btn">Send Email →</a>
+      <div class="ct-ic-value" style="font-size:12.5px;word-break:break-all;">Buygenixsolutions@gmail.com</div>
+      <div class="ct-ic-sub">Reply within 1–2 business days</div>
+      <a href="mailto:Buygenixsolutions@gmail.com" class="ct-ic-btn email-btn" style="margin-top:12px;">Send Email →</a>
     </div>
 
-    <div class="ct-info-card">
+    <div class="ct-info-card" style="padding:22px;">
       <span class="ct-ic-icon">🕐</span>
       <div class="ct-ic-label">Support Hours</div>
-      <div class="ct-hours">
-        <div class="ct-hour-row"><span class="ct-hour-day">Monday – Friday</span><span class="ct-hour-time">10:00 AM – 6:00 PM IST</span></div>
-        <div class="ct-hour-row"><span class="ct-hour-day">Saturday</span><span class="ct-hour-time">10:00 AM – 4:00 PM IST</span></div>
+      <div class="ct-hours" style="margin-top:6px;">
+        <div class="ct-hour-row"><span class="ct-hour-day">Mon – Fri</span><span class="ct-hour-time">10am – 6pm</span></div>
+        <div class="ct-hour-row"><span class="ct-hour-day">Saturday</span><span class="ct-hour-time">10am – 4pm</span></div>
         <div class="ct-hour-row"><span class="ct-hour-day">Sunday</span><span class="ct-hour-time">WhatsApp only</span></div>
-        <div class="ct-hour-row"><span class="ct-hour-day">Response Time</span><span class="ct-hour-time">Within 24 hours</span></div>
+        <div class="ct-hour-row"><span class="ct-hour-day">Response</span><span class="ct-hour-time">Within 24h</span></div>
       </div>
     </div>
 
-    <div class="ct-info-card">
+    <div class="ct-info-card" style="padding:22px;">
       <span class="ct-ic-icon">📍</span>
       <div class="ct-ic-label">Location</div>
-      <div class="ct-ic-value">Delhi, India 🇮🇳</div>
-      <div class="ct-ic-sub">Serving exporters across all Indian states. International enquiries welcome.</div>
-    </div>
-
-    <div class="ct-info-card">
-      <span class="ct-ic-icon">🌐</span>
-      <div class="ct-ic-label">Follow Us</div>
-      <div class="ct-ic-sub" style="margin-bottom:12px;">Stay updated with export tips, buyer leads and trade news.</div>
-      <div class="ct-social">
-        <a href="https://instagram.com/buygenixsolutions" class="ct-soc-btn" target="_blank" rel="noopener">📷 Instagram</a>
-        <a href="https://facebook.com/buygenixsolutions" class="ct-soc-btn" target="_blank" rel="noopener">📘 Facebook</a>
+      <div class="ct-ic-value" style="font-size:15px;">Delhi, India 🇮🇳</div>
+      <div class="ct-ic-sub">Serving all Indian exporters. International enquiries welcome.</div>
+      <div class="ct-social" style="margin-top:14px;">
+        <a href="https://instagram.com/buygenixsolutions" class="ct-soc-btn" target="_blank" rel="noopener" style="font-size:11px;">📷 Instagram</a>
+        <a href="https://facebook.com/buygenixsolutions" class="ct-soc-btn" target="_blank" rel="noopener" style="font-size:11px;">📘 Facebook</a>
       </div>
     </div>
 
   </div>
 
-  <!-- RIGHT — FORM -->
+  <!-- FORM — FULL WIDTH -->
   <div class="ct-form-card">
     <div class="ct-form-head">
       <h2>Send Us an Enquiry</h2>
