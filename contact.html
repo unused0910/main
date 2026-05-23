@@ -222,6 +222,94 @@ select.ct-in{cursor:pointer;}
 }
 .ct-success-wa:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(37,211,102,0.3);}
 
+/* ══ FORM HEADER ══ */
+.ct-form-header{
+  position:relative;border-radius:20px;overflow:hidden;
+  margin-bottom:32px;
+}
+.ct-form-header-bg{
+  position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--navy) 0%,#1e3a8a 55%,#312e81 100%);
+}
+.ct-form-header-bg::before{
+  content:"";position:absolute;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,0.05) 1px,transparent 1px);
+  background-size:28px 28px;
+}
+.ct-form-header-bg::after{
+  content:"";position:absolute;
+  bottom:-60px;right:-60px;
+  width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle,rgba(99,102,241,0.3),transparent 65%);
+}
+.ct-form-header-content{
+  position:relative;z-index:1;
+  padding:32px 32px 28px;
+}
+.ct-form-header .ct-form-eyebrow{color:rgba(165,180,252,0.8);}
+.ct-form-header .ct-form-eyebrow::before{background:rgba(165,180,252,0.5);}
+.ct-form-header .ct-form-title{color:white;margin-bottom:8px;}
+.ct-form-header .ct-form-sub{color:rgba(255,255,255,0.45);margin-bottom:20px;}
+/* Trust row */
+.ct-trust-row{display:flex;gap:8px;flex-wrap:wrap;}
+.ct-trust-item{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,0.07);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;padding:6px 12px;
+  font-size:11.5px;font-weight:500;color:rgba(255,255,255,0.65);
+}
+
+/* ══ FLOATING LABEL INPUTS ══ */
+.ct-field-float{position:relative;margin-bottom:0;}
+.ct-field-float .ct-in{padding:20px 16px 8px;height:56px;}
+.ct-field-float label{
+  position:absolute;left:16px;top:50%;transform:translateY(-50%);
+  font-size:13.5px;color:#94a3b8;pointer-events:none;
+  transition:all .18s cubic-bezier(.4,0,.2,1);
+  font-weight:400;letter-spacing:0;
+}
+.ct-field-float .ct-in:focus ~ label,
+.ct-field-float .ct-in:not(:placeholder-shown) ~ label{
+  top:10px;transform:translateY(0);
+  font-size:10px;font-weight:600;letter-spacing:0.5px;
+  color:var(--indigo);text-transform:uppercase;
+}
+.ct-field-float .req-dot{
+  display:inline-block;width:5px;height:5px;
+  border-radius:50%;background:#ef4444;
+  position:absolute;top:8px;right:12px;
+  opacity:0;transition:opacity .18s;
+}
+.ct-field-float .ct-in:focus ~ .req-dot{opacity:1;}
+
+/* REDESIGNED SUBMIT ROW */
+.ct-submit-redesign{
+  background:linear-gradient(135deg,#f8faff,#f0f2ff);
+  border-radius:16px;padding:20px 24px;
+  border:1px solid #e0e7ff;margin-top:24px;
+  display:flex;align-items:center;gap:20px;flex-wrap:wrap;
+}
+.ct-submit-redesign .ct-form-note{
+  flex:1;font-size:11.5px;color:#94a3b8;line-height:1.65;
+}
+.ct-submit-redesign .ct-form-note a{color:var(--indigo);text-decoration:none;font-weight:500;}
+.ct-submit-new{
+  background:linear-gradient(135deg,var(--navy),#1e3a8a);
+  color:white;border:none;border-radius:12px;
+  padding:14px 28px;font-size:14px;font-weight:600;
+  cursor:pointer;font-family:"DM Sans",sans-serif;
+  display:flex;align-items:center;gap:9px;
+  transition:all .25s;white-space:nowrap;
+  box-shadow:0 4px 16px rgba(5,9,15,0.18);
+}
+.ct-submit-new:hover{
+  background:linear-gradient(135deg,#0d1f3c,#2563eb);
+  transform:translateY(-2px);
+  box-shadow:0 8px 28px rgba(5,9,15,0.25);
+}
+.ct-submit-new:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+
 /* Spinner */
 .ct-spin{width:16px;height:16px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none;}
 @keyframes spin{to{transform:rotate(360deg);}}
@@ -334,9 +422,22 @@ select.ct-in{cursor:pointer;}
   <div class="ct-right">
     <div class="ct-form-wrap">
       <div id="ctFormContent">
-        <div class="ct-form-eyebrow">Send Enquiry</div>
-        <h2 class="ct-form-title">Tell Us About<br>Your Business</h2>
-        <p class="ct-form-sub">Fill in the details below and a member of our team will respond within 24 hours. Fields marked * are required.</p>
+
+        <!-- Visual header block -->
+        <div class="ct-form-header">
+          <div class="ct-form-header-bg"></div>
+          <div class="ct-form-header-content">
+            <div class="ct-form-eyebrow">Send Enquiry</div>
+            <h2 class="ct-form-title">Tell Us About<br>Your Business</h2>
+            <p class="ct-form-sub">We respond within 24 hours. WhatsApp is fastest.</p>
+            <!-- Trust badges -->
+            <div class="ct-trust-row">
+              <div class="ct-trust-item"><span>⚡</span><span>Responds in 2h</span></div>
+              <div class="ct-trust-item"><span>🔒</span><span>Data is private</span></div>
+              <div class="ct-trust-item"><span>✅</span><span>200+ members</span></div>
+            </div>
+          </div>
+        </div>
 
         <div id="ctErrMsg" class="ct-err"></div>
 
@@ -380,11 +481,11 @@ select.ct-in{cursor:pointer;}
           </div>
         </div>
 
-        <div class="ct-form-foot">
-          <p class="ct-form-note">By submitting you agree to our <a href="privacy.html">Privacy Policy</a>. We never share your data with third parties.</p>
-          <button class="ct-submit" id="ctSubmitBtn" onclick="ctSubmit()">
+        <div class="ct-submit-redesign">
+          <p class="ct-form-note">By submitting you agree to our <a href="privacy.html">Privacy Policy</a>. We never share your data.</p>
+          <button class="ct-submit-new" id="ctSubmitBtn" onclick="ctSubmit()">
             <span id="ctSubmitTxt">Send Enquiry</span>
-            <span id="ctSubmitIcon" class="ct-submit-icon">→</span>
+            <span id="ctSubmitIcon">→</span>
             <div class="ct-spin" id="ctSpin"></div>
           </button>
         </div>
