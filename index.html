@@ -318,265 +318,398 @@ function bgxShowCat(idx){var cat=BGX_CATS[idx];document.querySelectorAll('.bgx-c
 </div>
 
 <!-- ═══ APPAREL CATEGORY GRID ═══ -->
-<section style="background:#f7f7f7;padding:32px 0;">
+<section class="mkt-section">
 <style>
-.agc{transition:background .15s;}
-.agc:hover{background:#f0f4ff !important;}
-.agc:hover .agc-title{color:#2563eb;}
-.agc-title{font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;transition:color .15s;}
-.agc ul li:hover{color:#2563eb;text-decoration:underline;cursor:pointer;}
+/* ══ MARKETPLACE SECTION STYLES ══ */
+.mkt-section{width:100%;background:#f5f6fa;padding:0 0 48px;}
+.mkt-banner{
+  position:relative;width:100%;overflow:hidden;
+  border-radius:0;margin-bottom:28px;
+}
+.mkt-banner img{
+  width:100%;height:260px;object-fit:cover;object-position:center top;
+  display:block;
+}
+.mkt-banner-overlay{
+  position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(8,14,30,0.78) 0%,rgba(8,14,30,0.45) 45%,rgba(8,14,30,0.0) 80%);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:40px 52px;
+}
+.mkt-banner-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
+  color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:100px;
+  font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
+  font-family:"Space Grotesk",sans-serif;margin-bottom:12px;
+  width:fit-content;
+}
+.mkt-banner h2{
+  font-family:"Cormorant Garamond",serif;
+  font-size:clamp(26px,3vw,42px);font-weight:700;
+  color:#fff;line-height:1.15;letter-spacing:-0.5px;margin-bottom:8px;
+}
+.mkt-banner p{
+  font-size:14px;color:rgba(255,255,255,0.6);
+  line-height:1.6;max-width:400px;margin-bottom:18px;font-weight:300;
+}
+.mkt-banner-badges{display:flex;gap:14px;flex-wrap:wrap;}
+.mkt-badge{
+  display:flex;align-items:center;gap:6px;
+  font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;
+}
+.mkt-badge::before{content:"✓";color:#4ade80;font-weight:700;font-size:11px;}
+
+/* ══ CARD GRID ══ */
+.mkt-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:16px;padding:0 20px;
+  max-width:1440px;margin:0 auto;
+}
+.mkt-card{
+  background:#fff;border-radius:16px;
+  border:1px solid #eaecf4;overflow:hidden;
+  display:flex;gap:0;align-items:stretch;
+  box-shadow:0 1px 6px rgba(0,0,0,0.05);
+  cursor:pointer;
+  transition:all 0.25s cubic-bezier(.4,0,.2,1);
+  min-height:160px;
+}
+.mkt-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 12px 36px rgba(37,99,235,0.12),0 2px 8px rgba(0,0,0,0.06);
+  border-color:#c7d2fe;
+}
+.mkt-card-img{
+  width:140px;flex-shrink:0;overflow:hidden;
+  position:relative;background:#f3f4f6;
+}
+.mkt-card-img img{
+  width:100%;height:100%;object-fit:cover;
+  transition:transform 0.4s cubic-bezier(.4,0,.2,1);
+  display:block;
+}
+.mkt-card:hover .mkt-card-img img{transform:scale(1.07);}
+.mkt-card-body{
+  flex:1;padding:16px 16px 16px 14px;
+  display:flex;flex-direction:column;justify-content:space-between;
+  min-width:0;
+}
+.mkt-card-title{
+  font-size:14px;font-weight:800;color:#0d1117;
+  margin-bottom:8px;line-height:1.3;letter-spacing:-0.2px;
+}
+.mkt-card-items{
+  list-style:none;padding:0;margin:0 0 10px;
+  flex:1;display:flex;flex-direction:column;gap:3px;
+}
+.mkt-card-items li{
+  font-size:12px;color:#64748b;font-weight:400;
+  line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.mkt-card-arrow{
+  display:inline-flex;align-items:center;
+  font-size:13px;color:#2563eb;font-weight:600;
+  transition:gap 0.2s;gap:4px;align-self:flex-start;
+}
+.mkt-card:hover .mkt-card-arrow{gap:8px;}
+
+/* Agri section variant - green accents */
+.mkt-section.agri .mkt-card:hover{border-color:#bbf7d0;box-shadow:0 12px 36px rgba(22,163,74,0.1),0 2px 8px rgba(0,0,0,0.06);}
+.mkt-section.agri .mkt-card-arrow{color:#16a34a;}
+
+/* ══ BOTTOM TRUST STRIP ══ */
+.mkt-trust{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:0;background:#fff;
+  border-top:1px solid #eaecf4;border-bottom:1px solid #eaecf4;
+  margin-top:28px;
+}
+.mkt-trust-item{
+  display:flex;align-items:center;gap:14px;
+  padding:20px 24px;border-right:1px solid #eaecf4;
+}
+.mkt-trust-item:last-child{border-right:none;}
+.mkt-trust-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
+.mkt-trust-title{font-size:13px;font-weight:700;color:#0d1117;margin-bottom:2px;}
+.mkt-trust-sub{font-size:11.5px;color:#64748b;font-weight:300;line-height:1.4;}
+
+@media(max-width:1100px){.mkt-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:768px){.mkt-grid{grid-template-columns:repeat(2,1fr);padding:0 12px;}.mkt-banner-overlay{padding:24px 24px;}.mkt-trust{grid-template-columns:repeat(2,1fr);}.mkt-card-img{width:100px;}}
+@media(max-width:480px){.mkt-grid{grid-template-columns:1fr;}.mkt-card-img{width:120px;}}
 </style>
 
-  <!-- Title -->
-  <div style="text-align:center;margin-bottom:20px;padding:0 24px;">
-    <h2 style="font-size:26px;font-weight:700;color:#1f2937;font-family:'Cormorant Garamond',serif;margin-bottom:6px;">
-      Apparel <span style="color:#2563eb;">&</span> Garments
-    </h2>
-    <div style="display:flex;align-items:center;justify-content:center;width:220px;margin:0 auto;">
-      <div style="flex:1;height:2px;background:#2563eb;border-radius:2px;"></div>
-      <div style="width:8px;height:8px;border-radius:50%;background:#2563eb;flex-shrink:0;margin:0 4px;"></div>
-      <div style="flex:1;height:2px;background:#e5e7eb;border-radius:2px;"></div>
+<!-- FASHION BANNER -->
+<div class="mkt-banner">
+  <img src="assets/fashion-banner.png" alt="B2B Fashion Marketplace">
+  <div class="mkt-banner-overlay">
+    <div class="mkt-banner-tag">Premium Fashion. Global Trade.</div>
+    <h2>Your Trusted B2B<br>Fashion Marketplace</h2>
+    <p>Discover quality products. Connect with verified suppliers.</p>
+    <div class="mkt-banner-badges">
+      <span class="mkt-badge">Quality Assured</span>
+      <span class="mkt-badge">Verified Exporters</span>
+      <span class="mkt-badge">Global Buyers</span>
+    </div>
+  </div>
+</div>
+
+<!-- FASHION GRID -->
+<div class="mkt-grid">
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300&q=85" alt="Kids Clothing" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Kids Dress &amp; Clothing</div>
+      <ul class="mkt-card-items"><li>Boys Clothes</li><li>Girls Garments</li><li>Kids Frock</li><li>Kids Socks</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
     </div>
   </div>
 
-  <!-- Full-width body -->
-  <div style="display:flex;gap:0;background:white;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;overflow:hidden;width:100%;">
-
-    <!-- LEFT HERO — fixed width, full height -->
-    <div style="width:240px;flex-shrink:0;position:relative;min-height:480px;overflow:hidden;">
-      <img src="assets/apparel-hero.png" alt="Apparel"
-        style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,150,180,.3),rgba(0,0,0,.65));"></div>
-      <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 16px;">
-        <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:10px;opacity:.95;">Kids Dress &amp; Clothing</p>
-        <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:10px;opacity:.95;">Leather Clothing</p>
-        <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:18px;opacity:.95;">Footwear</p>
-        <button style="background:white;color:#2563eb;border:1.5px solid white;border-radius:6px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">View All</button>
-      </div>
-    </div>
-
-    <!-- RIGHT GRID — takes remaining full width -->
-    <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e5e7eb;">
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Kids Dress &amp; Clothing</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Boys Clothes</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Girls Garments</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Kids Frock</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Kids Socks</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Men Clothing</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Mens Shirts</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Mens T-shirts</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Mens Shorts</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Mens Jeans</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Women Clothing</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Suits</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Tops</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Kurties</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Jeans</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Footwear</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Shoes</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Mens Shoes</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Slipper</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Undergarment and Inner Wear</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Beach Wear</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Beach Pareos</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Leather Clothing</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Leather Gloves</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Leather Jacket</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Caps, Hats &amp; Headwears</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Apparel Cap</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fashion Caps</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Winter Caps</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Security Cap</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Designer &amp; Fashion Bags</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Designer Bag</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Embroidered Bags</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Handmade Bags</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Bags</li></ul></div>
-      </div>
-
-      <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:12px;align-items:flex-start;cursor:pointer;">
-        <img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=200&q=80" style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-        <div><div class="agc-title">Sarees &amp; Lehenga</div><ul style="list-style:none;padding:0;margin:0;"><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Designer Sarees</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Embroidered Sarees</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Ladies Sarees</li><li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Lehenga Choli</li></ul></div>
-      </div>
-
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=300&q=85" alt="Men Clothing" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Men Clothing</div>
+      <ul class="mkt-card-items"><li>Mens Shirts</li><li>Mens T-Shirts</li><li>Mens Shorts</li><li>Mens Jeans</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
     </div>
   </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=300&q=85" alt="Women Clothing" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Women Clothing</div>
+      <ul class="mkt-card-items"><li>Ladies Suits</li><li>Ladies Tops</li><li>Ladies Kurtis</li><li>Ladies Jeans</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=85" alt="Footwear" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Footwear</div>
+      <ul class="mkt-card-items"><li>Ladies Shoes</li><li>Mens Shoes</li><li>Slipper</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300&q=85" alt="Innerwear" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Undergarment &amp; Inner Wear</div>
+      <ul class="mkt-card-items"><li>Boxer / Trunks</li><li>Brach / Panties</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&q=85" alt="Leather Clothing" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Leather Clothing</div>
+      <ul class="mkt-card-items"><li>Leather Jackets</li><li>Leather Gloves</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&q=85" alt="Caps & Headwear" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Caps, Hats &amp; Headwears</div>
+      <ul class="mkt-card-items"><li>Apparel Cap</li><li>Fashion Cap</li><li>Winter Cap</li><li>Security Cap</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=85" alt="Fashion Bags" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Designer &amp; Fashion Bags</div>
+      <ul class="mkt-card-items"><li>Designer Bag</li><li>Embroidered Bags</li><li>Handmade Bags</li><li>Ladies Bags</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&q=85" alt="Sarees Lehenga" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Sarees &amp; Lehenga</div>
+      <ul class="mkt-card-items"><li>Designer Sarees</li><li>Embroidered Sarees</li><li>Ladies Sarees</li><li>Lehenga Choli</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&q=85" alt="Wallets Purses" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Wallets, Purses &amp; Handbags</div>
+      <ul class="mkt-card-items"><li>Wallets</li><li>Purses</li><li>Handbags</li><li>Clutches</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=300&q=85" alt="Fashion Accessories" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Fashion Accessories</div>
+      <ul class="mkt-card-items"><li>Sunglasses</li><li>Watches</li><li>Belts</li><li>Jewelry</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=85" alt="Fabrics Textiles" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Fabrics &amp; Textiles</div>
+      <ul class="mkt-card-items"><li>Cotton Fabric</li><li>Polyester Fabric</li><li>Linen Fabric</li><li>Denim Fabric</li></ul>
+      <span class="mkt-card-arrow">Explore →</span>
+    </div>
+  </div>
+
+</div><!-- /mkt-grid -->
 </section>
 <!-- ═══ END APPAREL CATEGORY GRID ═══ -->
 
 <!-- ═══ AGRICULTURE CATEGORY GRID ═══ -->
-<section style="background:#f7f7f7;padding:32px 0;">
+<section class="mkt-section agri">
 
-    <div style="text-align:center;margin-bottom:20px;padding:0 24px;">
-      <h2 style="font-size:26px;font-weight:700;color:#1f2937;font-family:'Cormorant Garamond',serif;margin-bottom:6px;">
-        Agriculture, Forestry <span style="color:#2563eb;">&</span> Farming
-      </h2>
-      <div style="display:flex;align-items:center;justify-content:center;width:260px;margin:0 auto;">
-        <div style="flex:1;height:2px;background:#2563eb;border-radius:2px;"></div>
-        <div style="width:8px;height:8px;border-radius:50%;background:#2563eb;flex-shrink:0;margin:0 4px;"></div>
-        <div style="flex:1;height:2px;background:#e5e7eb;border-radius:2px;"></div>
-      </div>
-    </div>
-
-    <div style="display:flex;gap:0;background:white;border-top:1px solid #e5e7eb;border-bottom:1px solid #e5e7eb;overflow:hidden;width:100%;">
-
-      <!-- LEFT HERO -->
-      <div style="width:220px;flex-shrink:0;position:relative;min-height:460px;overflow:hidden;">
-        <img src="https://images.unsplash.com/photo-1500937386664-56d1dfef3854?w=500&q=80" alt="Agriculture"
-          style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;">
-        <div style="position:absolute;inset:0;background:linear-gradient(to bottom,rgba(0,0,0,.15),rgba(0,0,0,.68));"></div>
-        <div style="position:absolute;bottom:0;left:0;right:0;padding:20px 16px;">
-          <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:10px;opacity:.95;">Fresh, Preserved &amp; Dried Fruits</p>
-          <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:10px;opacity:.95;">Food Grains, Cereals &amp; Flour</p>
-          <p style="font-size:12.5px;font-weight:700;color:white;margin-bottom:18px;opacity:.95;">Dry Fruits &amp; Nuts</p>
-          <button style="background:white;color:#2563eb;border:1.5px solid white;border-radius:6px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;">View All</button>
-        </div>
-      </div>
-
-      <!-- RIGHT GRID -->
-      <div style="flex:1;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:#e5e7eb;">
-
-        <!-- Fresh Flowers And Plants -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=200&q=80" alt="Flowers"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Fresh Flowers And Plants</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Natural Flowers</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fruit Plants</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Flowering Plants</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Dry Leaves</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Fresh Preserved & Dried Fruits -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=200&q=80" alt="Fruits"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Fresh, Preserved &amp; Dried Fruits</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fresh Fruit</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fruit Pulp</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Citrus Fruit</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fruit Powder</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Fresh Dried & Preserved Vegetables -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=200&q=80" alt="Vegetables"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Fresh, Dried &amp; Preserved Veg...</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fresh Vegetables</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Frozen Vegetables</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Dry Vegetables</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Root Vegetables</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Food Grains Cereals & Flour -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=200&q=80" alt="Grains"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Food Grains, Cereals &amp; Flour</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Food Grains</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Rice</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Pulses</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Flours</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Dry Fruits & Nuts -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=200&q=80" alt="Dry Fruits"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Dry Fruits &amp; Nuts</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Edible Nuts</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Cashew</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Raisins</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Dates</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Agriculture Equipment -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=200&q=80" alt="Equipment"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Agriculture Equipment And S...</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Agriculture Equipment</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Agriculture Sprayer</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Agricultural Machine</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Grain Processing Machine</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Bird Poultry & Animal Food -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=200&q=80" alt="Animal Food"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#2563eb;margin-bottom:6px;">Bird, Poultry &amp; Animal Food</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Animal Feed</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Animal Feed Supplement</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Oil Cake</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Poultry Feed</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Soil Additives & Fertilizers -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=200&q=80" alt="Fertilizers"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Soil Additives &amp; Fertilizers</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Micronutrient Fertilizers</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Fertilizer</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Plant Growth Promoters</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Seeds & Plant Saplings -->
-        <div class="agc" style="background:white;padding:14px 15px;display:flex;gap:11px;align-items:flex-start;cursor:pointer;">
-          <img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=200&q=80" alt="Seeds"
-            style="width:166px;height:142px;object-fit:cover;border-radius:6px;flex-shrink:0;">
-          <div>
-            <div style="font-size:13px;font-weight:700;color:#1f2937;margin-bottom:6px;">Seeds &amp; Plant Saplings</div>
-            <ul style="list-style:none;padding:0;margin:0;">
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Flower Seeds</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Grain Seeds</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Seeds</li>
-              <li style="font-size:11.5px;color:#4b5563;padding:1.5px 0;">Vegetable Seeds</li>
-            </ul>
-          </div>
-        </div>
-
-      </div>
+<!-- AGRI BANNER -->
+<div class="mkt-banner">
+  <img src="assets/agri-banner.png" alt="Global Agriculture Marketplace">
+  <div class="mkt-banner-overlay">
+    <div class="mkt-banner-tag" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3);color:#4ade80;">Trusted by Global Buyers</div>
+    <h2>Global Agriculture &amp;<br>Farming Marketplace</h2>
+    <p>Discover quality products. Connect with verified suppliers.</p>
+    <div class="mkt-banner-badges">
+      <span class="mkt-badge">Quality Assured</span>
+      <span class="mkt-badge">Global Suppliers</span>
+      <span class="mkt-badge">Export Ready</span>
     </div>
   </div>
+</div>
+
+<!-- AGRI GRID -->
+<div class="mkt-grid">
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=300&q=85" alt="Fresh Flowers" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Fresh Flowers And Plants</div>
+      <ul class="mkt-card-items"><li>Natural Flowers</li><li>Fruit Plants</li><li>Flowering Plants</li><li>Dry Leaves</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=300&q=85" alt="Fruits" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Fresh, Preserved &amp; Dried Fruits</div>
+      <ul class="mkt-card-items"><li>Fresh Fruit</li><li>Fruit Pulp</li><li>Citrus Fruit</li><li>Fruit Powder</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=300&q=85" alt="Vegetables" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Fresh, Dried &amp; Preserved Vegetables</div>
+      <ul class="mkt-card-items"><li>Fresh Vegetables</li><li>Frozen Vegetables</li><li>Dry Vegetables</li><li>Root Vegetables</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&q=85" alt="Food Grains" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Food Grains, Cereals &amp; Flour</div>
+      <ul class="mkt-card-items"><li>Food Grains</li><li>Rice</li><li>Pulses</li><li>Flours</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=300&q=85" alt="Dry Fruits" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Dry Fruits &amp; Nuts</div>
+      <ul class="mkt-card-items"><li>Edible Nuts</li><li>Cashew</li><li>Raisins</li><li>Dates</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=300&q=85" alt="Poultry" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Bird, Poultry &amp; Animal Food</div>
+      <ul class="mkt-card-items"><li>Animal Feed</li><li>Animal Feed Supplement</li><li>Oil Cake</li><li>Poultry Feed</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=300&q=85" alt="Agriculture Equipment" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Agriculture Equipment And Supplies</div>
+      <ul class="mkt-card-items"><li>Agriculture Equipment</li><li>Agriculture Sprayer</li><li>Agricultural Machine</li><li>Grain Processing</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=85" alt="Soil Fertilizers" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Soil Additives &amp; Fertilizers</div>
+      <ul class="mkt-card-items"><li>Micronutrient Fertilizers</li><li>Fertilizer</li><li>Plant Growth Promoters</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=300&q=85" alt="Seeds Saplings" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Seeds &amp; Plant Saplings</div>
+      <ul class="mkt-card-items"><li>Flower Seeds</li><li>Grain Seeds</li><li>Seeds</li><li>Vegetable Seeds</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=300&q=85" alt="Forestry" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Forestry Products &amp; Timber</div>
+      <ul class="mkt-card-items"><li>Timber</li><li>Wood Logs</li><li>Plywood</li><li>Wood Pellets</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=300&q=85" alt="Farming Solutions" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Farming Solutions</div>
+      <ul class="mkt-card-items"><li>Irrigation Systems</li><li>Greenhouse Supplies</li><li>Growing Media</li><li>Farm Tools</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+  <div class="mkt-card">
+    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=85" alt="Herbs Spices" onerror="this.style.background='#e8eaf6'"></div>
+    <div class="mkt-card-body">
+      <div class="mkt-card-title">Herbs, Spices &amp; Plant Extracts</div>
+      <ul class="mkt-card-items"><li>Herbs</li><li>Spices</li><li>Essential Oils</li><li>Plant Extracts</li></ul>
+      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    </div>
+  </div>
+
+</div><!-- /mkt-grid -->
+
+<!-- TRUST STRIP -->
+<div class="mkt-trust" style="max-width:1440px;margin:28px auto 0;padding:0 20px;">
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);width:100%;background:#fff;border:1px solid #eaecf4;border-radius:14px;overflow:hidden;">
+    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#dcfce7;">📦</div><div><div class="mkt-trust-title">Wide Product Range</div><div class="mkt-trust-sub">Everything you need in agriculture under one roof</div></div></div>
+    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#dbeafe;">✅</div><div><div class="mkt-trust-title">Verified Suppliers</div><div class="mkt-trust-sub">Connect with reliable and verified manufacturers worldwide</div></div></div>
+    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#fef3c7;">🌍</div><div><div class="mkt-trust-title">Export-Ready Quality</div><div class="mkt-trust-sub">Products meeting international quality standards</div></div></div>
+    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#f0fdf4;">🤝</div><div><div class="mkt-trust-title">Secure &amp; Easy Trade</div><div class="mkt-trust-sub">Safe transactions and dedicated support for global buyers</div></div></div>
+  </div>
+</div>
+
 </section>
 <!-- ═══ END AGRICULTURE CATEGORY GRID ═══ -->
 
