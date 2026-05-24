@@ -21,34 +21,19 @@ function getSB() {
   const nb = document.querySelector('.navbar');
   if (!nb) return;
 
-  /* Scroll class + hide/show on scroll direction */
-  let lastY = window.scrollY;
-  let ticking = false;
-
-  window.addEventListener('scroll', () => {
-    if (!ticking) {
-      requestAnimationFrame(() => {
-        const currentY = window.scrollY;
-        nb.classList.toggle('scrolled', currentY > 20);
-
-        if (currentY > 80) {
-          if (currentY > lastY) {
-            // scrolling DOWN — hide navbar
-            nb.classList.add('nav-hidden');
-          } else {
-            // scrolling UP — show navbar
-            nb.classList.remove('nav-hidden');
-          }
-        } else {
-          // near top — always show
-          nb.classList.remove('nav-hidden');
-        }
-
-        lastY = currentY;
-        ticking = false;
-      });
-      ticking = true;
+  /* Scroll class + hide on scroll down / show on scroll up */
+  let _lastScrollY = window.scrollY;
+  window.addEventListener('scroll', function() {
+    const cur = window.scrollY;
+    nb.classList.toggle('scrolled', cur > 20);
+    if (cur <= 80) {
+      nb.classList.remove('nav-hidden');
+    } else if (cur > _lastScrollY + 4) {
+      nb.classList.add('nav-hidden');
+    } else if (cur < _lastScrollY - 4) {
+      nb.classList.remove('nav-hidden');
     }
+    _lastScrollY = cur;
   }, { passive: true });
 
   /* Active link — match current filename */
