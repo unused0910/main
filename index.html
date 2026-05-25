@@ -318,399 +318,494 @@ function bgxShowCat(idx){var cat=BGX_CATS[idx];document.querySelectorAll('.bgx-c
 </div>
 
 <!-- ═══ APPAREL CATEGORY GRID ═══ -->
-<section class="mkt-section">
 <style>
-/* ══ MARKETPLACE SECTION STYLES ══ */
-.mkt-section{width:100%;background:#f5f6fa;padding:0 0 48px;}
-.mkt-banner{
-  position:relative;width:100%;overflow:hidden;
-  border-radius:0;margin-bottom:28px;
+/* ════ EXACT MARKETPLACE STYLES ════ */
+.mkt-wrap{
+  width:100%;background:#f5f6fa;
+  padding:24px 24px 40px;
+  font-family:"Plus Jakarta Sans","DM Sans","Segoe UI",sans-serif;
 }
-.mkt-banner img{
-  width:100%;height:260px;object-fit:cover;object-position:center top;
-  display:block;
-}
-.mkt-banner-overlay{
-  position:absolute;inset:0;
-  background:linear-gradient(to right,rgba(8,14,30,0.78) 0%,rgba(8,14,30,0.45) 45%,rgba(8,14,30,0.0) 80%);
-  display:flex;flex-direction:column;justify-content:center;
-  padding:40px 52px;
-}
-.mkt-banner-tag{
-  display:inline-flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);
-  color:rgba(255,255,255,0.85);padding:5px 14px;border-radius:100px;
-  font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;
-  font-family:"Space Grotesk",sans-serif;margin-bottom:12px;
-  width:fit-content;
-}
-.mkt-banner h2{
-  font-family:"Cormorant Garamond",serif;
-  font-size:clamp(26px,3vw,42px);font-weight:700;
-  color:#fff;line-height:1.15;letter-spacing:-0.5px;margin-bottom:8px;
-}
-.mkt-banner p{
-  font-size:14px;color:rgba(255,255,255,0.6);
-  line-height:1.6;max-width:400px;margin-bottom:18px;font-weight:300;
-}
-.mkt-banner-badges{display:flex;gap:14px;flex-wrap:wrap;}
-.mkt-badge{
-  display:flex;align-items:center;gap:6px;
-  font-size:12px;color:rgba(255,255,255,0.7);font-weight:500;
-}
-.mkt-badge::before{content:"✓";color:#4ade80;font-weight:700;font-size:11px;}
+.mkt-inner{max-width:1320px;margin:0 auto;}
 
-/* ══ CARD GRID ══ */
-.mkt-grid{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  gap:16px;padding:0 20px;
-  max-width:1440px;margin:0 auto;
+/* ── FASHION BANNER ── */
+.mkt-fashion-banner{
+  background:#f0f1f3;
+  border-radius:16px;overflow:hidden;
+  border:1px solid #e5e7eb;
+  display:grid;grid-template-columns:1fr 1fr;
+  margin-bottom:24px;
+  min-height:240px;
+  position:relative;
 }
+.mkt-fb-left{
+  padding:36px 40px;
+  display:flex;flex-direction:column;justify-content:center;
+  background:#f0f1f3;
+  position:relative;z-index:1;
+}
+.mkt-fb-pretag{
+  font-size:11px;font-weight:700;
+  letter-spacing:2px;text-transform:uppercase;
+  color:#6b7280;margin-bottom:10px;
+}
+.mkt-fb-h{
+  font-size:clamp(26px,2.8vw,40px);
+  font-weight:800;color:#0d1117;
+  line-height:1.15;letter-spacing:-0.5px;
+  margin-bottom:10px;
+}
+.mkt-fb-sub{
+  font-size:14px;color:#6b7280;
+  font-weight:400;line-height:1.6;
+}
+.mkt-fb-right{
+  position:relative;overflow:hidden;
+}
+.mkt-fb-right img{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  object-fit:cover;object-position:top center;
+}
+
+/* ── AGRI BANNER ── */
+.mkt-agri-banner{
+  border-radius:16px;overflow:hidden;
+  margin-bottom:24px;min-height:240px;
+  position:relative;display:grid;
+  grid-template-columns:1fr 1fr;
+  background:#1b3a20;
+}
+.mkt-ab-left{
+  padding:36px 40px;
+  display:flex;flex-direction:column;justify-content:center;
+  position:relative;z-index:2;
+  background:linear-gradient(to right,rgba(22,56,28,0.98) 0%,rgba(22,56,28,0.9) 70%,transparent 100%);
+}
+.mkt-ab-pill{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(34,197,94,0.15);
+  border:1px solid rgba(34,197,94,0.35);
+  color:#4ade80;padding:5px 14px;border-radius:100px;
+  font-size:11.5px;font-weight:600;
+  width:fit-content;margin-bottom:14px;
+}
+.mkt-ab-h{
+  font-size:clamp(24px,2.8vw,38px);
+  font-weight:800;color:#fff;
+  line-height:1.15;letter-spacing:-0.5px;
+  margin-bottom:10px;
+}
+.mkt-ab-sub{
+  font-size:13.5px;color:rgba(255,255,255,0.65);
+  font-weight:400;line-height:1.6;margin-bottom:18px;
+}
+.mkt-ab-badges{display:flex;gap:20px;flex-wrap:wrap;}
+.mkt-ab-badge{
+  display:flex;align-items:center;gap:7px;
+  font-size:12.5px;color:rgba(255,255,255,0.8);font-weight:500;
+}
+.mkt-ab-badge-icon{
+  width:22px;height:22px;border-radius:50%;
+  border:1.5px solid rgba(255,255,255,0.3);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;
+}
+.mkt-ab-right{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+}
+.mkt-ab-right img{
+  width:100%;height:100%;
+  object-fit:cover;object-position:center;
+}
+.mkt-ab-right::before{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to right,rgba(22,56,28,0.95) 0%,rgba(22,56,28,0.6) 40%,rgba(22,56,28,0.05) 80%);
+  z-index:1;
+}
+
+/* ── CARD GRID ── */
+.mkt-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+
+/* ── INDIVIDUAL CARD ── */
 .mkt-card{
-  background:#fff;border-radius:16px;
-  border:1px solid #eaecf4;overflow:hidden;
-  display:flex;gap:0;align-items:stretch;
-  box-shadow:0 1px 6px rgba(0,0,0,0.05);
+  background:#fff;
+  border:1px solid #e5e7eb;
+  border-radius:12px;
+  overflow:hidden;
+  display:flex;
+  align-items:stretch;
+  box-shadow:0 1px 4px rgba(0,0,0,0.05);
   cursor:pointer;
-  transition:all 0.25s cubic-bezier(.4,0,.2,1);
-  min-height:160px;
+  transition:all 0.22s cubic-bezier(.4,0,.2,1);
 }
 .mkt-card:hover{
-  transform:translateY(-4px);
-  box-shadow:0 12px 36px rgba(37,99,235,0.12),0 2px 8px rgba(0,0,0,0.06);
-  border-color:#c7d2fe;
+  transform:translateY(-3px);
+  box-shadow:0 8px 28px rgba(0,0,0,0.1);
+  border-color:#d1d5db;
 }
-.mkt-card-img{
-  width:140px;flex-shrink:0;overflow:hidden;
-  position:relative;background:#f3f4f6;
+
+/* Image — square left column */
+.mkt-ci{
+  width:128px;flex-shrink:0;
+  overflow:hidden;position:relative;
+  background:#f9fafb;
 }
-.mkt-card-img img{
-  width:100%;height:100%;object-fit:cover;
-  transition:transform 0.4s cubic-bezier(.4,0,.2,1);
-  display:block;
+.mkt-ci img{
+  width:100%;height:100%;
+  object-fit:cover;display:block;
+  transition:transform 0.35s cubic-bezier(.4,0,.2,1);
 }
-.mkt-card:hover .mkt-card-img img{transform:scale(1.07);}
-.mkt-card-body{
-  flex:1;padding:16px 16px 16px 14px;
-  display:flex;flex-direction:column;justify-content:space-between;
-  min-width:0;
+.mkt-card:hover .mkt-ci img{transform:scale(1.05);}
+
+/* Text content */
+.mkt-cb{
+  flex:1;padding:14px 14px 12px 14px;
+  display:flex;flex-direction:column;
+  justify-content:space-between;min-width:0;
 }
-.mkt-card-title{
-  font-size:14px;font-weight:800;color:#0d1117;
-  margin-bottom:8px;line-height:1.3;letter-spacing:-0.2px;
+.mkt-ct{
+  font-size:14.5px;font-weight:700;
+  color:#111827;line-height:1.3;
+  margin-bottom:8px;letter-spacing:-0.1px;
 }
-.mkt-card-items{
+.mkt-cl{
   list-style:none;padding:0;margin:0 0 10px;
   flex:1;display:flex;flex-direction:column;gap:3px;
 }
-.mkt-card-items li{
-  font-size:12px;color:#64748b;font-weight:400;
-  line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+.mkt-cl li{
+  font-size:12.5px;color:#6b7280;
+  font-weight:400;line-height:1.5;
 }
-.mkt-card-arrow{
-  display:inline-flex;align-items:center;
-  font-size:13px;color:#2563eb;font-weight:600;
-  transition:gap 0.2s;gap:4px;align-self:flex-start;
+.mkt-arrow{
+  font-size:16px;color:#9ca3af;
+  align-self:flex-end;line-height:1;
+  transition:color 0.2s,transform 0.2s;
 }
-.mkt-card:hover .mkt-card-arrow{gap:8px;}
+.mkt-card:hover .mkt-arrow{color:#374151;transform:translateX(3px);}
 
-/* Agri section variant - green accents */
-.mkt-section.agri .mkt-card:hover{border-color:#bbf7d0;box-shadow:0 12px 36px rgba(22,163,74,0.1),0 2px 8px rgba(0,0,0,0.06);}
-.mkt-section.agri .mkt-card-arrow{color:#16a34a;}
+/* Agri card arrow green */
+.mkt-card.agri:hover .mkt-arrow{color:#16a34a;}
 
-/* ══ BOTTOM TRUST STRIP ══ */
-.mkt-trust{
+/* ── TRUST STRIP ── */
+.mkt-trust-strip{
   display:grid;grid-template-columns:repeat(4,1fr);
-  gap:0;background:#fff;
-  border-top:1px solid #eaecf4;border-bottom:1px solid #eaecf4;
-  margin-top:28px;
+  margin-top:20px;
+  border:1px solid #e5e7eb;
+  border-radius:12px;overflow:hidden;
+  background:#fff;
 }
-.mkt-trust-item{
+.mkt-ti{
   display:flex;align-items:center;gap:14px;
-  padding:20px 24px;border-right:1px solid #eaecf4;
+  padding:18px 20px;
+  border-right:1px solid #e5e7eb;
 }
-.mkt-trust-item:last-child{border-right:none;}
-.mkt-trust-icon{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
-.mkt-trust-title{font-size:13px;font-weight:700;color:#0d1117;margin-bottom:2px;}
-.mkt-trust-sub{font-size:11.5px;color:#64748b;font-weight:300;line-height:1.4;}
+.mkt-ti:last-child{border-right:none;}
+.mkt-ti-icon{
+  width:40px;height:40px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;flex-shrink:0;
+}
+.mkt-ti-title{font-size:13px;font-weight:700;color:#111827;margin-bottom:3px;}
+.mkt-ti-sub{font-size:11.5px;color:#6b7280;line-height:1.4;font-weight:400;}
 
-@media(max-width:1100px){.mkt-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:768px){.mkt-grid{grid-template-columns:repeat(2,1fr);padding:0 12px;}.mkt-banner-overlay{padding:24px 24px;}.mkt-trust{grid-template-columns:repeat(2,1fr);}.mkt-card-img{width:100px;}}
-@media(max-width:480px){.mkt-grid{grid-template-columns:1fr;}.mkt-card-img{width:120px;}}
+@media(max-width:1200px){.mkt-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:900px){
+  .mkt-grid{grid-template-columns:repeat(2,1fr);}
+  .mkt-fashion-banner,.mkt-agri-banner{grid-template-columns:1fr;min-height:180px;}
+  .mkt-fb-right{height:200px;position:relative;}
+  .mkt-trust-strip{grid-template-columns:repeat(2,1fr);}
+  .mkt-ti:nth-child(2){border-right:none;}
+  .mkt-ab-left{padding:28px 24px;}
+  .mkt-fb-left{padding:24px 24px;}
+}
+@media(max-width:580px){
+  .mkt-grid{grid-template-columns:1fr;}
+  .mkt-wrap{padding:16px 16px 32px;}
+  .mkt-ci{width:110px;}
+}
 </style>
 
-<!-- FASHION BANNER -->
-<div class="mkt-banner">
-  <img src="assets/fashion-banner.png" alt="B2B Fashion Marketplace">
-  <div class="mkt-banner-overlay">
-    <div class="mkt-banner-tag">Premium Fashion. Global Trade.</div>
-    <h2>Your Trusted B2B<br>Fashion Marketplace</h2>
-    <p>Discover quality products. Connect with verified suppliers.</p>
-    <div class="mkt-banner-badges">
-      <span class="mkt-badge">Quality Assured</span>
-      <span class="mkt-badge">Verified Exporters</span>
-      <span class="mkt-badge">Global Buyers</span>
+<div class="mkt-wrap">
+<div class="mkt-inner">
+
+  <!-- ══ FASHION BANNER ══ -->
+  <div class="mkt-fashion-banner">
+    <div class="mkt-fb-left">
+      <div class="mkt-fb-pretag">Premium Fashion. Global Trade.</div>
+      <h2 class="mkt-fb-h">Your Trusted B2B<br>Fashion Marketplace</h2>
+      <p class="mkt-fb-sub">Discover quality products. Connect with verified suppliers.</p>
     </div>
-  </div>
-</div>
-
-<!-- FASHION GRID -->
-<div class="mkt-grid">
-
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300&q=85" alt="Kids Clothing" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Kids Dress &amp; Clothing</div>
-      <ul class="mkt-card-items"><li>Boys Clothes</li><li>Girls Garments</li><li>Kids Frock</li><li>Kids Socks</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-fb-right">
+      <img src="assets/fashion-banner.png" alt="B2B Fashion Marketplace">
     </div>
   </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=300&q=85" alt="Men Clothing" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Men Clothing</div>
-      <ul class="mkt-card-items"><li>Mens Shirts</li><li>Mens T-Shirts</li><li>Mens Shorts</li><li>Mens Jeans</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
-    </div>
-  </div>
+  <!-- ══ FASHION CARDS ══ -->
+  <div class="mkt-grid">
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=300&q=85" alt="Women Clothing" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Women Clothing</div>
-      <ul class="mkt-card-items"><li>Ladies Suits</li><li>Ladies Tops</li><li>Ladies Kurtis</li><li>Ladies Jeans</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=280&q=85" alt="Kids Clothing" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Kids Dress &amp;<br>Clothing</div>
+        <ul class="mkt-cl"><li>Boys Clothes</li><li>Girls Garments</li><li>Kids Frock</li><li>Kids Socks</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=85" alt="Footwear" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Footwear</div>
-      <ul class="mkt-card-items"><li>Ladies Shoes</li><li>Mens Shoes</li><li>Slipper</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=280&q=85" alt="Men Clothing" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Men Clothing</div>
+        <ul class="mkt-cl"><li>Mens Shirts</li><li>Mens T-Shirts</li><li>Mens Shorts</li><li>Mens Jeans</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300&q=85" alt="Innerwear" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Undergarment &amp; Inner Wear</div>
-      <ul class="mkt-card-items"><li>Boxer / Trunks</li><li>Brach / Panties</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=280&q=85" alt="Women Clothing" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Women Clothing</div>
+        <ul class="mkt-cl"><li>Ladies Suits</li><li>Ladies Tops</li><li>Ladies Kurtis</li><li>Ladies Jeans</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&q=85" alt="Leather Clothing" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Leather Clothing</div>
-      <ul class="mkt-card-items"><li>Leather Jackets</li><li>Leather Gloves</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=280&q=85" alt="Footwear" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Footwear</div>
+        <ul class="mkt-cl"><li>Ladies Shoes</li><li>Mens Shoes</li><li>Slipper</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&q=85" alt="Caps & Headwear" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Caps, Hats &amp; Headwears</div>
-      <ul class="mkt-card-items"><li>Apparel Cap</li><li>Fashion Cap</li><li>Winter Cap</li><li>Security Cap</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=280&q=85" alt="Innerwear" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Undergarment<br>and Inner Wear</div>
+        <ul class="mkt-cl"><li>Boxer / Trunks</li><li>Brach / Panties</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=85" alt="Fashion Bags" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Designer &amp; Fashion Bags</div>
-      <ul class="mkt-card-items"><li>Designer Bag</li><li>Embroidered Bags</li><li>Handmade Bags</li><li>Ladies Bags</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=280&q=85" alt="Leather" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Leather Clothing</div>
+        <ul class="mkt-cl"><li>Leather Jackets</li><li>Leather Gloves</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&q=85" alt="Sarees Lehenga" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Sarees &amp; Lehenga</div>
-      <ul class="mkt-card-items"><li>Designer Sarees</li><li>Embroidered Sarees</li><li>Ladies Sarees</li><li>Lehenga Choli</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=280&q=85" alt="Caps" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Caps, Hats &amp;<br>Headwears</div>
+        <ul class="mkt-cl"><li>Apparel Cap</li><li>Fashion Cap</li><li>Winter Cap</li><li>Security Cap</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&q=85" alt="Wallets Purses" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Wallets, Purses &amp; Handbags</div>
-      <ul class="mkt-card-items"><li>Wallets</li><li>Purses</li><li>Handbags</li><li>Clutches</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=280&q=85" alt="Fashion Bags" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Designer &amp;<br>Fashion Bags</div>
+        <ul class="mkt-cl"><li>Designer Bag</li><li>Embroidered Bags</li><li>Handmade Bags</li><li>Ladies Bags</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=300&q=85" alt="Fashion Accessories" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Fashion Accessories</div>
-      <ul class="mkt-card-items"><li>Sunglasses</li><li>Watches</li><li>Belts</li><li>Jewelry</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=280&q=85" alt="Sarees" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Sarees &amp;<br>Lehenga</div>
+        <ul class="mkt-cl"><li>Designer Saree</li><li>Embroidered Saree</li><li>Lehenga Sarees</li><li>Lehenga Choli</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=85" alt="Fabrics Textiles" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Fabrics &amp; Textiles</div>
-      <ul class="mkt-card-items"><li>Cotton Fabric</li><li>Polyester Fabric</li><li>Linen Fabric</li><li>Denim Fabric</li></ul>
-      <span class="mkt-card-arrow">Explore →</span>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=280&q=85" alt="Wallets" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Wallets, Purses<br>&amp; Handbags</div>
+        <ul class="mkt-cl"><li>Wallets</li><li>Purses</li><li>Handbags</li><li>Clutches</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-</div><!-- /mkt-grid -->
-</section>
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=280&q=85" alt="Accessories" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Fashion<br>Accessories</div>
+        <ul class="mkt-cl"><li>Sunglasses</li><li>Watches</li><li>Belts</li><li>Jewelry</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
+    </div>
+
+    <div class="mkt-card">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=280&q=85" alt="Fabrics" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Fabrics &amp;<br>Textiles</div>
+        <ul class="mkt-cl"><li>Cotton Fabric</li><li>Polyester Fabric</li><li>Linen Fabric</li><li>Denim Fabric</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
+    </div>
+
+  </div><!-- /fashion grid -->
+
+</div><!-- /inner -->
+</div><!-- /wrap -->
 <!-- ═══ END APPAREL CATEGORY GRID ═══ -->
 
 <!-- ═══ AGRICULTURE CATEGORY GRID ═══ -->
-<section class="mkt-section agri">
+<div class="mkt-wrap" style="padding-top:0;">
+<div class="mkt-inner">
 
-<!-- AGRI BANNER -->
-<div class="mkt-banner">
-  <img src="assets/agri-banner.png" alt="Global Agriculture Marketplace">
-  <div class="mkt-banner-overlay">
-    <div class="mkt-banner-tag" style="background:rgba(34,197,94,0.2);border-color:rgba(34,197,94,0.3);color:#4ade80;">Trusted by Global Buyers</div>
-    <h2>Global Agriculture &amp;<br>Farming Marketplace</h2>
-    <p>Discover quality products. Connect with verified suppliers.</p>
-    <div class="mkt-banner-badges">
-      <span class="mkt-badge">Quality Assured</span>
-      <span class="mkt-badge">Global Suppliers</span>
-      <span class="mkt-badge">Export Ready</span>
+  <!-- ══ AGRI BANNER ══ -->
+  <div class="mkt-agri-banner">
+    <div class="mkt-ab-right">
+      <img src="assets/agri-banner.png" alt="Agriculture Marketplace">
     </div>
-  </div>
-</div>
-
-<!-- AGRI GRID -->
-<div class="mkt-grid">
-
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=300&q=85" alt="Fresh Flowers" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Fresh Flowers And Plants</div>
-      <ul class="mkt-card-items"><li>Natural Flowers</li><li>Fruit Plants</li><li>Flowering Plants</li><li>Dry Leaves</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-ab-left">
+      <div class="mkt-ab-pill">🛡 Trusted by Global Buyers</div>
+      <h2 class="mkt-ab-h">Global Agriculture &amp;<br>Farming Marketplace</h2>
+      <p class="mkt-ab-sub">Discover quality products. Connect with verified suppliers.</p>
+      <div class="mkt-ab-badges">
+        <span class="mkt-ab-badge"><span class="mkt-ab-badge-icon">🛡</span>Quality Assured</span>
+        <span class="mkt-ab-badge"><span class="mkt-ab-badge-icon">🌐</span>Global Suppliers</span>
+        <span class="mkt-ab-badge"><span class="mkt-ab-badge-icon">📦</span>Export Ready</span>
+      </div>
     </div>
   </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=300&q=85" alt="Fruits" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Fresh, Preserved &amp; Dried Fruits</div>
-      <ul class="mkt-card-items"><li>Fresh Fruit</li><li>Fruit Pulp</li><li>Citrus Fruit</li><li>Fruit Powder</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+  <!-- ══ AGRI CARDS ══ -->
+  <div class="mkt-grid">
+
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=280&q=85" alt="Flowers" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Fresh Flowers<br>And Plants</div>
+        <ul class="mkt-cl"><li>Natural Flowers</li><li>Fruit Plants</li><li>Flowering Plants</li><li>Dry Leaves</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=300&q=85" alt="Vegetables" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Fresh, Dried &amp; Preserved Vegetables</div>
-      <ul class="mkt-card-items"><li>Fresh Vegetables</li><li>Frozen Vegetables</li><li>Dry Vegetables</li><li>Root Vegetables</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=280&q=85" alt="Fruits" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Fresh, Preserved &amp;<br>Dried Fruits</div>
+        <ul class="mkt-cl"><li>Fresh Fruit</li><li>Fruit Pulp</li><li>Citrus Fruit</li><li>Fruit Powder</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&q=85" alt="Food Grains" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Food Grains, Cereals &amp; Flour</div>
-      <ul class="mkt-card-items"><li>Food Grains</li><li>Rice</li><li>Pulses</li><li>Flours</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=280&q=85" alt="Vegetables" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Fresh, Dried &amp;<br>Preserved Vegetables</div>
+        <ul class="mkt-cl"><li>Fresh Vegetables</li><li>Frozen Vegetables</li><li>Dry Vegetables</li><li>Root Vegetables</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=300&q=85" alt="Dry Fruits" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Dry Fruits &amp; Nuts</div>
-      <ul class="mkt-card-items"><li>Edible Nuts</li><li>Cashew</li><li>Raisins</li><li>Dates</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=280&q=85" alt="Grains" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Food Grains,<br>Cereals &amp; Flour</div>
+        <ul class="mkt-cl"><li>Food Grains</li><li>Rice</li><li>Pulses</li><li>Flours</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=300&q=85" alt="Poultry" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Bird, Poultry &amp; Animal Food</div>
-      <ul class="mkt-card-items"><li>Animal Feed</li><li>Animal Feed Supplement</li><li>Oil Cake</li><li>Poultry Feed</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=280&q=85" alt="Dry Fruits" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Dry Fruits &amp; Nuts</div>
+        <ul class="mkt-cl"><li>Edible Nuts</li><li>Cashew</li><li>Raisins</li><li>Dates</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=300&q=85" alt="Agriculture Equipment" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Agriculture Equipment And Supplies</div>
-      <ul class="mkt-card-items"><li>Agriculture Equipment</li><li>Agriculture Sprayer</li><li>Agricultural Machine</li><li>Grain Processing</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=280&q=85" alt="Poultry" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Bird, Poultry &amp;<br>Animal Food</div>
+        <ul class="mkt-cl"><li>Animal Feed</li><li>Animal Feed Supplement</li><li>Oil Cake</li><li>Poultry Feed</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=85" alt="Soil Fertilizers" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Soil Additives &amp; Fertilizers</div>
-      <ul class="mkt-card-items"><li>Micronutrient Fertilizers</li><li>Fertilizer</li><li>Plant Growth Promoters</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=280&q=85" alt="Equipment" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Agriculture Equipment<br>And Supplies</div>
+        <ul class="mkt-cl"><li>Agriculture Equipment</li><li>Agriculture Sprayer</li><li>Agricultural Machine</li><li>Grain Processing Machine</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=300&q=85" alt="Seeds Saplings" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Seeds &amp; Plant Saplings</div>
-      <ul class="mkt-card-items"><li>Flower Seeds</li><li>Grain Seeds</li><li>Seeds</li><li>Vegetable Seeds</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=280&q=85" alt="Fertilizers" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Soil Additives &amp;<br>Fertilizers</div>
+        <ul class="mkt-cl"><li>Micronutrient Fertilizers</li><li>Fertilizer</li><li>Plant Growth Promoters</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=300&q=85" alt="Forestry" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Forestry Products &amp; Timber</div>
-      <ul class="mkt-card-items"><li>Timber</li><li>Wood Logs</li><li>Plywood</li><li>Wood Pellets</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=280&q=85" alt="Seeds" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Seeds &amp; Plant<br>Saplings</div>
+        <ul class="mkt-cl"><li>Flower Seeds</li><li>Grain Seeds</li><li>Seeds</li><li>Vegetable Seeds</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=300&q=85" alt="Farming Solutions" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Farming Solutions</div>
-      <ul class="mkt-card-items"><li>Irrigation Systems</li><li>Greenhouse Supplies</li><li>Growing Media</li><li>Farm Tools</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=280&q=85" alt="Forestry" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Forestry Products<br>&amp; Timber</div>
+        <ul class="mkt-cl"><li>Timber</li><li>Wood Logs</li><li>Plywood</li><li>Wood Pellets</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
-  </div>
 
-  <div class="mkt-card">
-    <div class="mkt-card-img"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=85" alt="Herbs Spices" onerror="this.style.background='#e8eaf6'"></div>
-    <div class="mkt-card-body">
-      <div class="mkt-card-title">Herbs, Spices &amp; Plant Extracts</div>
-      <ul class="mkt-card-items"><li>Herbs</li><li>Spices</li><li>Essential Oils</li><li>Plant Extracts</li></ul>
-      <span class="mkt-card-arrow" style="color:#16a34a;">Explore →</span>
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=280&q=85" alt="Farming" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Farming<br>Solutions</div>
+        <ul class="mkt-cl"><li>Irrigation Systems</li><li>Greenhouse Supplies</li><li>Growing Media</li><li>Farm Tools</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
     </div>
+
+    <div class="mkt-card agri">
+      <div class="mkt-ci"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=280&q=85" alt="Herbs Spices" onerror="this.style.background='#f3f4f6'"></div>
+      <div class="mkt-cb">
+        <div class="mkt-ct">Herbs, Spices &amp;<br>Plant Extracts</div>
+        <ul class="mkt-cl"><li>Herbs</li><li>Spices</li><li>Essential Oils</li><li>Plant Extracts</li></ul>
+        <span class="mkt-arrow">→</span>
+      </div>
+    </div>
+
+  </div><!-- /agri grid -->
+
+  <!-- TRUST STRIP -->
+  <div class="mkt-trust-strip">
+    <div class="mkt-ti"><div class="mkt-ti-icon" style="background:#dcfce7;">📦</div><div><div class="mkt-ti-title">Wide Product Range</div><div class="mkt-ti-sub">Everything you need in agriculture under one roof</div></div></div>
+    <div class="mkt-ti"><div class="mkt-ti-icon" style="background:#dbeafe;">✅</div><div><div class="mkt-ti-title">Verified Suppliers</div><div class="mkt-ti-sub">Connect with reliable and verified manufacturers worldwide</div></div></div>
+    <div class="mkt-ti"><div class="mkt-ti-icon" style="background:#fef3c7;">🌍</div><div><div class="mkt-ti-title">Export-Ready Quality</div><div class="mkt-ti-sub">Products meeting international quality standards</div></div></div>
+    <div class="mkt-ti"><div class="mkt-ti-icon" style="background:#f0fdf4;">🤝</div><div><div class="mkt-ti-title">Secure &amp; Easy Trade</div><div class="mkt-ti-sub">Safe transactions and dedicated support for global buyers</div></div></div>
   </div>
 
-</div><!-- /mkt-grid -->
-
-<!-- TRUST STRIP -->
-<div class="mkt-trust" style="max-width:1440px;margin:28px auto 0;padding:0 20px;">
-  <div style="display:grid;grid-template-columns:repeat(4,1fr);width:100%;background:#fff;border:1px solid #eaecf4;border-radius:14px;overflow:hidden;">
-    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#dcfce7;">📦</div><div><div class="mkt-trust-title">Wide Product Range</div><div class="mkt-trust-sub">Everything you need in agriculture under one roof</div></div></div>
-    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#dbeafe;">✅</div><div><div class="mkt-trust-title">Verified Suppliers</div><div class="mkt-trust-sub">Connect with reliable and verified manufacturers worldwide</div></div></div>
-    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#fef3c7;">🌍</div><div><div class="mkt-trust-title">Export-Ready Quality</div><div class="mkt-trust-sub">Products meeting international quality standards</div></div></div>
-    <div class="mkt-trust-item"><div class="mkt-trust-icon" style="background:#f0fdf4;">🤝</div><div><div class="mkt-trust-title">Secure &amp; Easy Trade</div><div class="mkt-trust-sub">Safe transactions and dedicated support for global buyers</div></div></div>
-  </div>
-</div>
-
-</section>
+</div><!-- /inner -->
+</div><!-- /wrap -->
 <!-- ═══ END AGRICULTURE CATEGORY GRID ═══ -->
 
 <!-- ═══ SERVICES ═══ -->
