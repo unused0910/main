@@ -317,201 +317,129 @@ function bgxShowCat(idx){var cat=BGX_CATS[idx];document.querySelectorAll('.bgx-c
   </div>
 </div>
 
-<!-- ═══ APPAREL CATEGORY GRID ═══ -->
+<!-- ═══ MARKETPLACE SECTION ═══ -->
 <style>
-/* ════ COMPACT PREMIUM MARKETPLACE ════ */
-.pm-wrap{
-  width:100%;background:#f7f7f5;
-  padding:20px 24px 32px;
-  font-family:"Plus Jakarta Sans","DM Sans","Segoe UI",sans-serif;
-}
-.pm-inner{max-width:1480px;margin:0 auto;}
+.mks-wrap{width:100%;background:#f7f7f5;padding:0 0 32px;}
+.mks-inner{max-width:1480px;margin:0 auto;padding:0 20px;}
 
-/* ── BANNER: image only, no overlay ── */
-.pm-banner{
-  width:100%;border-radius:20px;
-  overflow:hidden;margin-bottom:20px;
-  line-height:0;
-}
-.pm-banner img{
-  width:100%;height:280px;
-  object-fit:cover;object-position:center;
-  display:block;
-  border-radius:20px;
-}
+/* Banners full width no crop */
+.mks-banner{width:100%;line-height:0;margin-bottom:0;}
+.mks-banner img{width:100%;display:block;height:auto;}
 
-/* ── GRID ── */
-.pm-grid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:16px;
-}
-
-/* ── CARD ── */
-.pm-card{
-  background:#fff;
-  border-radius:16px;
-  border:none;
-  box-shadow:0 4px 20px rgba(0,0,0,0.06);
-  overflow:hidden;
-  display:flex;
-  align-items:stretch;
-  height:auto;min-height:210px;max-height:230px;
-  cursor:pointer;
-  transition:transform 0.3s cubic-bezier(.4,0,.2,1),box-shadow 0.3s;
-}
-.pm-card:hover{
-  transform:translateY(-6px);
-  box-shadow:0 12px 32px rgba(0,0,0,0.1);
-}
-
-/* Card image — fixed 150×150 */
-.pm-img{
-  width:150px;min-width:150px;max-width:150px;
-  overflow:hidden;background:#f1f3f5;
-  flex-shrink:0;
-}
-.pm-img img{
-  width:150px;height:100%;
-  object-fit:cover;display:block;
-  transition:transform 0.35s cubic-bezier(.4,0,.2,1);
-}
-.pm-card:hover .pm-img img{transform:scale(1.06);}
-
-/* Card content */
-.pm-body{
-  flex:1;padding:14px 15px 13px;
-  display:flex;flex-direction:column;
-  justify-content:space-between;
-  min-width:0;overflow:hidden;
-}
-.pm-title{
-  font-size:14px;font-weight:700;
-  color:#111827;line-height:1.3;
-  margin-bottom:7px;letter-spacing:-0.1px;
-}
-.pm-list{
-  list-style:none;padding:0;margin:0 0 8px;
-  flex:1;display:flex;flex-direction:column;gap:2.5px;
-}
-.pm-list li{
-  font-size:12px;color:#6b7280;
-  font-weight:400;line-height:1.5;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.pm-cta{
-  font-size:12px;font-weight:600;
-  color:#2563eb;display:inline-flex;
-  align-items:center;gap:3px;
-  transition:gap 0.2s;
-  align-self:flex-start;
-}
-.pm-card.agri .pm-cta{color:#16a34a;}
-.pm-card:hover .pm-cta{gap:7px;}
-
-/* ── TRUST STRIP (agri) ── */
-.pm-trust{
+/* Grid */
+.mks-grid{
   display:grid;grid-template-columns:repeat(4,1fr);
-  margin-top:18px;
-  background:#fff;
-  border-radius:14px;
-  box-shadow:0 2px 12px rgba(0,0,0,0.05);
-  overflow:hidden;
+  gap:14px;padding:20px 20px 0;
+  max-width:1480px;margin:0 auto;
 }
-.pm-ti{
-  display:flex;align-items:center;gap:12px;
-  padding:16px 18px;
-  border-right:1px solid #f0f0f0;
-}
-.pm-ti:last-child{border-right:none;}
-.pm-ti-icon{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:16px;flex-shrink:0;
-}
-.pm-ti-title{font-size:12.5px;font-weight:700;color:#111827;margin-bottom:2px;}
-.pm-ti-sub{font-size:11px;color:#9ca3af;font-weight:400;line-height:1.4;}
 
-/* ── RESPONSIVE ── */
-@media(max-width:1200px){.pm-grid{grid-template-columns:repeat(3,1fr);}}
-@media(max-width:860px){
-  .pm-grid{grid-template-columns:repeat(2,1fr);}
-  .pm-banner img{height:180px;}
-  .pm-trust{grid-template-columns:repeat(2,1fr);}
-  .pm-ti:nth-child(2){border-right:none;}
+/* Card */
+.mks-card{
+  background:#fff;border-radius:14px;border:none;
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);
+  overflow:hidden;display:flex;align-items:stretch;
+  cursor:pointer;min-height:130px;
+  transition:transform .28s cubic-bezier(.4,0,.2,1),box-shadow .28s;
 }
-@media(max-width:500px){
-  .pm-grid{grid-template-columns:1fr;}
-  .pm-img{width:120px;min-width:120px;}
-  .pm-wrap{padding:12px 12px 24px;}
-  .pm-banner img{height:140px;}
+.mks-card:hover{transform:translateY(-5px);box-shadow:0 10px 28px rgba(0,0,0,0.11);}
+.mks-img{
+  width:120px;min-width:120px;flex-shrink:0;overflow:hidden;background:#f3f4f6;
 }
+.mks-img img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s;}
+.mks-card:hover .mks-img img{transform:scale(1.06);}
+.mks-body{flex:1;padding:12px 13px 11px;display:flex;flex-direction:column;justify-content:space-between;min-width:0;}
+.mks-title{font-size:13px;font-weight:700;color:#111827;line-height:1.3;margin-bottom:6px;letter-spacing:-0.1px;}
+.mks-list{list-style:none;padding:0;margin:0 0 7px;flex:1;display:flex;flex-direction:column;gap:2px;}
+.mks-list li{font-size:11.5px;color:#6b7280;font-weight:400;line-height:1.45;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.mks-arrow{font-size:11.5px;font-weight:600;color:#2563eb;align-self:flex-start;transition:letter-spacing .2s;}
+.mks-card.agri .mks-arrow{color:#16a34a;}
+.mks-card:hover .mks-arrow{letter-spacing:1px;}
+
+/* Trust strip */
+.mks-trust{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  margin:18px 20px 0;
+  background:#fff;border-radius:12px;
+  box-shadow:0 2px 10px rgba(0,0,0,0.05);overflow:hidden;
+  max-width:1480px;
+}
+.mks-ti{display:flex;align-items:center;gap:12px;padding:15px 18px;border-right:1px solid #f0f0ee;}
+.mks-ti:last-child{border-right:none;}
+.mks-ti-icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;flex-shrink:0;}
+.mks-ti-title{font-size:12.5px;font-weight:700;color:#111827;margin-bottom:2px;}
+.mks-ti-sub{font-size:11px;color:#9ca3af;line-height:1.4;}
+
+/* Divider between banners */
+.mks-gap{height:16px;background:#f7f7f5;}
+
+@media(max-width:1100px){.mks-grid{grid-template-columns:repeat(3,1fr);}}
+@media(max-width:768px){
+  .mks-grid{grid-template-columns:repeat(2,1fr);padding:14px 14px 0;}
+  .mks-trust{grid-template-columns:repeat(2,1fr);margin:14px 14px 0;}
+  .mks-ti:nth-child(2){border-right:none;}
+}
+@media(max-width:480px){.mks-grid{grid-template-columns:1fr;}.mks-img{width:105px;min-width:105px;}}
 </style>
 
-<div class="pm-wrap">
-<div class="pm-inner">
+<div class="mks-wrap">
 
-  <!-- FASHION BANNER — image only -->
-  <div class="pm-banner">
+  <!-- FASHION BANNER — full width, natural height -->
+  <div class="mks-banner">
     <img src="assets/fashion-banner.png" alt="B2B Fashion Marketplace">
   </div>
 
-  <!-- FASHION GRID -->
-  <div class="pm-grid">
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=300&q=85" alt="Kids" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Kids Dress &amp; Clothing</div><ul class="pm-list"><li>Boys Clothes</li><li>Girls Garments</li><li>Kids Frock</li><li>Kids Socks</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=300&q=85" alt="Men" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Men Clothing</div><ul class="pm-list"><li>Mens Shirts</li><li>Mens T-Shirts</li><li>Mens Shorts</li><li>Mens Jeans</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=300&q=85" alt="Women" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Women Clothing</div><ul class="pm-list"><li>Ladies Suits</li><li>Ladies Tops</li><li>Ladies Kurtis</li><li>Ladies Jeans</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=300&q=85" alt="Footwear" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Footwear</div><ul class="pm-list"><li>Ladies Shoes</li><li>Mens Shoes</li><li>Slipper</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=300&q=85" alt="Innerwear" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Undergarment &amp; Inner Wear</div><ul class="pm-list"><li>Boxer / Trunks</li><li>Brach / Panties</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&q=85" alt="Leather" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Leather Clothing</div><ul class="pm-list"><li>Leather Jackets</li><li>Leather Gloves</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=300&q=85" alt="Caps" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Caps, Hats &amp; Headwears</div><ul class="pm-list"><li>Apparel Cap</li><li>Fashion Cap</li><li>Winter Cap</li><li>Security Cap</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=300&q=85" alt="Bags" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Designer &amp; Fashion Bags</div><ul class="pm-list"><li>Designer Bag</li><li>Embroidered Bags</li><li>Handmade Bags</li><li>Ladies Bags</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=300&q=85" alt="Sarees" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Sarees &amp; Lehenga</div><ul class="pm-list"><li>Designer Saree</li><li>Embroidered Saree</li><li>Lehenga Sarees</li><li>Lehenga Choli</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=300&q=85" alt="Wallets" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Wallets, Purses &amp; Handbags</div><ul class="pm-list"><li>Wallets</li><li>Purses</li><li>Handbags</li><li>Clutches</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=300&q=85" alt="Accessories" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Fashion Accessories</div><ul class="pm-list"><li>Sunglasses</li><li>Watches</li><li>Belts</li><li>Jewelry</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card"><div class="pm-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&q=85" alt="Fabrics" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Fabrics &amp; Textiles</div><ul class="pm-list"><li>Cotton Fabric</li><li>Polyester Fabric</li><li>Linen Fabric</li><li>Denim Fabric</li></ul><span class="pm-cta">Explore →</span></div></div>
+  <!-- FASHION 4-COL GRID -->
+  <div class="mks-grid">
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1519238263530-99bdd11df2ea?w=280&q=85" alt="Kids"></div><div class="mks-body"><div class="mks-title">Kids Dress &amp; Clothing</div><ul class="mks-list"><li>Boys Clothes</li><li>Girls Garments</li><li>Kids Frock</li><li>Kids Socks</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=280&q=85" alt="Men"></div><div class="mks-body"><div class="mks-title">Men Clothing</div><ul class="mks-list"><li>Mens Shirts</li><li>Mens T-Shirts</li><li>Mens Shorts</li><li>Mens Jeans</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1594938298603-c8148c4b4657?w=280&q=85" alt="Women"></div><div class="mks-body"><div class="mks-title">Women Clothing</div><ul class="mks-list"><li>Ladies Suits</li><li>Ladies Tops</li><li>Ladies Kurtis</li><li>Ladies Jeans</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=280&q=85" alt="Footwear"></div><div class="mks-body"><div class="mks-title">Footwear</div><ul class="mks-list"><li>Ladies Shoes</li><li>Mens Shoes</li><li>Slipper</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1567401893414-76b7b1e5a7a5?w=280&q=85" alt="Innerwear"></div><div class="mks-body"><div class="mks-title">Undergarment &amp; Inner Wear</div><ul class="mks-list"><li>Boxer / Trunks</li><li>Brach / Panties</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?w=280&q=85" alt="Leather"></div><div class="mks-body"><div class="mks-title">Leather Clothing</div><ul class="mks-list"><li>Leather Jackets</li><li>Leather Gloves</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=280&q=85" alt="Caps"></div><div class="mks-body"><div class="mks-title">Caps, Hats &amp; Headwears</div><ul class="mks-list"><li>Apparel Cap</li><li>Fashion Cap</li><li>Winter Cap</li><li>Security Cap</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=280&q=85" alt="Bags"></div><div class="mks-body"><div class="mks-title">Designer &amp; Fashion Bags</div><ul class="mks-list"><li>Designer Bag</li><li>Embroidered Bags</li><li>Handmade Bags</li><li>Ladies Bags</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=280&q=85" alt="Sarees"></div><div class="mks-body"><div class="mks-title">Sarees &amp; Lehenga</div><ul class="mks-list"><li>Designer Saree</li><li>Embroidered Saree</li><li>Lehenga Sarees</li><li>Lehenga Choli</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1627123424574-724758594e93?w=280&q=85" alt="Wallets"></div><div class="mks-body"><div class="mks-title">Wallets, Purses &amp; Handbags</div><ul class="mks-list"><li>Wallets</li><li>Purses</li><li>Handbags</li><li>Clutches</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=280&q=85" alt="Accessories"></div><div class="mks-body"><div class="mks-title">Fashion Accessories</div><ul class="mks-list"><li>Sunglasses</li><li>Watches</li><li>Belts</li><li>Jewelry</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card"><div class="mks-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=280&q=85" alt="Fabrics"></div><div class="mks-body"><div class="mks-title">Fabrics &amp; Textiles</div><ul class="mks-list"><li>Cotton Fabric</li><li>Polyester Fabric</li><li>Linen Fabric</li><li>Denim Fabric</li></ul><span class="mks-arrow">Explore →</span></div></div>
   </div>
 
-</div>
-</div>
-<!-- ═══ END APPAREL CATEGORY GRID ═══ -->
+  <!-- GAP BETWEEN SECTIONS -->
+  <div class="mks-gap"></div>
 
-<!-- ═══ AGRICULTURE CATEGORY GRID ═══ -->
-<div class="pm-wrap" style="padding-top:0;">
-<div class="pm-inner">
-
-  <!-- AGRI BANNER — image only -->
-  <div class="pm-banner">
+  <!-- AGRI BANNER — full width, natural height -->
+  <div class="mks-banner">
     <img src="assets/agri-banner.png" alt="Global Agriculture Marketplace">
   </div>
 
-  <!-- AGRI GRID -->
-  <div class="pm-grid">
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=300&q=85" alt="Flowers" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Fresh Flowers And Plants</div><ul class="pm-list"><li>Natural Flowers</li><li>Fruit Plants</li><li>Flowering Plants</li><li>Dry Leaves</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=300&q=85" alt="Fruits" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Fresh, Preserved &amp; Dried Fruits</div><ul class="pm-list"><li>Fresh Fruit</li><li>Fruit Pulp</li><li>Citrus Fruit</li><li>Fruit Powder</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=300&q=85" alt="Vegetables" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Fresh, Dried &amp; Preserved Vegetables</div><ul class="pm-list"><li>Fresh Vegetables</li><li>Frozen Vegetables</li><li>Dry Vegetables</li><li>Root Vegetables</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=300&q=85" alt="Grains" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Food Grains, Cereals &amp; Flour</div><ul class="pm-list"><li>Food Grains</li><li>Rice</li><li>Pulses</li><li>Flours</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=300&q=85" alt="Dry Fruits" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Dry Fruits &amp; Nuts</div><ul class="pm-list"><li>Edible Nuts</li><li>Cashew</li><li>Raisins</li><li>Dates</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=300&q=85" alt="Poultry" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Bird, Poultry &amp; Animal Food</div><ul class="pm-list"><li>Animal Feed</li><li>Animal Feed Supplement</li><li>Oil Cake</li><li>Poultry Feed</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=300&q=85" alt="Equipment" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Agriculture Equipment And Supplies</div><ul class="pm-list"><li>Agriculture Equipment</li><li>Agriculture Sprayer</li><li>Agricultural Machine</li><li>Grain Processing</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=300&q=85" alt="Fertilizers" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Soil Additives &amp; Fertilizers</div><ul class="pm-list"><li>Micronutrient Fertilizers</li><li>Fertilizer</li><li>Plant Growth Promoters</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=300&q=85" alt="Seeds" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Seeds &amp; Plant Saplings</div><ul class="pm-list"><li>Flower Seeds</li><li>Grain Seeds</li><li>Seeds</li><li>Vegetable Seeds</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=300&q=85" alt="Forestry" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Forestry Products &amp; Timber</div><ul class="pm-list"><li>Timber</li><li>Wood Logs</li><li>Plywood</li><li>Wood Pellets</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=300&q=85" alt="Farming" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Farming Solutions</div><ul class="pm-list"><li>Irrigation Systems</li><li>Greenhouse Supplies</li><li>Growing Media</li><li>Farm Tools</li></ul><span class="pm-cta">Explore →</span></div></div>
-    <div class="pm-card agri"><div class="pm-img"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=300&q=85" alt="Herbs" onerror="this.style.background='#f3f4f6'"></div><div class="pm-body"><div class="pm-title">Herbs, Spices &amp; Plant Extracts</div><ul class="pm-list"><li>Herbs</li><li>Spices</li><li>Essential Oils</li><li>Plant Extracts</li></ul><span class="pm-cta">Explore →</span></div></div>
+  <!-- AGRI 4-COL GRID -->
+  <div class="mks-grid">
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1490750967868-88df5691cc61?w=280&q=85" alt="Flowers"></div><div class="mks-body"><div class="mks-title">Fresh Flowers And Plants</div><ul class="mks-list"><li>Natural Flowers</li><li>Fruit Plants</li><li>Flowering Plants</li><li>Dry Leaves</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=280&q=85" alt="Fruits"></div><div class="mks-body"><div class="mks-title">Fresh, Preserved &amp; Dried Fruits</div><ul class="mks-list"><li>Fresh Fruit</li><li>Fruit Pulp</li><li>Citrus Fruit</li><li>Fruit Powder</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?w=280&q=85" alt="Vegetables"></div><div class="mks-body"><div class="mks-title">Fresh, Dried &amp; Preserved Vegetables</div><ul class="mks-list"><li>Fresh Vegetables</li><li>Frozen Vegetables</li><li>Dry Vegetables</li><li>Root Vegetables</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=280&q=85" alt="Grains"></div><div class="mks-body"><div class="mks-title">Food Grains, Cereals &amp; Flour</div><ul class="mks-list"><li>Food Grains</li><li>Rice</li><li>Pulses</li><li>Flours</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1543158181-e6f9f6712055?w=280&q=85" alt="Dry Fruits"></div><div class="mks-body"><div class="mks-title">Dry Fruits &amp; Nuts</div><ul class="mks-list"><li>Edible Nuts</li><li>Cashew</li><li>Raisins</li><li>Dates</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1548550023-2bdb3c5beed7?w=280&q=85" alt="Poultry"></div><div class="mks-body"><div class="mks-title">Bird, Poultry &amp; Animal Food</div><ul class="mks-list"><li>Animal Feed</li><li>Animal Feed Supplement</li><li>Oil Cake</li><li>Poultry Feed</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1592878849122-facb97ed0d72?w=280&q=85" alt="Equipment"></div><div class="mks-body"><div class="mks-title">Agriculture Equipment &amp; Supplies</div><ul class="mks-list"><li>Agriculture Equipment</li><li>Agriculture Sprayer</li><li>Agricultural Machine</li><li>Grain Processing</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=280&q=85" alt="Fertilizers"></div><div class="mks-body"><div class="mks-title">Soil Additives &amp; Fertilizers</div><ul class="mks-list"><li>Micronutrient Fertilizers</li><li>Fertilizer</li><li>Plant Growth Promoters</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1592394533824-9440e5d68530?w=280&q=85" alt="Seeds"></div><div class="mks-body"><div class="mks-title">Seeds &amp; Plant Saplings</div><ul class="mks-list"><li>Flower Seeds</li><li>Grain Seeds</li><li>Seeds</li><li>Vegetable Seeds</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1448375240586-882707db888b?w=280&q=85" alt="Forestry"></div><div class="mks-body"><div class="mks-title">Forestry Products &amp; Timber</div><ul class="mks-list"><li>Timber</li><li>Wood Logs</li><li>Plywood</li><li>Wood Pellets</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1530836369250-ef72a3f5cda8?w=280&q=85" alt="Farming"></div><div class="mks-body"><div class="mks-title">Farming Solutions</div><ul class="mks-list"><li>Irrigation Systems</li><li>Greenhouse Supplies</li><li>Growing Media</li><li>Farm Tools</li></ul><span class="mks-arrow">Explore →</span></div></div>
+    <div class="mks-card agri"><div class="mks-img"><img src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=280&q=85" alt="Herbs"></div><div class="mks-body"><div class="mks-title">Herbs, Spices &amp; Plant Extracts</div><ul class="mks-list"><li>Herbs</li><li>Spices</li><li>Essential Oils</li><li>Plant Extracts</li></ul><span class="mks-arrow">Explore →</span></div></div>
   </div>
 
   <!-- TRUST STRIP -->
-  <div class="pm-trust">
-    <div class="pm-ti"><div class="pm-ti-icon" style="background:#dcfce7;">📦</div><div><div class="pm-ti-title">Wide Product Range</div><div class="pm-ti-sub">Everything you need in agriculture under one roof</div></div></div>
-    <div class="pm-ti"><div class="pm-ti-icon" style="background:#dbeafe;">✅</div><div><div class="pm-ti-title">Verified Suppliers</div><div class="pm-ti-sub">Connect with reliable and verified manufacturers worldwide</div></div></div>
-    <div class="pm-ti"><div class="pm-ti-icon" style="background:#fef3c7;">🌍</div><div><div class="pm-ti-title">Export-Ready Quality</div><div class="pm-ti-sub">Products meeting international quality standards</div></div></div>
-    <div class="pm-ti"><div class="pm-ti-icon" style="background:#f0fdf4;">🤝</div><div><div class="pm-ti-title">Secure &amp; Easy Trade</div><div class="pm-ti-sub">Safe transactions and dedicated support for global buyers</div></div></div>
+  <div class="mks-trust" style="margin:18px auto 0;max-width:1480px;">
+    <div class="mks-ti"><div class="mks-ti-icon" style="background:#dcfce7;">📦</div><div><div class="mks-ti-title">Wide Product Range</div><div class="mks-ti-sub">Everything you need under one roof</div></div></div>
+    <div class="mks-ti"><div class="mks-ti-icon" style="background:#dbeafe;">✅</div><div><div class="mks-ti-title">Verified Suppliers</div><div class="mks-ti-sub">Connect with verified manufacturers worldwide</div></div></div>
+    <div class="mks-ti"><div class="mks-ti-icon" style="background:#fef3c7;">🌍</div><div><div class="mks-ti-title">Export-Ready Quality</div><div class="mks-ti-sub">Meeting international quality standards</div></div></div>
+    <div class="mks-ti"><div class="mks-ti-icon" style="background:#f0fdf4;">🤝</div><div><div class="mks-ti-title">Secure &amp; Easy Trade</div><div class="mks-ti-sub">Dedicated support for global buyers</div></div></div>
   </div>
 
 </div>
-</div>
-<!-- ═══ END AGRICULTURE CATEGORY GRID ═══ -->
+<!-- ═══ END MARKETPLACE SECTION ═══ -->
+
+
 
 <!-- ═══ SERVICES ═══ -->
 <section class="section" style="background:var(--sky);">
