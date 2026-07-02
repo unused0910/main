@@ -1,0 +1,1098 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>CRM & WhatsApp Outreach</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f3f6f5; --card:#ffffff; --text:#13201c; --muted:#5c6d68; --border:#e2e9e6;
+  --primary:#0fa968; --primary-d:#0c8a55; --primary-soft:#e3f7ee;
+  --accent:#f4781f; --accent-soft:#fdeadd;
+  --blue:#0ea5e9; --danger:#e1264a; --danger-soft:#fde6ea; --warn:#d99a13; --warn-soft:#fbf0d8;
+  --radius:16px; --shadow:0 1px 2px rgba(20,40,30,.04), 0 8px 24px rgba(20,40,30,.05);
+  --font-h:'Plus Jakarta Sans',sans-serif; --font-b:'Inter',sans-serif;
+}
+[data-theme="dark"]{
+  --bg:#0d1411; --card:#141f1a; --text:#e9f3ee; --muted:#8aa39a; --border:#223129;
+  --primary-soft:#11302322; --accent-soft:#2a1d12;
+  --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--font-b);transition:background .2s,color .2s}
+h1,h2,h3,.brand,.navitem,button{font-family:var(--font-h)}
+a{color:var(--primary-d);text-decoration:none}
+.app{display:flex;min-height:100vh}
+.sidebar{width:236px;flex-shrink:0;background:var(--card);border-right:1px solid var(--border);padding:22px 14px;position:sticky;top:0;height:100vh;display:flex;flex-direction:column}
+.brand{display:flex;align-items:center;gap:10px;padding:4px 8px 22px;font-weight:800;font-size:15px}
+.brand .logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(135deg,var(--primary),var(--blue));display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;box-shadow:var(--shadow)}
+nav{display:flex;flex-direction:column;gap:3px;flex:1}
+.navitem{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:10px;background:none;border:none;text-align:left;cursor:pointer;color:var(--muted);font-size:13.5px;font-weight:600;width:100%}
+.navitem:hover{background:var(--primary-soft);color:var(--text)}
+.navitem.active{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+.navitem .ic{font-size:16px;width:20px;text-align:center}
+.sidebar-foot{font-size:11px;color:var(--muted);padding:10px 8px}
+.main{flex:1;min-width:0;padding:22px 26px 60px;max-width:100%}
+.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px}
+.topbar h1{font-size:20px;margin:0;font-weight:800}
+.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+input,select,textarea{font-family:var(--font-b);font-size:13.5px;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);color:var(--text);outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+textarea{width:100%;resize:vertical;line-height:1.5}
+button{cursor:pointer;font-weight:700;font-size:13px;border-radius:10px;border:1px solid transparent;padding:9px 15px;display:inline-flex;align-items:center;gap:6px;transition:transform .08s,opacity .15s}
+button:active{transform:scale(.97)}
+.btn-primary{background:var(--primary);color:#fff;box-shadow:var(--shadow)}
+.btn-primary:hover{background:var(--primary-d)}
+.btn-outline{background:var(--card);color:var(--text);border-color:var(--border)}
+.btn-outline:hover{background:var(--primary-soft)}
+.btn-ghost{background:transparent;color:var(--muted);padding:7px 9px}
+.btn-ghost:hover{background:var(--border)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-sm{padding:6px 10px;font-size:12px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;animation:fadein .25s ease}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-bottom:18px}
+.stat-card{display:flex;align-items:center;gap:12px}
+.stat-ic{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.stat-num{font-size:23px;font-weight:800;line-height:1}
+.stat-lbl{font-size:11.5px;color:var(--muted);margin-top:3px}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:900px){.grid-2,.grid-3{grid-template-columns:1fr}}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:1px solid var(--border)}
+td{padding:11px 12px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;font-size:11px;font-weight:700}
+.badge-new{background:var(--border);color:var(--muted)}
+.badge-sent{background:#dbeafe;color:#1d4ed8}
+.badge-delivered{background:#e0e7ff;color:#4338ca}
+.badge-read{background:#dcfce7;color:#15803d}
+.badge-interested{background:var(--primary-soft);color:var(--primary-d)}
+.badge-notinterested{background:var(--danger-soft);color:var(--danger)}
+.badge-followup{background:var(--warn-soft);color:var(--warn)}
+.badge-noreply{background:var(--border);color:var(--muted)}
+.modal-overlay{position:fixed;inset:0;background:rgba(10,18,15,.45);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;z-index:100;animation:fadein .15s ease;padding:16px}
+.modal{background:var(--card);border-radius:18px;padding:24px;max-width:560px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.modal h2{margin:0 0 4px;font-size:17px}
+.modal .sub{color:var(--muted);font-size:13px;margin-bottom:16px}
+.field{margin-bottom:12px}
+.field label{display:block;font-size:12px;font-weight:700;margin-bottom:5px;color:var(--muted)}
+.field input,.field select,.field textarea{width:100%}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+.toast-wrap{position:fixed;bottom:18px;right:18px;display:flex;flex-direction:column;gap:8px;z-index:200;max-width:320px}
+.toast{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:0 10px 30px rgba(0,0,0,.18);font-size:13px;display:flex;gap:9px;animation:fadein .2s ease}
+.toast b{display:block;margin-bottom:1px}
+.empty{text-align:center;padding:54px 20px;color:var(--muted);border:1.5px dashed var(--border);border-radius:var(--radius)}
+.empty .e-ic{font-size:30px;margin-bottom:8px}
+.chip{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:999px;border:1px solid var(--border);font-size:12px;cursor:pointer;background:var(--card)}
+.chip:hover{background:var(--primary-soft)}
+.tabs{display:inline-flex;background:var(--border);border-radius:10px;padding:3px;gap:2px}
+.tab{padding:7px 14px;border-radius:8px;font-size:12.5px;font-weight:700;background:none;border:none;cursor:pointer;color:var(--muted)}
+.tab.active{background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+.preview-bubble{background:#dcf8c6;border-radius:16px;padding:14px;font-size:13.5px;white-space:pre-wrap;line-height:1.5;color:#0c2611}
+[data-theme="dark"] .preview-bubble{background:#1f3a28;color:#dff4e4}
+.search-wrap{position:relative}
+.search-wrap input{padding-left:32px;width:200px}
+.search-wrap span{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:13px}
+.q-item{display:flex;align-items:center;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--border)}
+.q-item:last-child{border-bottom:none}
+.countdown{font-weight:800;font-size:13px;color:var(--accent)}
+.leadlist{max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:10px;padding:6px}
+.leadlist label{display:flex;align-items:center;gap:9px;padding:7px 9px;border-radius:8px;font-size:13px;cursor:pointer}
+.leadlist label:hover{background:var(--primary-soft)}
+.muted{color:var(--muted)}
+.mb-0{margin-bottom:0}
+.flex-between{display:flex;align-items:center;justify-content:space-between}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:var(--border);border-radius:99px}
+.upload-box{border:2px dashed var(--border);border-radius:14px;padding:36px;text-align:center;cursor:pointer}
+.upload-box:hover{background:var(--primary-soft)}
+.dup-flag{color:var(--warn);font-size:11px}
+@media(max-width:760px){
+  .app{flex-direction:column}
+  .sidebar{position:fixed;bottom:0;left:0;right:0;width:100%;height:auto;flex-direction:row;border-right:none;border-top:1px solid var(--border);padding:6px;z-index:50}
+  .brand,.sidebar-foot{display:none}
+  nav{flex-direction:row;width:100%;overflow-x:auto}
+  .navitem{flex-direction:column;font-size:10px;gap:3px;flex:1;white-space:nowrap;padding:6px 4px}
+  .main{padding:16px 14px 90px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="logo">💬</div><div>CRM Outreach<br><span class="muted" style="font-weight:500;font-size:11px">Standalone Edition</span></div></div>
+    <nav id="nav"></nav>
+    <div class="sidebar-foot">Runs 100% in your browser.<br>No server, no cost.</div>
+  </aside>
+  <main class="main">
+    <div id="main-content"></div>
+  </main>
+</div>
+<div class="toast-wrap" id="toasts"></div>
+<div id="modal-root"></div>
+
+<script>
+/* ============================= DATA LAYER ============================= */
+const LS_KEY = 'crm_whatsapp_outreach_v1';
+const STATUSES = ["New","Sent","Delivered","Read","Interested","Not Interested","Follow Up","No Reply"];
+const STATUS_CLASS = {New:"badge-new",Sent:"badge-sent",Delivered:"badge-delivered",Read:"badge-read",Interested:"badge-interested","Not Interested":"badge-notinterested","Follow Up":"badge-followup","No Reply":"badge-noreply"};
+
+function genId(){ return 'id_' + Date.now().toString(36) + Math.random().toString(36).slice(2,8); }
+
+function defaultData(){
+  return {
+    leads: [],
+    templates: [{
+      id: genId(), name: "Cold Outreach v1", timesUsed:0, timesReplied:0, createdAt: Date.now(),
+      content: "Hi {{name}}\nI am from {{sender}}.\nWe have verified manufacturers and exporters of {{product}}.\nQuantity Required: {{qty}}\nCountry: {{country}}\nIf you're looking for suppliers, kindly let us know.\nThank you."
+    }],
+    campaigns: [],
+    history: [],
+    settings: { companyName:"My Company", senderName:"Sales Team", logoEmoji:"💬", darkMode:false, minDelay:15, maxDelay:35, baileysUrl:"http://localhost:3001" }
+  };
+}
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if(!raw) return defaultData();
+    const parsed = JSON.parse(raw);
+    const d = defaultData();
+    return Object.assign(d, parsed, { settings: Object.assign(d.settings, parsed.settings||{}) });
+  }catch(e){ return defaultData(); }
+}
+let DB = loadDB();
+function saveDB(){ localStorage.setItem(LS_KEY, JSON.stringify(DB)); }
+
+/* ============================= HELPERS ============================= */
+function normalizePhone(raw){ let p=(raw||'').toString().replace(/[^\d+]/g,''); if(p && !p.startsWith('+')) p='+'+p; return p; }
+function isValidPhone(raw){ const p=normalizePhone(raw); return /^\+\d{8,15}$/.test(p); }
+function isValidEmail(raw){ if(!raw) return true; return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(raw).trim()); }
+function fmtDate(ts){ return new Date(ts).toLocaleDateString('en-IN',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtDateTime(ts){ return new Date(ts).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}); }
+function escapeHtml(s){ return (s===undefined||s===null) ? '' : String(s).replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+/* ---- Built-in CSV parser (replaces PapaParse — zero external dependencies) ---- */
+function parseCSVText(text){
+  const rows = []; let row = [], field = '', inQuotes = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(inQuotes){
+      if(c === '"'){ if(text[i+1] === '"'){ field+='"'; i++; } else inQuotes=false; }
+      else field += c;
+    } else {
+      if(c === '"') inQuotes = true;
+      else if(c === ','){ row.push(field); field=''; }
+      else if(c === '\r'){ /* skip, \n handles row end */ }
+      else if(c === '\n'){ row.push(field); field=''; rows.push(row); row=[]; }
+      else field += c;
+    }
+  }
+  if(field.length>0 || row.length>0){ row.push(field); rows.push(row); }
+  return rows.filter(r => r.some(v=>v && v.trim()!==''));
+}
+function parseCSVToObjects(text){
+  const rows = parseCSVText(text);
+  if(rows.length===0) return { headers:[], data:[] };
+  const headers = rows[0].map(h=>h.trim());
+  const data = rows.slice(1).map(r=>{ const obj={}; headers.forEach((h,i)=> obj[h]=(r[i]||'').trim()); return obj; });
+  return { headers, data };
+}
+
+/* ---- Built-in chart drawing (pure SVG/CSS — replaces Chart.js, zero external dependencies) ---- */
+function drawLineChart(id, labels, data, color){
+  const el = document.getElementById(id); if(!el) return;
+  const w = 600, h = 170, pad = 22;
+  const max = Math.max(1, ...data);
+  const stepX = (w - pad*2) / Math.max(1, data.length-1);
+  const pts = data.map((v,i)=> [pad + i*stepX, h - pad - (v/max)*(h-pad*2-10)]);
+  const path = pts.map((p,i)=> (i===0?'M':'L') + p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join(' ');
+  const area = path + ` L${pts[pts.length-1][0].toFixed(1)} ${h-pad} L${pts[0][0].toFixed(1)} ${h-pad} Z`;
+  const everyN = Math.ceil(labels.length/7);
+  const labelEls = labels.map((l,i)=> i%everyN===0 ? `<text x="${pts[i][0].toFixed(1)}" y="${h-4}" font-size="9" text-anchor="middle" fill="var(--muted)">${l}</text>` : '').join('');
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none">
+    <path d="${area}" fill="${color}" opacity="0.12"></path>
+    <path d="${path}" fill="none" stroke="${color}" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"></path>
+    ${labelEls}</svg>`;
+}
+function drawBarChart(id, labels, data, color){
+  const el = document.getElementById(id); if(!el) return;
+  const w = 600, h = 170, pad = 22;
+  const max = Math.max(1, ...data);
+  const barSlot = (w - pad*2) / data.length;
+  const everyN = Math.ceil(labels.length/7);
+  const bars = data.map((v,i)=>{
+    const barH = (v/max) * (h - pad*2 - 6);
+    const x = pad + i*barSlot + barSlot*0.18;
+    const y = h - pad - barH;
+    const lbl = i%everyN===0 ? `<text x="${(x+barSlot*0.32).toFixed(1)}" y="${h-4}" font-size="9" text-anchor="middle" fill="var(--muted)">${labels[i]}</text>` : '';
+    return `<rect x="${x.toFixed(1)}" y="${y.toFixed(1)}" width="${(barSlot*0.64).toFixed(1)}" height="${Math.max(barH,1).toFixed(1)}" rx="3" fill="${color}"></rect>${lbl}`;
+  }).join('');
+  el.innerHTML = `<svg viewBox="0 0 ${w} ${h}" width="100%" height="${h}" preserveAspectRatio="none">${bars}</svg>`;
+}
+function drawDonut(id, labels, data, colors){
+  const el = document.getElementById(id); if(!el) return;
+  const total = data.reduce((a,b)=>a+b,0) || 1;
+  let acc = 0;
+  const stops = data.map((v,i)=>{ const start=acc/total*360; acc+=v; const end=acc/total*360; return `${colors[i]} ${start.toFixed(1)}deg ${end.toFixed(1)}deg`; }).join(', ');
+  el.innerHTML = `
+    <div style="display:flex;align-items:center;gap:18px;justify-content:center;height:170px;flex-wrap:wrap">
+      <div style="width:120px;height:120px;border-radius:50%;background:conic-gradient(${stops});flex-shrink:0;box-shadow:var(--shadow)"></div>
+      <div>${labels.map((l,i)=>`<div style="display:flex;align-items:center;gap:7px;font-size:12.5px;margin-bottom:6px"><span style="width:10px;height:10px;border-radius:50%;background:${colors[i]};display:inline-block;flex-shrink:0"></span>${escapeHtml(l)}: <b>${data[i]}</b></div>`).join('')}</div>
+    </div>`;
+}
+function renderTemplate(content, lead){
+  const map = { name:lead.name, company:lead.company, product:lead.product, qty:lead.qty, country:lead.country, email:lead.email, sender: DB.settings.senderName||'' };
+  return (content||'').replace(/\{\{\s*(\w+)\s*\}\}/g, (m,k)=>{ k=k.toLowerCase(); const v = map[k]; return (v!==undefined && v!=='' && v!==null) ? v : `[${k}]`; });
+}
+function flagDuplicates(){
+  const seen = {};
+  DB.leads.forEach(l=>{ const key=l.phone; seen[key]=(seen[key]||0)+1; });
+  DB.leads.forEach(l=>{ l.isDuplicate = seen[l.phone] > 1; });
+}
+function toast(title, desc, variant){
+  const wrap = document.getElementById('toasts');
+  const icons = {success:'✅',error:'⛔',warning:'⚠️',info:'ℹ️'};
+  const el = document.createElement('div');
+  el.className='toast';
+  el.innerHTML = `<span>${icons[variant]||icons.info}</span><div><b>${escapeHtml(title)}</b>${desc?`<span class="muted">${escapeHtml(desc)}</span>`:''}</div>`;
+  wrap.appendChild(el);
+  setTimeout(()=>el.remove(), 4000);
+}
+function closeModal(){ document.getElementById('modal-root').innerHTML=''; }
+function openModal(html){ document.getElementById('modal-root').innerHTML = `<div class="modal-overlay" onclick="if(event.target===this) closeModal()"><div class="modal">${html}</div></div>`; }
+function confirmDialog(title, desc, onConfirm, danger){
+  openModal(`
+    <h2>${escapeHtml(title)}</h2>
+    <p class="sub">${escapeHtml(desc)}</p>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="${danger?'btn-danger':'btn-primary'}" id="confirm-btn">Confirm</button>
+    </div>`);
+  document.getElementById('confirm-btn').onclick = ()=>{ onConfirm(); closeModal(); };
+}
+
+/* ============================= ROUTER / NAV ============================= */
+const NAV_ITEMS = [
+  {id:'dashboard', label:'Dashboard', icon:'📊'},
+  {id:'leads', label:'Leads', icon:'👥'},
+  {id:'templates', label:'Templates', icon:'📝'},
+  {id:'campaigns', label:'Campaigns', icon:'📤'},
+  {id:'history', label:'History', icon:'🕐'},
+  {id:'analytics', label:'Analytics', icon:'📈'},
+  {id:'settings', label:'Settings', icon:'⚙️'},
+];
+let state = { view:'dashboard', leadFilters:{search:'',status:'all',country:'',product:''}, csvPreview:null, csvMapping:null };
+
+function renderNav(){
+  document.getElementById('nav').innerHTML = NAV_ITEMS.map(item=>
+    `<button class="navitem ${state.view===item.id?'active':''}" data-action="nav" data-view="${item.id}"><span class="ic">${item.icon}</span>${item.label}</button>`
+  ).join('');
+}
+function go(view){ state.view = view; renderApp(); }
+
+function renderApp(){
+  document.documentElement.setAttribute('data-theme', DB.settings.darkMode ? 'dark':'light');
+  renderNav();
+  const root = document.getElementById('main-content');
+  flagDuplicates();
+  const renderers = { dashboard: renderDashboard, leads: renderLeads, templates: renderTemplates, campaigns: renderCampaigns, history: renderHistory, analytics: renderAnalytics, settings: renderSettings };
+  root.innerHTML = renderers[state.view]();
+  afterRender[state.view] && afterRender[state.view]();
+}
+const afterRender = {};
+
+/* ============================= DASHBOARD ============================= */
+function renderDashboard(){
+  const totalLeads = DB.leads.length;
+  const messagesSent = DB.history.length;
+  const interested = DB.leads.filter(l=>l.status==='Interested').length;
+  const pending = DB.leads.filter(l=>l.status==='New'||l.status==='Follow Up').length;
+  const todayStr = new Date().toDateString();
+  const sentToday = DB.history.filter(h=>new Date(h.sentAt).toDateString()===todayStr).length;
+
+  const stats = [
+    {label:'Total Leads', val:totalLeads, ic:'👥', bg:'var(--primary-soft)', color:'var(--primary-d)'},
+    {label:'Messages Sent', val:messagesSent, ic:'📤', bg:'#e0f2fe', color:'#0369a1'},
+    {label:'Interested Buyers', val:interested, ic:'👍', bg:'var(--primary-soft)', color:'var(--primary-d)'},
+    {label:'Pending', val:pending, ic:'⏳', bg:'var(--warn-soft)', color:'var(--warn)'},
+    {label:"Today's Sent", val:sentToday, ic:'📅', bg:'var(--accent-soft)', color:'var(--accent)'},
+  ];
+
+  const recent = [...DB.history].sort((a,b)=>b.sentAt-a.sentAt).slice(0,8);
+
+  return `
+    <div class="topbar"><h1>Dashboard</h1></div>
+    <div class="stat-grid">
+      ${stats.map(s=>`<div class="card stat-card"><div class="stat-ic" style="background:${s.bg};color:${s.color}">${s.ic}</div><div><div class="stat-num">${s.val}</div><div class="stat-lbl">${s.label}</div></div></div>`).join('')}
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3 style="margin-top:0">Leads Added (14 days)</h3><div id="chart-leads"></div></div>
+      <div class="card"><h3 style="margin-top:0">Interest Rate</h3><div id="chart-interest"></div></div>
+    </div>
+    <div class="grid-2" style="margin-top:16px">
+      <div class="card"><h3 style="margin-top:0">Messages Sent Daily</h3><div id="chart-sent"></div></div>
+      <div class="card">
+        <h3 style="margin-top:0">Recent Activity</h3>
+        ${recent.length===0 ? `<div class="empty"><div class="e-ic">🕊️</div>No activity yet. Send your first campaign.</div>` :
+          recent.map(h=>`<div class="q-item"><div><b style="font-size:13px">${escapeHtml(h.leadName)}</b><div class="muted" style="font-size:12px">${escapeHtml(h.company||'')}</div></div><div style="text-align:right"><span class="badge ${STATUS_CLASS[h.status]||''}">${h.status}</span><div class="muted" style="font-size:11px;margin-top:3px">${fmtDateTime(h.sentAt)}</div></div></div>`).join('')}
+      </div>
+    </div>`;
+}
+afterRender.dashboard = function(){
+  const days = Array.from({length:14}).map((_,i)=>{ const d=new Date(); d.setDate(d.getDate()-(13-i)); return d; });
+  const labels = days.map(d=>d.toLocaleDateString('en-IN',{day:'2-digit',month:'short'}));
+  const leadsData = days.map(d=> DB.leads.filter(l=> new Date(l.createdAt).toDateString()===d.toDateString()).length );
+  const sentData = days.map(d=> DB.history.filter(h=> new Date(h.sentAt).toDateString()===d.toDateString()).length );
+  const interested = DB.leads.filter(l=>l.status==='Interested').length;
+  const notInterested = DB.leads.filter(l=>l.status==='Not Interested').length;
+  const other = Math.max(DB.leads.length - interested - notInterested, 0);
+
+  drawLineChart('chart-leads', labels, leadsData, '#0fa968');
+  drawBarChart('chart-sent', labels, sentData, '#0ea5e9');
+  drawDonut('chart-interest', ['Interested','Not Interested','Other'], [interested,notInterested,other], ['#0fa968','#e1264a','#d9dfdc']);
+};
+
+/* ============================= LEADS ============================= */
+function renderLeads(){
+  const f = state.leadFilters;
+  let leads = [...DB.leads];
+  if(f.search){ const s=f.search.toLowerCase(); leads = leads.filter(l => (l.name||'').toLowerCase().includes(s) || (l.company||'').toLowerCase().includes(s) || (l.phone||'').includes(s) || (l.email||'').toLowerCase().includes(s)); }
+  if(f.status!=='all') leads = leads.filter(l=>l.status===f.status);
+  if(f.country) leads = leads.filter(l=>(l.country||'').toLowerCase().includes(f.country.toLowerCase()));
+  if(f.product) leads = leads.filter(l=>(l.product||'').toLowerCase().includes(f.product.toLowerCase()));
+  leads.sort((a,b)=>b.createdAt-a.createdAt);
+
+  return `
+    <div class="topbar">
+      <h1>Leads</h1>
+      <div class="row">
+        <button class="btn-outline" data-action="open-csv"><span>📁</span> Bulk Upload</button>
+        <button class="btn-primary" data-action="open-lead-form"><span>＋</span> Add Lead</button>
+      </div>
+    </div>
+    <div class="row" style="margin-bottom:14px">
+      <div class="search-wrap"><span>🔎</span><input placeholder="Search leads..." id="f-search" value="${escapeHtml(f.search)}"></div>
+      <select id="f-status">
+        <option value="all">All Status</option>
+        ${STATUSES.map(s=>`<option value="${s}" ${f.status===s?'selected':''}>${s}</option>`).join('')}
+      </select>
+      <input placeholder="Country" id="f-country" value="${escapeHtml(f.country)}" style="width:120px">
+      <input placeholder="Product" id="f-product" value="${escapeHtml(f.product)}" style="width:120px">
+    </div>
+    <div class="card" style="padding:0">
+      ${leads.length===0 ? `<div class="empty"><div class="e-ic">👥</div>No leads found. Add one manually or upload a CSV.</div>` : `
+      <div class="table-wrap" style="border:none">
+      <table>
+        <thead><tr><th>Name</th><th>Company</th><th>WhatsApp</th><th>Product</th><th>Qty</th><th>Country</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        ${leads.map(l=>`
+          <tr>
+            <td><b>${escapeHtml(l.name)}</b>${l.isDuplicate?'<div class="dup-flag">⚠ possible duplicate</div>':''}</td>
+            <td>${escapeHtml(l.company)||'—'}</td>
+            <td style="${!l.phoneValid?'color:var(--danger)':''}">${escapeHtml(l.phone)}</td>
+            <td>${escapeHtml(l.product)||'—'}</td>
+            <td>${escapeHtml(l.qty)||'—'}</td>
+            <td>${escapeHtml(l.country)||'—'}</td>
+            <td><span class="badge ${STATUS_CLASS[l.status]}">${l.status}</span></td>
+            <td><div class="row" style="gap:4px">
+              <button class="btn-ghost btn-sm" data-action="edit-lead" data-id="${l.id}">✏️</button>
+              <button class="btn-ghost btn-sm" data-action="delete-lead" data-id="${l.id}">🗑️</button>
+            </div></td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`}
+    </div>`;
+}
+afterRender.leads = function(){
+  ['search','status','country','product'].forEach(key=>{
+    const el = document.getElementById('f-'+key);
+    if(!el) return;
+    el.addEventListener(key==='status' ? 'change':'input', e=>{ state.leadFilters[key]=e.target.value; renderApp(); });
+  });
+};
+
+function openLeadForm(lead){
+  const isEdit = !!lead;
+  lead = lead || {name:'',company:'',phone:'',email:'',product:'',qty:'',country:'',status:'New'};
+  openModal(`
+    <h2>${isEdit?'Edit Lead':'Add New Lead'}</h2>
+    <div class="grid-2">
+      <div class="field" style="grid-column:1/-1"><label>Name *</label><input id="lf-name" value="${escapeHtml(lead.name)}"></div>
+      <div class="field"><label>Company Name</label><input id="lf-company" value="${escapeHtml(lead.company)}"></div>
+      <div class="field"><label>WhatsApp Number *</label><input id="lf-phone" placeholder="+91XXXXXXXXXX" value="${escapeHtml(lead.phone)}"></div>
+      <div class="field"><label>Email</label><input id="lf-email" value="${escapeHtml(lead.email)}"></div>
+      <div class="field"><label>Product</label><input id="lf-product" value="${escapeHtml(lead.product)}"></div>
+      <div class="field"><label>Quantity</label><input id="lf-qty" value="${escapeHtml(lead.qty)}"></div>
+      <div class="field"><label>Country</label><input id="lf-country" value="${escapeHtml(lead.country)}"></div>
+      <div class="field"><label>Status</label><select id="lf-status">${STATUSES.map(s=>`<option ${lead.status===s?'selected':''}>${s}</option>`).join('')}</select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="lf-save">${isEdit?'Update':'Save'} Lead</button>
+    </div>`);
+  document.getElementById('lf-save').onclick = ()=>{
+    const name = document.getElementById('lf-name').value.trim();
+    const phone = normalizePhone(document.getElementById('lf-phone').value);
+    const email = document.getElementById('lf-email').value.trim();
+    if(!name) return toast('Name required','','error');
+    if(!isValidPhone(phone)) return toast('Invalid WhatsApp number','Use format +countrycode followed by digits','error');
+    if(!isValidEmail(email)) return toast('Invalid email','','error');
+    const data = {
+      name, phone, email,
+      company: document.getElementById('lf-company').value.trim(),
+      product: document.getElementById('lf-product').value.trim(),
+      qty: document.getElementById('lf-qty').value.trim(),
+      country: document.getElementById('lf-country').value.trim(),
+      status: document.getElementById('lf-status').value,
+      phoneValid: true, emailValid: true,
+    };
+    if(isEdit){ Object.assign(lead, data); toast('Lead updated','', 'success'); }
+    else { DB.leads.push(Object.assign({id:genId(), createdAt:Date.now(), source:'manual'}, data)); toast('Lead added','','success'); }
+    saveDB(); closeModal(); renderApp();
+  };
+}
+
+function openCsvModal(){
+  openModal(`
+    <h2>Bulk Upload Leads (CSV)</h2>
+    <p class="sub">Columns are auto-mapped: Name, Company, Phone, Email, Product, Qty, Country.</p>
+    <div id="csv-body">
+      <label class="upload-box" style="display:block">
+        <div style="font-size:26px">📁</div>
+        <div><b>Click to select a CSV file</b></div>
+        <div class="muted" style="font-size:12px">or drag and drop</div>
+        <input type="file" accept=".csv" style="display:none" id="csv-input">
+      </label>
+    </div>`);
+  document.getElementById('csv-input').onchange = (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{
+      const { headers, data } = parseCSVToObjects(reader.result);
+      if(headers.length===0){ toast('Could not read CSV','File appears empty or invalid','error'); return; }
+      const aliases = { name:['name','full name','contact name'], company:['company','company name','business'], phone:['phone','whatsapp','whatsapp number','mobile','contact number'], email:['email','email address'], product:['product','item','requirement'], qty:['qty','quantity','required qty'], country:['country','location','region'] };
+      const mapping = {};
+      Object.entries(aliases).forEach(([field, alts])=>{ const m = headers.find(h=>alts.includes(h.trim().toLowerCase())); if(m) mapping[field]=m; });
+      const rows = data.map(r=>{
+        const get = f => mapping[f] ? (r[mapping[f]]||'').trim() : '';
+        const phone = normalizePhone(get('phone'));
+        const email = get('email');
+        return { name:get('name'), company:get('company'), phone, email, product:get('product'), qty:get('qty'), country:get('country'), phoneValid:isValidPhone(phone), emailValid:isValidEmail(email) };
+      });
+      renderCsvPreview(rows);
+    };
+    reader.readAsText(file);
+  };
+}
+function renderCsvPreview(rows){
+  document.getElementById('csv-body').innerHTML = `
+    <p class="muted" style="font-size:12.5px">${rows.length} rows detected — review before importing.</p>
+    <div style="max-height:320px;overflow:auto;border:1px solid var(--border);border-radius:10px">
+      <table><thead><tr><th>Name</th><th>Company</th><th>Phone</th><th>Product</th><th>Qty</th><th>Country</th><th>Valid</th></tr></thead>
+      <tbody>${rows.slice(0,80).map(r=>`<tr><td>${escapeHtml(r.name)}</td><td>${escapeHtml(r.company)}</td><td>${escapeHtml(r.phone)}</td><td>${escapeHtml(r.product)}</td><td>${escapeHtml(r.qty)}</td><td>${escapeHtml(r.country)}</td><td>${r.phoneValid?'<span class="badge badge-interested">OK</span>':'<span class="badge badge-notinterested">Invalid #</span>'}</td></tr>`).join('')}</tbody></table>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="csv-import">Import ${rows.length} Leads</button>
+    </div>`;
+  document.getElementById('csv-import').onclick = ()=>{
+    let inserted=0, skipped=0;
+    const existingPhones = new Set(DB.leads.map(l=>l.phone));
+    rows.forEach(r=>{
+      if(!r.name || !r.phone || !r.phoneValid){ skipped++; return; }
+      if(existingPhones.has(r.phone)){ skipped++; return; }
+      existingPhones.add(r.phone);
+      DB.leads.push({ id:genId(), createdAt:Date.now(), source:'csv', status:'New', emailValid:true, ...r });
+      inserted++;
+    });
+    saveDB(); closeModal(); renderApp();
+    toast('Import complete', `${inserted} imported, ${skipped} skipped`, 'success');
+  };
+}
+function deleteLead(id){
+  const lead = DB.leads.find(l=>l.id===id);
+  confirmDialog('Delete this lead?', `"${lead.name}" will be permanently removed.`, ()=>{
+    DB.leads = DB.leads.filter(l=>l.id!==id); saveDB(); renderApp(); toast('Lead deleted','','success');
+  }, true);
+}
+
+/* ============================= TEMPLATES ============================= */
+function renderTemplates(){
+  return `
+    <div class="topbar"><h1>Message Templates</h1><button class="btn-primary" data-action="open-template-editor"><span>＋</span> New Template</button></div>
+    ${DB.templates.length===0 ? `<div class="empty"><div class="e-ic">📝</div>No templates yet.</div>` : `
+    <div class="grid-3">
+      ${DB.templates.map(t=>`
+        <div class="card">
+          <div class="flex-between"><b>${escapeHtml(t.name)}</b><span class="badge badge-new">${t.timesUsed} used</span></div>
+          <p class="muted" style="font-size:12.5px;white-space:pre-wrap;max-height:90px;overflow:hidden;margin:10px 0">${escapeHtml(t.content)}</p>
+          <div class="row" style="justify-content:flex-end">
+            <button class="btn-ghost btn-sm" data-action="edit-template" data-id="${t.id}">✏️ Edit</button>
+            <button class="btn-ghost btn-sm" data-action="delete-template" data-id="${t.id}">🗑️</button>
+          </div>
+        </div>`).join('')}
+    </div>`}`;
+}
+function openTemplateEditor(tpl){
+  const isEdit = !!tpl;
+  const name = isEdit ? tpl.name : '';
+  const content = isEdit ? tpl.content : "Hi {{name}}\nI am from {{sender}}.\nWe have verified manufacturers and exporters of {{product}}.\nQuantity Required: {{qty}}\nCountry: {{country}}\nIf you're looking for suppliers, kindly let us know.\nThank you.";
+  const sample = {name:'Rohit Sharma', company:'Buygenix Solutions', product:'Cotton T-Shirts', qty:'5000 units', country:'UAE', email:'rohit@example.com'};
+  openModal(`
+    <h2>${isEdit?'Edit Template':'Create Template'}</h2>
+    <div class="field"><label>Template Name</label><input id="tf-name" value="${escapeHtml(name)}" placeholder="e.g. Cold Outreach v1"></div>
+    <div class="field"><label>Message Content</label><textarea id="tf-content" rows="8" style="font-family:monospace">${escapeHtml(content)}</textarea></div>
+    <div class="field"><label>Insert Variable</label>
+      <div class="row">${['name','company','product','qty','country','email'].map(v=>`<span class="chip" data-var="${v}">{{${v}}}</span>`).join('')}</div>
+    </div>
+    <div class="field"><label>Live Preview</label><div class="preview-bubble" id="tf-preview"></div></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" id="tf-save">${isEdit?'Update':'Save'} Template</button>
+    </div>`);
+  const ta = document.getElementById('tf-content');
+  const preview = ()=>{ document.getElementById('tf-preview').textContent = renderTemplate(ta.value, sample); };
+  preview();
+  ta.addEventListener('input', preview);
+  document.querySelectorAll('[data-var]').forEach(chip=>chip.onclick = ()=>{ ta.value += `{{${chip.dataset.var}}}`; preview(); });
+  document.getElementById('tf-save').onclick = ()=>{
+    const n = document.getElementById('tf-name').value.trim();
+    const c = ta.value.trim();
+    if(!n || !c) return toast('Name and content required','','error');
+    if(isEdit){ tpl.name=n; tpl.content=c; toast('Template updated','','success'); }
+    else { DB.templates.push({id:genId(), name:n, content:c, timesUsed:0, timesReplied:0, createdAt:Date.now()}); toast('Template created','','success'); }
+    saveDB(); closeModal(); renderApp();
+  };
+}
+function deleteTemplate(id){
+  const t = DB.templates.find(t=>t.id===id);
+  confirmDialog('Delete this template?', `"${t.name}" will be permanently removed.`, ()=>{
+    DB.templates = DB.templates.filter(t=>t.id!==id); saveDB(); renderApp(); toast('Template deleted','','success');
+  }, true);
+}
+
+/* ============================= CAMPAIGNS ============================= */
+let campaignDraft = { name:'', templateId:'', leadIds:new Set() };
+
+function renderCampaigns(){
+  const tab = state.campaignTab || 'new';
+  return `
+    <div class="topbar"><h1>Campaigns</h1></div>
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="tab ${tab==='new'?'active':''}" data-action="campaign-tab" data-tab="new">New Campaign</button>
+      <button class="tab ${tab==='all'?'active':''}" data-action="campaign-tab" data-tab="all">All Campaigns</button>
+    </div>
+    ${tab==='new' ? renderCampaignWizard() : renderCampaignList()}`;
+}
+function renderCampaignWizard(){
+  const eligible = DB.leads.filter(l=>['New','Follow Up','No Reply'].includes(l.status));
+  const tpl = DB.templates.find(t=>t.id===campaignDraft.templateId);
+  const firstSelected = eligible.find(l=>campaignDraft.leadIds.has(l.id));
+  const sample = firstSelected || {name:'Lead Name',company:'Company',product:'Product',qty:'Qty',country:'Country'};
+  return `
+    <div class="grid-2">
+      <div class="card">
+        <h3 style="margin-top:0">New Campaign</h3>
+        <div class="field"><label>Campaign Name</label><input id="cw-name" value="${escapeHtml(campaignDraft.name)}" placeholder="e.g. UAE Buyers — June Outreach"></div>
+        <div class="field"><label>Select Template</label>
+          <select id="cw-template">
+            <option value="">Choose template</option>
+            ${DB.templates.map(t=>`<option value="${t.id}" ${campaignDraft.templateId===t.id?'selected':''}>${escapeHtml(t.name)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field flex-between" style="margin-bottom:6px"><label class="mb-0">Select Leads (${campaignDraft.leadIds.size}/${eligible.length})</label>
+          <button class="btn-ghost btn-sm" data-action="toggle-all-leads">${campaignDraft.leadIds.size===eligible.length && eligible.length>0 ?'Clear all':'Select all'}</button></div>
+        <div class="leadlist">
+          ${eligible.length===0 ? `<p class="muted" style="padding:8px;font-size:12.5px">No eligible leads (status New / Follow Up / No Reply).</p>` :
+            eligible.map(l=>`<label><input type="checkbox" data-lead-check="${l.id}" ${campaignDraft.leadIds.has(l.id)?'checked':''}> ${escapeHtml(l.name)} <span class="muted">— ${escapeHtml(l.company||'No company')} (${escapeHtml(l.country||'—')})</span></label>`).join('')}
+        </div>
+        <button class="btn-primary" style="margin-top:14px;width:100%;justify-content:center" data-action="create-campaign">📤 Create & Queue Campaign</button>
+      </div>
+      <div class="card" style="background:linear-gradient(160deg,var(--primary-soft),transparent)">
+        <h3 style="margin-top:0">Preview</h3>
+        ${tpl ? `<div class="preview-bubble">${escapeHtml(renderTemplate(tpl.content, sample))}</div>` : `<p class="muted">Select a template to preview the message.</p>`}
+        <p class="muted" style="font-size:12px;margin-top:12px">Messages are sent one-by-one, gated by a random 15–35s timer — never all at once. Each click opens a WhatsApp chat with the message pre-filled, so you just hit send in WhatsApp.</p>
+      </div>
+    </div>`;
+}
+function renderCampaignList(){
+  if(DB.campaigns.length===0) return `<div class="empty"><div class="e-ic">📤</div>No campaigns yet. Create one from the New Campaign tab.</div>`;
+  return [...DB.campaigns].sort((a,b)=>b.createdAt-a.createdAt).map(c=>{
+    const sentCount = c.queue.filter(q=>q.status==='Sent').length;
+    return `<div class="card" style="margin-bottom:12px">
+      <div class="flex-between">
+        <div><b>${escapeHtml(c.name)}</b> <span class="badge ${c.status==='Completed'?'badge-interested':c.status==='Paused'?'badge-followup':c.status==='Running'?'badge-sent':'badge-new'}">${c.status}</span>
+          <div class="muted" style="font-size:12px;margin-top:3px">${sentCount}/${c.queue.length} sent · created ${fmtDateTime(c.createdAt)}</div></div>
+        <button class="btn-outline btn-sm" data-action="open-campaign" data-id="${c.id}">Open Queue →</button>
+      </div></div>`;
+  }).join('');
+}
+
+/* sending queue rendering */
+function openCampaignQueue(id){
+  const c = DB.campaigns.find(c=>c.id===id);
+  if(!c) return;
+  state.view = 'campaign-detail'; state.activeCampaignId = id;
+  renderApp();
+  checkBaileysStatus();
+}
+afterRender['campaign-detail'] = function(){};
+let autoSend = { running:false, campaignId:null, timer:null };
+
+function renderCampaignDetail(){
+  const c = DB.campaigns.find(c=>c.id===state.activeCampaignId);
+  if(!c) return `<p>Campaign not found.</p>`;
+  const next = c.queue.find(q=>q.status==='Pending');
+  const isAutoRunning = autoSend.running && autoSend.campaignId===c.id;
+  const baileysOn = state.baileysConnected === true;
+  const baileysBadge = state.baileysConnected===true ? `<span class="badge badge-interested">🟢 Baileys Connected</span>`
+    : state.baileysConnected===false ? `<span class="badge badge-notinterested">🔴 Baileys Not Connected</span>`
+    : `<span class="badge badge-new">Checking Baileys…</span>`;
+
+  return `
+    <div class="topbar">
+      <h1>${escapeHtml(c.name)}</h1>
+      <div class="row">
+        <button class="btn-outline" data-action="back-to-campaigns">← Back</button>
+        ${c.status==='Running' && !isAutoRunning ? `<button class="btn-outline" data-action="pause-campaign" data-id="${c.id}">⏸ Pause</button>` : ''}
+        ${c.status==='Paused' ? `<button class="btn-primary" data-action="resume-campaign" data-id="${c.id}">▶ Resume</button>` : ''}
+        <button class="btn-outline" data-action="skip-invalid" data-id="${c.id}">⏭ Skip Invalid</button>
+        ${c.queue.some(q=>q.status==='Failed') ? `<button class="btn-outline" data-action="retry-failed" data-id="${c.id}">🔁 Retry Failed</button>` : ''}
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div class="flex-between" style="margin-bottom:10px">
+        <div><b>Status:</b> ${c.status} &nbsp; <span class="muted">${c.queue.filter(q=>q.status==='Sent').length}/${c.queue.length} sent</span></div>
+        <div id="queue-countdown" class="countdown"></div>
+      </div>
+      <div class="flex-between" style="flex-wrap:wrap;gap:10px;border-top:1px solid var(--border);padding-top:12px">
+        <div class="row">${baileysBadge} <button class="btn-ghost btn-sm" data-action="check-baileys">🔄 Recheck</button></div>
+        <div class="row">
+          ${!isAutoRunning ? `<button class="btn-primary" data-action="start-autosend" data-id="${c.id}" ${!baileysOn || !next ? 'disabled' : ''}>🚀 Auto-Send All (Free, via Baileys)</button>`
+            : `<button class="btn-danger btn-sm" data-action="stop-autosend">⏸ Stop Auto-Send</button>`}
+        </div>
+      </div>
+      ${!baileysOn ? `<p class="muted" style="font-size:12px;margin:10px 0 0">Baileys service not detected at <code>${escapeHtml(DB.settings.baileysUrl)}</code>. Start it on your computer (see Settings → Sending), then click Recheck.</p>` : ''}
+    </div>
+    <div class="card" style="padding:0">
+      <div class="table-wrap" style="border:none">
+      <table>
+        <thead><tr><th>Lead</th><th>Phone</th><th>Message</th><th>Status</th><th></th></tr></thead>
+        <tbody>
+        ${c.queue.map((q,i)=>{
+          const lead = DB.leads.find(l=>l.id===q.leadId) || {};
+          const isNext = next && next.leadId===q.leadId && q.status==='Pending';
+          return `<tr>
+            <td><b>${escapeHtml(lead.name||'—')}</b></td>
+            <td>${escapeHtml(lead.phone||'—')}</td>
+            <td style="max-width:260px;white-space:pre-wrap;font-size:12px" class="muted">${escapeHtml(q.message.slice(0,80))}${q.message.length>80?'…':''}</td>
+            <td><span class="badge ${q.status==='Sent'?'badge-interested':q.status==='Skipped'||q.status==='Failed'?'badge-notinterested':'badge-new'}">${q.status}</span></td>
+            <td>${isNext && c.status==='Running' && !isAutoRunning ? `<button class="btn-primary btn-sm" id="send-now-btn" data-action="send-queue-item" data-cid="${c.id}" data-qid="${q.id}" disabled>Wait...</button>` : ''}</td>
+          </tr>`;
+        }).join('')}
+        </tbody>
+      </table></div>
+    </div>`;
+}
+let countdownTimer = null;
+function startQueueCountdown(campaign){
+  clearInterval(countdownTimer);
+  if(autoSend.running && autoSend.campaignId===campaign.id){
+    const el=document.getElementById('queue-countdown'); if(el) el.textContent='Auto-sending…';
+    return;
+  }
+  const next = campaign.queue.find(q=>q.status==='Pending');
+  if(!next || campaign.status!=='Running'){ const el=document.getElementById('queue-countdown'); if(el) el.textContent=''; return; }
+  let remaining = next.delaySeconds!=null ? next.delaySeconds : 0;
+  const update = ()=>{
+    const el = document.getElementById('queue-countdown'); const btn = document.getElementById('send-now-btn');
+    if(!el) { clearInterval(countdownTimer); return; }
+    if(remaining<=0){
+      el.textContent = 'Ready to send →';
+      if(btn){ btn.disabled=false; btn.textContent='Send to '+( (DB.leads.find(l=>l.id===next.leadId)||{}).name || 'lead'); }
+      clearInterval(countdownTimer);
+    } else {
+      el.textContent = `Next message ready in ${remaining}s`;
+      remaining--;
+    }
+  };
+  update();
+  countdownTimer = setInterval(update, 1000);
+}
+function sendQueueItem(campaignId, queueId){
+  const c = DB.campaigns.find(c=>c.id===campaignId);
+  const q = c.queue.find(q=>q.id===queueId);
+  const lead = DB.leads.find(l=>l.id===q.leadId);
+  if(!lead) return;
+  const url = `https://wa.me/${lead.phone.replace('+','')}?text=${encodeURIComponent(q.message)}`;
+  window.open(url, '_blank');
+  q.status = 'Sent';
+  DB.history.push({ id:genId(), leadId:lead.id, leadName:lead.name, company:lead.company, phone:lead.phone, message:q.message, status:'Sent', sentAt:Date.now(), reply:'' });
+  lead.status = 'Sent';
+  const tpl = DB.templates.find(t=>t.id===c.templateId); if(tpl) tpl.timesUsed++;
+  const remaining = c.queue.filter(q=>q.status==='Pending').length;
+  if(remaining===0) c.status='Completed';
+  saveDB();
+  renderApp();
+  if(state.view==='campaign-detail') startQueueCountdown(c);
+}
+
+/* ---- Baileys-powered automatic sending (free, no manual tap, real risk — see Settings) ---- */
+async function checkBaileysStatus(){
+  const url = (DB.settings.baileysUrl||'http://localhost:3001').replace(/\/$/,'');
+  try{
+    const res = await fetch(url + '/status', { method:'GET' });
+    const data = await res.json();
+    state.baileysConnected = !!data.connected;
+  }catch(e){
+    state.baileysConnected = false;
+  }
+  if(state.view==='campaign-detail' || state.view==='settings') renderApp();
+}
+function startAutoSend(campaignId){
+  const c = DB.campaigns.find(c=>c.id===campaignId);
+  if(!c) return;
+  c.status = 'Running'; saveDB();
+  autoSend.running = true; autoSend.campaignId = campaignId;
+  toast('Auto-send started', 'Sending one by one with random delays — keep this tab open.', 'success');
+  renderApp();
+  processAutoSendStep(campaignId);
+}
+function stopAutoSend(){
+  autoSend.running = false;
+  if(autoSend.timer) clearTimeout(autoSend.timer);
+  const c = DB.campaigns.find(c=>c.id===autoSend.campaignId);
+  if(c && c.status==='Running'){ c.status='Paused'; saveDB(); }
+  toast('Auto-send stopped','You can resume or restart auto-send anytime.','warning');
+  renderApp();
+}
+async function processAutoSendStep(campaignId){
+  if(!autoSend.running || autoSend.campaignId!==campaignId) return;
+  const c = DB.campaigns.find(c=>c.id===campaignId);
+  if(!c || c.status==='Paused'){ autoSend.running=false; return; }
+
+  const next = c.queue.find(q=>q.status==='Pending');
+  if(!next){ c.status='Completed'; saveDB(); autoSend.running=false; renderApp(); toast('Campaign completed','All queued messages processed.','success'); return; }
+
+  const lead = DB.leads.find(l=>l.id===next.leadId);
+  if(!lead || !isValidPhone(lead.phone)){
+    next.status='Skipped'; saveDB(); renderApp();
+    if(autoSend.running) processAutoSendStep(campaignId);
+    return;
+  }
+
+  const baileysUrl = (DB.settings.baileysUrl||'http://localhost:3001').replace(/\/$/,'');
+  try{
+    const res = await fetch(baileysUrl + '/send', {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body: JSON.stringify({ to: lead.phone, message: next.message })
+    });
+    const data = await res.json();
+    if(!res.ok || !data.success) throw new Error(data.error || 'Send failed');
+    next.status = 'Sent';
+    DB.history.push({ id:genId(), leadId:lead.id, leadName:lead.name, company:lead.company, phone:lead.phone, message:next.message, status:'Sent', sentAt:Date.now(), reply:'' });
+    lead.status = 'Sent';
+    const tpl = DB.templates.find(t=>t.id===c.templateId); if(tpl) tpl.timesUsed++;
+  }catch(err){
+    next.status = 'Failed';
+    toast('Failed to send to '+lead.name, String(err.message||err), 'error');
+  }
+  saveDB();
+  if(state.view==='campaign-detail') renderApp();
+
+  if(!autoSend.running) return;
+  const minD = DB.settings.minDelay||15, maxD = DB.settings.maxDelay||35;
+  const delayMs = (Math.floor(Math.random()*(maxD-minD+1))+minD) * 1000;
+  autoSend.timer = setTimeout(()=>processAutoSendStep(campaignId), delayMs);
+}
+function createCampaign(){
+  const name = document.getElementById('cw-name').value.trim();
+  const tplId = document.getElementById('cw-template').value;
+  if(!name || !tplId || campaignDraft.leadIds.size===0) return toast('Missing info','Name, template and at least one lead are required.', 'warning');
+  const tpl = DB.templates.find(t=>t.id===tplId);
+  const leadIds = Array.from(campaignDraft.leadIds);
+  const validLeads = leadIds.map(id=>DB.leads.find(l=>l.id===id)).filter(l=>l && l.phoneValid!==false && isValidPhone(l.phone));
+  const minD = DB.settings.minDelay||15, maxD = DB.settings.maxDelay||35;
+  const queue = validLeads.map((l,i)=>({ id:genId(), leadId:l.id, message: renderTemplate(tpl.content, l), status:'Pending', delaySeconds: i===0?0: Math.floor(Math.random()*(maxD-minD+1))+minD }));
+  const campaign = { id:genId(), name, templateId:tplId, leadIds, status:'Running', createdAt:Date.now(), queue };
+  DB.campaigns.push(campaign);
+  saveDB();
+  campaignDraft = {name:'', templateId:'', leadIds:new Set()};
+  toast('Campaign created', 'Messages are queued with random delays.', 'success');
+  openCampaignQueue(campaign.id);
+}
+
+/* ============================= HISTORY ============================= */
+function renderHistory(){
+  const search = (state.historySearch||'').toLowerCase();
+  let items = [...DB.history].sort((a,b)=>b.sentAt-a.sentAt);
+  if(search) items = items.filter(h=>(h.leadName||'').toLowerCase().includes(search) || (h.company||'').toLowerCase().includes(search));
+  return `
+    <div class="topbar">
+      <h1>Message History</h1>
+      <div class="row">
+        <div class="search-wrap"><span>🔎</span><input id="h-search" placeholder="Search by lead or company..." value="${escapeHtml(state.historySearch||'')}"></div>
+        <button class="btn-outline" data-action="export-history-csv">⬇ Export CSV</button>
+      </div>
+    </div>
+    <div class="card" style="padding:0">
+      ${items.length===0 ? `<div class="empty"><div class="e-ic">🕐</div>No message history yet.</div>` : `
+      <div class="table-wrap" style="border:none">
+      <table>
+        <thead><tr><th>Lead</th><th>Phone</th><th>Message</th><th>Status</th><th>Reply</th><th>Sent At</th><th>Quick Action</th></tr></thead>
+        <tbody>
+        ${items.map(h=>`<tr>
+          <td><b>${escapeHtml(h.leadName)}</b><div class="muted" style="font-size:11px">${escapeHtml(h.company)}</div></td>
+          <td>${escapeHtml(h.phone)}</td>
+          <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px" class="muted">${escapeHtml(h.message)}</td>
+          <td><span class="badge ${STATUS_CLASS[h.status]||''}">${h.status}</span></td>
+          <td style="max-width:140px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${escapeHtml(h.reply)||'—'}</td>
+          <td class="muted" style="font-size:11px">${fmtDateTime(h.sentAt)}</td>
+          <td><div class="row" style="gap:3px">
+            <button class="btn-ghost btn-sm" title="Mark Interested" data-action="mark-interested" data-id="${h.leadId}">👍</button>
+            <button class="btn-ghost btn-sm" title="Mark Not Interested" data-action="mark-not-interested" data-id="${h.leadId}">👎</button>
+          </div></td>
+        </tr>`).join('')}
+        </tbody>
+      </table></div>`}
+    </div>`;
+}
+afterRender.history = function(){
+  const el = document.getElementById('h-search');
+  if(el) el.addEventListener('input', e=>{ state.historySearch = e.target.value; renderApp(); });
+};
+function markLeadStatus(leadId, status){
+  const lead = DB.leads.find(l=>l.id===leadId);
+  if(!lead) return;
+  lead.status = status; saveDB(); renderApp();
+  toast(`Lead marked ${status}`,'','success');
+}
+function exportHistoryCsv(){
+  const cols = ['leadName','company','phone','status','reply','sentAt'];
+  const header = ['Lead','Company','Phone','Status','Reply','SentAt'].join(',');
+  const body = DB.history.map(h=>cols.map(c=>`"${String(c==='sentAt'? fmtDateTime(h[c]) : (h[c]||'')).replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadFile('history-export.csv', `${header}\n${body}`, 'text/csv');
+}
+
+/* ============================= ANALYTICS ============================= */
+function renderAnalytics(){
+  const totalLeads = DB.leads.length;
+  const interested = DB.leads.filter(l=>l.status==='Interested').length;
+  const interestRate = totalLeads>0 ? Math.round(interested/totalLeads*100) : 0;
+  const totalSent = DB.history.length;
+  const responded = DB.leads.filter(l=>['Read','Delivered','Interested','Not Interested','Follow Up'].includes(l.status)).length;
+  const responseRate = totalSent>0 ? Math.round(responded/totalSent*100): 0;
+
+  const byCountry = {}; DB.leads.forEach(l=>{ const k=l.country||'Unknown'; byCountry[k]=(byCountry[k]||0)+1; });
+  const byProduct = {}; DB.leads.forEach(l=>{ const k=l.product||'Unknown'; byProduct[k]=(byProduct[k]||0)+1; });
+  const topCountries = Object.entries(byCountry).sort((a,b)=>b[1]-a[1]).slice(0,8);
+  const topProducts = Object.entries(byProduct).sort((a,b)=>b[1]-a[1]).slice(0,8);
+
+  const tplPerf = DB.templates.map(t=>{
+    const sentLeadsIds = DB.history.filter(h=>{ return true; }).map(h=>h.leadId);
+    const interestedCount = DB.leads.filter(l=> l.status==='Interested' ).length; // approximate (single-template campaigns assumed)
+    return { name:t.name, used:t.timesUsed, rate: t.timesUsed>0 ? Math.round((interestedCount/Math.max(totalLeads,1))*100) : 0 };
+  }).sort((a,b)=>b.rate-a.rate).slice(0,5);
+
+  return `
+    <div class="topbar">
+      <h1>Analytics</h1>
+      <div class="row">
+        <button class="btn-outline" data-action="export-leads-csv">⬇ Leads CSV</button>
+        <button class="btn-outline" data-action="export-json-backup">⬇ Full Backup (JSON)</button>
+      </div>
+    </div>
+    <div class="grid-2" style="margin-bottom:16px">
+      <div class="card stat-card"><div class="stat-ic" style="background:var(--primary-soft);color:var(--primary-d)">📈</div><div><div class="stat-num">${interestRate}%</div><div class="stat-lbl">Interested Percentage</div></div></div>
+      <div class="card stat-card"><div class="stat-ic" style="background:#e0f2fe;color:#0369a1">💬</div><div><div class="stat-num">${responseRate}%</div><div class="stat-lbl">Response Rate</div></div></div>
+    </div>
+    <div class="grid-2">
+      <div class="card"><h3 style="margin-top:0">🌍 Country Wise Leads</h3>
+        ${topCountries.length===0?'<p class="muted">No data yet.</p>':topCountries.map(([k,v])=>`<div class="q-item"><span>${escapeHtml(k)}</span><span class="badge badge-new">${v}</span></div>`).join('')}
+      </div>
+      <div class="card"><h3 style="margin-top:0">📦 Product Wise Leads</h3>
+        ${topProducts.length===0?'<p class="muted">No data yet.</p>':topProducts.map(([k,v])=>`<div class="q-item"><span>${escapeHtml(k)}</span><span class="badge badge-new">${v}</span></div>`).join('')}
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px"><h3 style="margin-top:0">🏆 Top Performing Templates</h3>
+      ${tplPerf.length===0 ? '<p class="muted">No template data yet.</p>' : tplPerf.map(t=>`<div class="q-item"><div><b style="font-size:13px">${escapeHtml(t.name)}</b><div class="muted" style="font-size:11px">${t.used} sent</div></div><span class="badge badge-interested">${t.rate}% interest</span></div>`).join('')}
+    </div>`;
+}
+function exportLeadsCsv(){
+  const cols = ['name','company','phone','email','product','qty','country','status'];
+  const header = ['Name','Company','WhatsApp','Email','Product','Quantity','Country','Status'].join(',');
+  const body = DB.leads.map(l=>cols.map(c=>`"${String(l[c]||'').replace(/"/g,'""')}"`).join(',')).join('\n');
+  downloadFile('leads-export.csv', `${header}\n${body}`, 'text/csv');
+}
+function exportJsonBackup(){ downloadFile('crm-backup.json', JSON.stringify(DB, null, 2), 'application/json'); }
+function downloadFile(filename, content, type){
+  const blob = new Blob([content], {type});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href=url; a.download=filename; a.click();
+  URL.revokeObjectURL(url);
+}
+
+/* ============================= SETTINGS ============================= */
+function renderSettings(){
+  const s = DB.settings;
+  const tab = state.settingsTab || 'profile';
+  return `
+    <div class="topbar"><h1>Settings</h1></div>
+    <div class="tabs" style="margin-bottom:16px">
+      <button class="tab ${tab==='profile'?'active':''}" data-action="settings-tab" data-tab="profile">Profile</button>
+      <button class="tab ${tab==='sending'?'active':''}" data-action="settings-tab" data-tab="sending">Sending</button>
+      <button class="tab ${tab==='ui'?'active':''}" data-action="settings-tab" data-tab="ui">UI</button>
+      <button class="tab ${tab==='data'?'active':''}" data-action="settings-tab" data-tab="data">Data</button>
+    </div>
+    ${tab==='profile' ? `
+      <div class="card" style="max-width:480px">
+        <div class="field"><label>Company Name</label><input id="set-company" value="${escapeHtml(s.companyName)}"></div>
+        <div class="field"><label>Sender Name</label><input id="set-sender" value="${escapeHtml(s.senderName)}"></div>
+        <button class="btn-primary" data-action="save-profile">Save Profile</button>
+      </div>` : ''}
+    ${tab==='sending' ? `
+      <div class="card" style="max-width:540px;margin-bottom:14px">
+        <h3 style="margin-top:0">Manual Mode (always free, zero risk)</h3>
+        <p class="muted" style="font-size:12.5px">Click-to-chat: each message opens WhatsApp with the text pre-filled — you just hit send.</p>
+        <div class="grid-2">
+          <div class="field"><label>Min Delay (seconds)</label><input type="number" id="set-mindelay" value="${s.minDelay}"></div>
+          <div class="field"><label>Max Delay (seconds)</label><input type="number" id="set-maxdelay" value="${s.maxDelay}"></div>
+        </div>
+        <button class="btn-primary" data-action="save-sending">Save</button>
+      </div>
+      <div class="card" style="max-width:540px">
+        <h3 style="margin-top:0">🚀 Automatic Mode (Baileys — free, but unofficial)</h3>
+        <p class="muted" style="font-size:12.5px">Sends the whole campaign automatically with no manual tap. Requires running the free <code>baileys-service</code> script on your computer (see its README) and scanning a QR code once. <b>Carries WhatsApp ban risk</b> — see earlier notes.</p>
+        <div class="field"><label>Baileys Service URL</label><input id="set-baileysurl" value="${escapeHtml(s.baileysUrl)}" placeholder="http://localhost:3001"></div>
+        <div class="row">
+          <button class="btn-primary" data-action="save-baileys-url">Save URL</button>
+          <button class="btn-outline" data-action="check-baileys">🔄 Check Connection</button>
+          ${state.baileysConnected===true ? `<span class="badge badge-interested">🟢 Connected</span>` : state.baileysConnected===false ? `<span class="badge badge-notinterested">🔴 Not Connected</span>` : `<span class="badge badge-new">Not checked yet</span>`}
+        </div>
+      </div>` : ''}
+    ${tab==='ui' ? `
+      <div class="card" style="max-width:480px">
+        <div class="flex-between"><label>Dark Mode</label><input type="checkbox" id="set-dark" ${s.darkMode?'checked':''} style="width:18px;height:18px"></div>
+        <button class="btn-primary" style="margin-top:14px" data-action="save-ui">Save</button>
+      </div>` : ''}
+    ${tab==='data' ? `
+      <div class="card" style="max-width:480px">
+        <p class="muted" style="font-size:12.5px;margin-top:0">All your data lives only in this browser (localStorage). Export a backup regularly.</p>
+        <div class="row">
+          <button class="btn-outline" data-action="export-json-backup">⬇ Export Backup (JSON)</button>
+          <label class="btn-outline" style="cursor:pointer">⬆ Import Backup<input type="file" accept=".json" style="display:none" id="import-json"></label>
+        </div>
+        <hr style="border-color:var(--border);margin:18px 0">
+        <button class="btn-danger" data-action="clear-all-data">🗑 Clear All Data</button>
+      </div>` : ''}`;
+}
+afterRender.settings = function(){
+  const imp = document.getElementById('import-json');
+  if(imp) imp.onchange = (e)=>{
+    const file = e.target.files[0]; if(!file) return;
+    const reader = new FileReader();
+    reader.onload = ()=>{ try{ DB = Object.assign(defaultData(), JSON.parse(reader.result)); saveDB(); renderApp(); toast('Backup imported','','success'); }catch(err){ toast('Invalid backup file','','error'); } };
+    reader.readAsText(file);
+  };
+};
+
+/* ============================= EVENT DELEGATION ============================= */
+document.body.addEventListener('click', (e)=>{
+  const el = e.target.closest('[data-action]');
+  if(!el) return;
+  const action = el.dataset.action;
+  const id = el.dataset.id;
+  switch(action){
+    case 'nav': go(el.dataset.view); break;
+    case 'open-lead-form': openLeadForm(null); break;
+    case 'edit-lead': openLeadForm(DB.leads.find(l=>l.id===id)); break;
+    case 'delete-lead': deleteLead(id); break;
+    case 'open-csv': openCsvModal(); break;
+    case 'open-template-editor': openTemplateEditor(null); break;
+    case 'edit-template': openTemplateEditor(DB.templates.find(t=>t.id===id)); break;
+    case 'delete-template': deleteTemplate(id); break;
+    case 'campaign-tab': state.campaignTab = el.dataset.tab; renderApp(); break;
+    case 'toggle-all-leads': {
+      const eligible = DB.leads.filter(l=>['New','Follow Up','No Reply'].includes(l.status));
+      if(campaignDraft.leadIds.size===eligible.length) campaignDraft.leadIds = new Set();
+      else campaignDraft.leadIds = new Set(eligible.map(l=>l.id));
+      renderApp(); break;
+    }
+    case 'create-campaign': createCampaign(); break;
+    case 'open-campaign': openCampaignQueue(id); break;
+    case 'back-to-campaigns': state.view='campaigns'; renderApp(); break;
+    case 'pause-campaign': { const c=DB.campaigns.find(c=>c.id===id); c.status='Paused'; saveDB(); renderApp(); break; }
+    case 'resume-campaign': { const c=DB.campaigns.find(c=>c.id===id); c.status='Running'; saveDB(); renderApp(); break; }
+    case 'skip-invalid': {
+      const c=DB.campaigns.find(c=>c.id===id);
+      c.queue.forEach(q=>{ const lead = DB.leads.find(l=>l.id===q.leadId); if(q.status==='Pending' && (!lead || !isValidPhone(lead.phone))) q.status='Skipped'; });
+      saveDB(); renderApp(); toast('Invalid numbers skipped','','success'); break;
+    }
+    case 'retry-failed': {
+      const c=DB.campaigns.find(c=>c.id===id);
+      c.queue.forEach(q=>{ if(q.status==='Failed') q.status='Pending'; });
+      if(c.status==='Completed') c.status='Running';
+      saveDB(); renderApp(); toast('Failed messages re-queued','','success'); break;
+    }
+    case 'send-queue-item': sendQueueItem(el.dataset.cid, el.dataset.qid); break;
+    case 'start-autosend': startAutoSend(id); break;
+    case 'stop-autosend': stopAutoSend(); break;
+    case 'check-baileys': toast('Checking…','Contacting Baileys service','info'); checkBaileysStatus(); break;
+    case 'save-baileys-url': {
+      DB.settings.baileysUrl = document.getElementById('set-baileysurl').value.trim() || 'http://localhost:3001';
+      saveDB(); toast('Baileys URL saved','Click Check Connection to verify','success'); break;
+    }
+    case 'mark-interested': markLeadStatus(id, 'Interested'); break;
+    case 'mark-not-interested': markLeadStatus(id, 'Not Interested'); break;
+    case 'export-history-csv': exportHistoryCsv(); break;
+    case 'export-leads-csv': exportLeadsCsv(); break;
+    case 'export-json-backup': exportJsonBackup(); break;
+    case 'save-profile': {
+      DB.settings.companyName = document.getElementById('set-company').value.trim();
+      DB.settings.senderName = document.getElementById('set-sender').value.trim();
+      saveDB(); toast('Profile saved','','success'); break;
+    }
+    case 'save-sending': {
+      DB.settings.minDelay = parseInt(document.getElementById('set-mindelay').value)||15;
+      DB.settings.maxDelay = parseInt(document.getElementById('set-maxdelay').value)||35;
+      saveDB(); toast('Sending settings saved','','success'); break;
+    }
+    case 'save-ui': {
+      DB.settings.darkMode = document.getElementById('set-dark').checked;
+      saveDB(); renderApp(); toast('Saved','','success'); break;
+    }
+    case 'settings-tab': state.settingsTab = el.dataset.tab; renderApp(); break;
+    case 'clear-all-data': confirmDialog('Clear all data?','This permanently deletes every lead, template, campaign and history record in this browser.', ()=>{ DB=defaultData(); saveDB(); renderApp(); toast('All data cleared','','success'); }, true); break;
+  }
+});
+document.body.addEventListener('change', (e)=>{
+  if(e.target.matches('[data-lead-check]')){
+    const id = e.target.dataset.leadCheck;
+    if(e.target.checked) campaignDraft.leadIds.add(id); else campaignDraft.leadIds.delete(id);
+  }
+});
+
+/* override main render to handle campaign-detail view */
+const _renderApp = renderApp;
+renderApp = function(){
+  document.documentElement.setAttribute('data-theme', DB.settings.darkMode ? 'dark':'light');
+  renderNav();
+  flagDuplicates();
+  const root = document.getElementById('main-content');
+  if(state.view==='campaign-detail'){ root.innerHTML = renderCampaignDetail(); const c=DB.campaigns.find(c=>c.id===state.activeCampaignId); if(c) startQueueCountdown(c); return; }
+  const renderers = { dashboard: renderDashboard, leads: renderLeads, templates: renderTemplates, campaigns: renderCampaigns, history: renderHistory, analytics: renderAnalytics, settings: renderSettings };
+  root.innerHTML = renderers[state.view]();
+  afterRender[state.view] && afterRender[state.view]();
+};
+
+/* ============================= INIT ============================= */
+renderApp();
+</script>
+</body>
+</html>
