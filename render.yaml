@@ -1,0 +1,39 @@
+# render.yaml
+# Render Blueprint — defines the backend web service.
+# Commit this file to your repo root.
+# In Render Dashboard: New → Blueprint → connect your GitHub repo.
+
+services:
+  - type: web
+    name: whatsapp-crm-backend
+    runtime: node
+    rootDir: baileys-service
+    buildCommand: npm install
+    startCommand: npm start
+    plan: free
+
+    # Health check — Render pings this to confirm the service is up
+    healthCheckPath: /
+
+    # Environment variables — set these in Render Dashboard
+    # (never commit real values to git)
+    envVars:
+      - key: NODE_ENV
+        value: production
+
+      - key: LOG_LEVEL
+        value: warn
+
+      # ── Set these in Render Dashboard ──────────────────────
+      # SUPABASE_URL          → your Supabase project URL
+      # SUPABASE_SERVICE_KEY  → your Supabase service_role key (secret!)
+      # ALLOWED_ORIGIN        → your Vercel frontend URL, e.g. https://your-app.vercel.app
+      # API_SECRET            → any long random string (protects write endpoints)
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SERVICE_KEY
+        sync: false
+      - key: ALLOWED_ORIGIN
+        sync: false
+      - key: API_SECRET
+        sync: false

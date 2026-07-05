@@ -1,0 +1,1018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>WhatsApp CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f7f9fc;--border:#e2e8f0;
+  --text:#0f172a;--muted:#64748b;
+  --primary:#25d366;--primary-d:#128c7e;--primary-soft:#dcfce7;
+  --accent:#7c3aed;--accent-soft:#ede9fe;
+  --danger:#ef4444;--danger-soft:#fee2e2;
+  --warn:#f59e0b;--warn-soft:#fef3c7;
+  --blue:#3b82f6;--blue-soft:#dbeafe;
+  --radius:12px;--radius-sm:8px;
+  --shadow:0 1px 3px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.06);
+  --shadow-md:0 4px 24px rgba(0,0,0,.1);
+}
+[data-theme=dark]{
+  --bg:#0b1120;--surface:#131e2e;--surface2:#1a2740;
+  --border:#1e3050;--text:#e2e8f0;--muted:#94a3b8;
+  --primary-soft:#052e16;--accent-soft:#2e1065;
+  --danger-soft:#450a0a;--warn-soft:#451a03;--blue-soft:#1e3a8a;
+}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;font-size:14px;line-height:1.5}
+button{cursor:pointer;font-family:inherit;font-size:13px;font-weight:600;border:none;border-radius:var(--radius-sm);padding:8px 14px;transition:opacity .15s,transform .1s;display:inline-flex;align-items:center;gap:6px}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed;transform:none}
+input,select,textarea{font-family:inherit;font-size:13px;padding:9px 12px;border:1.5px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--text);outline:none;width:100%;transition:border-color .15s}
+input:focus,select:focus,textarea:focus{border-color:var(--primary)}
+textarea{resize:vertical;line-height:1.6}
+label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:4px}
+
+/* Layout */
+.app{display:flex;min-height:100vh}
+.sidebar{width:240px;flex-shrink:0;background:var(--surface);border-right:1px solid var(--border);display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow-y:auto}
+.brand{display:flex;align-items:center;gap:10px;padding:20px 16px;border-bottom:1px solid var(--border)}
+.brand-icon{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;font-size:18px}
+.brand-name{font-weight:800;font-size:14px}
+.brand-sub{font-size:11px;color:var(--muted)}
+.nav{flex:1;padding:10px 8px}
+.nav-label{font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;padding:12px 8px 4px}
+.nav-btn{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);color:var(--muted);font-weight:600;font-size:13px;cursor:pointer;border:none;background:none;width:100%;text-align:left;transition:background .15s,color .15s}
+.nav-btn:hover{background:var(--surface2);color:var(--text)}
+.nav-btn.active{background:var(--primary-soft);color:var(--primary-d)}
+.nav-btn .ico{width:20px;text-align:center}
+.sidebar-foot{padding:12px 16px;border-top:1px solid var(--border);font-size:11px;color:var(--muted)}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;position:sticky;top:0;z-index:10}
+.topbar h1{font-size:18px;font-weight:800}
+.page{padding:24px;flex:1}
+
+/* Buttons */
+.btn-primary{background:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-d)}
+.btn-outline{background:var(--surface);color:var(--text);border:1.5px solid var(--border)}
+.btn-outline:hover{background:var(--surface2)}
+.btn-ghost{background:transparent;color:var(--muted);padding:7px 9px}
+.btn-ghost:hover{background:var(--border)}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warn{background:var(--warn);color:#fff}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn-icon{padding:7px;border-radius:var(--radius-sm)}
+
+/* Cards */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);padding:20px}
+.card-title{font-size:14px;font-weight:700;margin-bottom:14px}
+
+/* Stat grid */
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:14px;margin-bottom:20px}
+.stat-card{display:flex;align-items:center;gap:14px}
+.stat-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.stat-val{font-size:26px;font-weight:800;line-height:1}
+.stat-lbl{font-size:11.5px;color:var(--muted);margin-top:3px}
+
+/* Table */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--radius)}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 14px;color:var(--muted);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:var(--surface2);border-bottom:1px solid var(--border)}
+td{padding:11px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:var(--surface2)}
+
+/* Badges */
+.badge{display:inline-flex;align-items:center;padding:3px 9px;border-radius:999px;font-size:11px;font-weight:700;white-space:nowrap}
+.b-new,.b-draft,.b-pending{background:var(--border);color:var(--muted)}
+.b-sent,.b-running{background:var(--blue-soft);color:var(--blue)}
+.b-delivered,.b-read,.b-completed,.b-interested{background:var(--primary-soft);color:var(--primary-d)}
+.b-notinterested,.b-failed,.b-cancelled{background:var(--danger-soft);color:var(--danger)}
+.b-followup,.b-paused,.b-skipped{background:var(--warn-soft);color:var(--warn)}
+.b-noreply{background:var(--border);color:var(--muted)}
+
+/* Modal */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);backdrop-filter:blur(4px);z-index:100;display:flex;align-items:center;justify-content:center;padding:16px;animation:fin .15s ease}
+.modal{background:var(--surface);border-radius:16px;padding:24px;width:100%;max-width:600px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-md);animation:sup .2s ease}
+.modal-title{font-size:16px;font-weight:800;margin-bottom:4px}
+.modal-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;margin-top:20px;padding-top:16px;border-top:1px solid var(--border)}
+@keyframes fin{from{opacity:0}to{opacity:1}}
+@keyframes sup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+
+/* Toast */
+.toast-wrap{position:fixed;bottom:20px;right:20px;z-index:200;display:flex;flex-direction:column;gap:8px;max-width:340px}
+.toast{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow-md);font-size:13px;display:flex;gap:10px;align-items:flex-start;animation:sup .2s ease}
+.toast-close{background:none;border:none;padding:2px 4px;margin-left:auto;color:var(--muted);font-size:16px}
+
+/* Progress */
+.prog-bar{height:8px;border-radius:999px;background:var(--border);overflow:hidden}
+.prog-fill{height:100%;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--primary-d));transition:width .4s ease}
+
+/* WA bubble */
+.wa-bubble{background:#dcf8c6;border-radius:0 12px 12px 12px;padding:12px 14px;font-size:13.5px;white-space:pre-wrap;line-height:1.6;color:#0c2611;word-break:break-word}
+[data-theme=dark] .wa-bubble{background:#1a3a25;color:#d4f0dd}
+
+/* Log stream */
+.log-stream{background:var(--bg);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;max-height:340px;overflow-y:auto;font-size:12px;font-family:monospace;line-height:1.8}
+.l-ok{color:var(--primary-d)}
+.l-err{color:var(--danger)}
+.l-skip{color:var(--muted)}
+.l-wait{color:var(--warn)}
+.l-info{color:var(--blue)}
+
+/* Upload */
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:40px 24px;text-align:center;cursor:pointer;transition:background .15s,border-color .15s}
+.upload-zone:hover,.upload-zone.drag{background:var(--primary-soft);border-color:var(--primary)}
+.upload-zone input[type=file]{display:none}
+
+/* Misc */
+.row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+.field{margin-bottom:14px}
+.sep{border:none;border-top:1px solid var(--border);margin:16px 0}
+.muted{color:var(--muted)}
+.bold{font-weight:700}
+.sm{font-size:12px}
+.search-wrap{position:relative}
+.search-wrap input{padding-left:34px;width:220px}
+.search-ic{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.chip{display:inline-flex;align-items:center;padding:3px 10px;border-radius:999px;border:1.5px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;background:var(--surface)}
+.chip:hover{background:var(--primary-soft);border-color:var(--primary)}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
+.dot-green{background:var(--primary)}
+.dot-red{background:var(--danger)}
+.dot-yellow{background:var(--warn);animation:blink 1.2s infinite}
+.empty{text-align:center;padding:60px 20px;color:var(--muted);border:2px dashed var(--border);border-radius:var(--radius)}
+.empty-ico{font-size:34px;margin-bottom:10px}
+.empty h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* QR */
+.qr-box{display:flex;flex-direction:column;align-items:center;gap:14px;padding:16px 0}
+.qr-box img{border-radius:12px;border:4px solid var(--border);width:200px;height:200px}
+.qr-steps{background:var(--surface2);border-radius:var(--radius-sm);padding:12px 16px;font-size:12.5px;line-height:1.7}
+
+/* Responsive */
+@media(max-width:768px){
+  .sidebar{position:fixed;bottom:0;left:0;right:0;width:100%;height:auto;flex-direction:row;border-right:none;border-top:1px solid var(--border);z-index:40}
+  .brand,.sidebar-foot,.nav-label{display:none}
+  .nav{padding:4px;display:flex;overflow-x:auto}
+  .nav-btn{flex-direction:column;font-size:10px;gap:2px;flex:1;white-space:nowrap;justify-content:center;min-width:56px;padding:6px 4px}
+  .main{padding-bottom:72px}
+  .page{padding:14px}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .topbar h1{font-size:15px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">💬</div>
+      <div><div class="brand-name">WhatsApp CRM</div><div class="brand-sub">Outreach Platform</div></div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="sidebar-foot" id="wa-foot">Checking WhatsApp…</div>
+  </aside>
+  <div class="main">
+    <div class="topbar">
+      <h1 id="pg-title">Dashboard</h1>
+      <div class="row" id="tb-actions"></div>
+    </div>
+    <div class="page" id="page">Loading…</div>
+  </div>
+</div>
+<div class="toast-wrap" id="toasts"></div>
+<div id="modal-root"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   CONFIG
+══════════════════════════════════════════════ */
+let BACKEND = (
+  (typeof window.__BACKEND_URL!=='undefined' && window.__BACKEND_URL) ||
+  localStorage.getItem('crm_backend_url') || ''
+).replace(/\/$/,'');
+let SECRET = localStorage.getItem('crm_api_secret') || '';
+
+/* ══════════════════════════════════════════════
+   API
+══════════════════════════════════════════════ */
+async function api(method, path, body){
+  if(!BACKEND) throw new Error('Backend URL not set — go to Settings');
+  const res = await fetch(BACKEND + path, {
+    method,
+    headers:{'Content-Type':'application/json','x-api-secret':SECRET},
+    ...(body ? {body:JSON.stringify(body)} : {})
+  });
+  const data = await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(data.error || 'HTTP '+res.status);
+  return data;
+}
+const GET   = p     => api('GET',    p);
+const POST  = (p,b) => api('POST',   p, b);
+const PATCH = (p,b) => api('PATCH',  p, b);
+const DEL   = p     => api('DELETE', p);
+
+/* ══════════════════════════════════════════════
+   HELPERS
+══════════════════════════════════════════════ */
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function fmtDT(ts){ return ts?new Date(ts).toLocaleString('en-IN',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'}):'—'; }
+function norm(raw){ let p=(raw||'').replace(/[^\d+]/g,''); if(p&&!p.startsWith('+'))p='+'+p; return p; }
+function validPhone(p){ return /^\+?\d{8,15}$/.test((p||'').replace(/\s/g,'')); }
+
+function renderMsg(content, lead){
+  const m={name:lead.name||'',company:lead.company||'',product:lead.product||'',qty:lead.quantity||'',country:lead.country||'',email:lead.email||''};
+  return (content||'').replace(/\{\{\s*(\w+)\s*\}\}/g,(_,k)=>m[k.toLowerCase()]??`[${k}]`);
+}
+
+const BADGE_CLS = {
+  New:'b-new',Draft:'b-draft',Pending:'b-pending',
+  Sent:'b-sent',Running:'b-running',
+  Delivered:'b-delivered',Read:'b-read',Completed:'b-completed',Interested:'b-interested',
+  'Not Interested':'b-notinterested',Failed:'b-failed',Cancelled:'b-cancelled',
+  'Follow Up':'b-followup',Paused:'b-paused',Skipped:'b-skipped',
+  'No Reply':'b-noreply',sent:'b-sent',failed:'b-failed',skipped:'b-skipped',
+};
+function badge(v){ return `<span class="badge ${BADGE_CLS[v]||'b-new'}">${esc(v)}</span>`; }
+
+/* ══════════════════════════════════════════════
+   TOAST
+══════════════════════════════════════════════ */
+function toast(title, desc, type='info'){
+  const ic = {success:'✅',error:'⛔',warning:'⚠️',info:'ℹ️'};
+  const el = document.createElement('div');
+  el.className = 'toast';
+  el.innerHTML = `<span>${ic[type]||ic.info}</span>
+    <div style="flex:1"><b>${esc(title)}</b>${desc?`<div class="muted sm">${esc(desc)}</div>`:''}</div>
+    <button class="toast-close" onclick="this.parentElement.remove()">×</button>`;
+  document.getElementById('toasts').appendChild(el);
+  setTimeout(()=>el.remove(), 5000);
+}
+
+/* ══════════════════════════════════════════════
+   MODAL
+══════════════════════════════════════════════ */
+function openModal(html){
+  document.getElementById('modal-root').innerHTML =
+    `<div class="overlay" onclick="if(event.target===this)closeModal()"><div class="modal">${html}</div></div>`;
+}
+function closeModal(){ document.getElementById('modal-root').innerHTML=''; }
+function confirm$(title, desc, onOk, danger=false){
+  openModal(`<div class="modal-title">${esc(title)}</div>
+    <div class="modal-sub">${esc(desc)}</div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="${danger?'btn-danger':'btn-primary'}" id="c-ok">${danger?'Delete':'Confirm'}</button>
+    </div>`);
+  document.getElementById('c-ok').onclick=()=>{onOk();closeModal();};
+}
+
+/* ══════════════════════════════════════════════
+   CSV/EXCEL PARSER (zero CDN needed for CSV)
+══════════════════════════════════════════════ */
+function parseCSV(text){
+  const rows=[];let row=[],f='',q=false;
+  for(let i=0;i<text.length;i++){
+    const c=text[i];
+    if(q){if(c==='"'&&text[i+1]==='"'){f+='"';i++;}else if(c==='"')q=false;else f+=c;}
+    else{
+      if(c==='"')q=true;
+      else if(c===','){row.push(f);f='';}
+      else if(c==='\n'||c==='\r'){row.push(f);f='';if(row.some(v=>v.trim()))rows.push(row);row=[];}
+      else f+=c;
+    }
+  }
+  if(f||row.length){row.push(f);if(row.some(v=>v.trim()))rows.push(row);}
+  if(!rows.length)return{headers:[],data:[]};
+  const headers=rows[0].map(h=>h.trim());
+  return{headers,data:rows.slice(1).map(r=>{const o={};headers.forEach((h,i)=>o[h]=(r[i]||'').trim());return o;})};
+}
+
+let _XLSX=null;
+async function loadXLSX(){
+  if(_XLSX)return _XLSX;
+  await new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
+    s.onload=()=>{_XLSX=window.XLSX;res();};s.onerror=rej;
+    document.head.appendChild(s);
+  });
+  return _XLSX;
+}
+async function parseExcel(file){
+  const XLSX=await loadXLSX();
+  const buf=await file.arrayBuffer();
+  const wb=XLSX.read(buf,{type:'array'});
+  const ws=wb.Sheets[wb.SheetNames[0]];
+  const json=XLSX.utils.sheet_to_json(ws,{defval:''});
+  if(!json.length)return{headers:[],data:[]};
+  return{headers:Object.keys(json[0]),data:json.map(r=>Object.fromEntries(Object.entries(r).map(([k,v])=>[k,String(v).trim()])))};
+}
+
+function mapHeaders(headers){
+  const A={name:['name','full name','contact name'],company:['company','company name','business','organisation'],
+    phone:['phone','whatsapp','whatsapp number','mobile','contact number','number'],email:['email','email address'],
+    product:['product','item','requirement'],quantity:['qty','quantity','required qty'],country:['country','location','region']};
+  const m={};
+  Object.entries(A).forEach(([f,alts])=>{const h=headers.find(h=>alts.includes(h.trim().toLowerCase()));if(h)m[f]=h;});
+  return m;
+}
+function buildLeads(data,map){
+  return data.map(r=>{
+    const g=f=>map[f]?(r[map[f]]||'').trim():'';
+    const phone=norm(g('phone'));
+    return{name:g('name'),company:g('company'),phone,email:g('email'),
+      product:g('product'),quantity:g('quantity'),country:g('country'),
+      phone_valid:validPhone(phone),source:'csv'};
+  });
+}
+
+/* ══════════════════════════════════════════════
+   NAV / ROUTER
+══════════════════════════════════════════════ */
+const PAGES = [
+  {id:'dashboard',label:'Dashboard',ico:'📊'},
+  {id:'leads',label:'Leads',ico:'👥'},
+  {id:'templates',label:'Templates',ico:'📝'},
+  {id:'campaigns',label:'Campaigns',ico:'📤'},
+  {id:'history',label:'History',ico:'🕐'},
+  {id:'analytics',label:'Analytics',ico:'📈'},
+  {id:'settings',label:'Settings',ico:'⚙️'},
+];
+let VIEW = 'dashboard';
+
+function renderNav(){
+  document.getElementById('nav').innerHTML = PAGES.map(p=>
+    `<button class="nav-btn${VIEW===p.id?' active':''}" data-view="${p.id}">
+      <span class="ico">${p.ico}</span>${p.label}
+    </button>`
+  ).join('');
+}
+
+function go(view){
+  VIEW=view;
+  renderNav();
+  document.getElementById('pg-title').textContent = PAGES.find(p=>p.id===view)?.label||view;
+  document.getElementById('tb-actions').innerHTML = '';
+  document.getElementById('page').innerHTML = '<div class="muted" style="padding:20px">Loading…</div>';
+  ({dashboard:pgDashboard,leads:pgLeads,templates:pgTemplates,campaigns:pgCampaigns,
+    history:pgHistory,analytics:pgAnalytics,settings:pgSettings}[view]||(() => {}))();
+}
+
+document.getElementById('nav').addEventListener('click', e=>{
+  const btn=e.target.closest('[data-view]'); if(btn) go(btn.dataset.view);
+});
+
+/* ══════════════════════════════════════════════
+   WA STATUS POLL
+══════════════════════════════════════════════ */
+async function pollWA(){
+  try{
+    const d=await GET('/api/status');
+    const foot=document.getElementById('wa-foot');
+    if(foot) foot.innerHTML=`<span class="dot ${d.connected?'dot-green':'dot-yellow'}"></span>${d.connected?'WA Connected':'Waiting for QR…'}`;
+  }catch{
+    const foot=document.getElementById('wa-foot');
+    if(foot) foot.innerHTML=`<span class="dot dot-red"></span>Backend offline`;
+  }
+  setTimeout(pollWA,8000);
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: DASHBOARD
+══════════════════════════════════════════════ */
+async function pgDashboard(){
+  const p=document.getElementById('page');
+  p.innerHTML=`
+    <div class="stat-grid" id="stats"><div class="card" style="grid-column:1/-1;color:var(--muted)">Loading stats…</div></div>
+    <div class="grid-2">
+      <div class="card" id="wa-card"><div class="card-title">📱 WhatsApp Status</div><div id="wa-body">Checking…</div></div>
+      <div class="card"><div class="card-title">🕐 Recent Activity</div><div id="activity">Loading…</div></div>
+    </div>`;
+
+  try{
+    const [sR,lR,wR]=await Promise.all([
+      GET('/api/stats').catch(()=>({stats:{}})),
+      GET('/api/logs?limit=7').catch(()=>({logs:[]})),
+      GET('/api/status').catch(()=>({connected:false,qr:null})),
+    ]);
+    const s=sR.stats||{};
+    const STATS=[
+      {l:'Total Leads',v:s.total_leads||0,i:'👥',bg:'var(--primary-soft)',c:'var(--primary-d)'},
+      {l:'Sent Today',v:s.sent_today||0,i:'📤',bg:'var(--blue-soft)',c:'var(--blue)'},
+      {l:'Interested',v:s.interested||0,i:'👍',bg:'var(--primary-soft)',c:'var(--primary-d)'},
+      {l:'Pending',v:s.pending||0,i:'⏳',bg:'var(--warn-soft)',c:'var(--warn)'},
+      {l:'Total Sent',v:s.total_sent||0,i:'✅',bg:'var(--accent-soft)',c:'var(--accent)'},
+      {l:'Active Campaigns',v:s.active_campaigns||0,i:'🚀',bg:'var(--blue-soft)',c:'var(--blue)'},
+    ];
+    document.getElementById('stats').innerHTML=STATS.map(s=>
+      `<div class="card stat-card"><div class="stat-ico" style="background:${s.bg};color:${s.c}">${s.i}</div>
+       <div><div class="stat-val">${s.v}</div><div class="stat-lbl">${s.l}</div></div></div>`
+    ).join('');
+
+    const logs=lR.logs||[];
+    document.getElementById('activity').innerHTML = logs.length===0
+      ? '<p class="muted sm">No activity yet.</p>'
+      : logs.map(l=>`<div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)">
+          <div><div class="bold sm">${esc(l.lead_name||'—')}</div><div class="muted sm">${esc(l.phone||'')}</div></div>
+          <div style="text-align:right">${badge(l.status)}<div class="muted sm">${fmtDT(l.sent_at)}</div></div>
+        </div>`).join('');
+
+    const wa=wR;
+    document.getElementById('wa-body').innerHTML = wa.connected
+      ? `<div style="color:var(--primary-d);font-weight:700;margin-bottom:10px"><span class="dot dot-green"></span>Connected & Ready</div>
+         <p class="muted sm">WhatsApp is connected. You can send campaigns now.</p>
+         <button class="btn-outline btn-sm" style="margin-top:12px" onclick="doLogout()">Logout / Reset QR</button>`
+      : wa.qr
+      ? `<div class="qr-box">
+           <div style="color:var(--warn);font-weight:700;margin-bottom:8px"><span class="dot dot-yellow"></span>Scan QR to Connect</div>
+           <img src="${wa.qr}" width="190" height="190" alt="QR"/>
+           <div class="qr-steps"><ol style="padding-left:16px">
+             <li>Open WhatsApp on your phone</li>
+             <li>Settings → Linked Devices</li>
+             <li>Link a Device → Scan this QR</li>
+           </ol></div>
+           <button class="btn-outline btn-sm" onclick="pgDashboard()">🔄 Refresh QR</button>
+         </div>`
+      : `<p class="muted sm">Waiting for QR… <button class="btn-outline btn-sm" onclick="pgDashboard()">Refresh</button></p>`;
+  }catch(e){
+    document.getElementById('stats').innerHTML=`<div class="card" style="grid-column:1/-1;color:var(--danger)">⛔ ${esc(e.message)} — Check Settings and make sure your Render backend is running.</div>`;
+  }
+}
+
+async function doLogout(){
+  confirm$('Logout WhatsApp?','Session will be deleted. You must scan a new QR to reconnect.',async()=>{
+    try{ await POST('/api/logout'); toast('Logged out','Scan new QR to reconnect','success'); setTimeout(pgDashboard,1500); }
+    catch(e){ toast('Error',e.message,'error'); }
+  },true);
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: LEADS
+══════════════════════════════════════════════ */
+let _leads=[];
+async function pgLeads(){
+  document.getElementById('tb-actions').innerHTML=`
+    <button class="btn-outline" onclick="openUpload()">📁 Upload CSV/Excel</button>
+    <button class="btn-primary" onclick="openLeadForm(null)">＋ Add Lead</button>`;
+  document.getElementById('page').innerHTML=`
+    <div class="row" style="margin-bottom:14px">
+      <div class="search-wrap"><span class="search-ic">🔎</span><input id="ls" placeholder="Search…" oninput="filterLeads()"></div>
+      <select id="lf-st" onchange="filterLeads()"><option value="">All Status</option>
+        ${['New','Sent','Delivered','Read','Interested','Not Interested','Follow Up','No Reply'].map(s=>`<option>${s}</option>`).join('')}
+      </select>
+      <input id="lf-co" placeholder="Country" style="width:110px" oninput="filterLeads()">
+      <input id="lf-pr" placeholder="Product"  style="width:110px" oninput="filterLeads()">
+      <span class="muted sm" id="lc"></span>
+    </div>
+    <div class="card" style="padding:0" id="ltbl">Loading…</div>`;
+  await fetchLeads();
+}
+
+async function fetchLeads(){
+  try{
+    const r=await GET('/api/leads'); _leads=r.leads||[]; filterLeads();
+  }catch(e){ document.getElementById('ltbl').innerHTML=errBox(e.message); }
+}
+
+function filterLeads(){
+  const s=(document.getElementById('ls')?.value||'').toLowerCase();
+  const st=document.getElementById('lf-st')?.value||'';
+  const co=(document.getElementById('lf-co')?.value||'').toLowerCase();
+  const pr=(document.getElementById('lf-pr')?.value||'').toLowerCase();
+  let d=[..._leads];
+  if(s)d=d.filter(l=>(l.name||'').toLowerCase().includes(s)||(l.phone||'').includes(s)||(l.company||'').toLowerCase().includes(s));
+  if(st)d=d.filter(l=>l.status===st);
+  if(co)d=d.filter(l=>(l.country||'').toLowerCase().includes(co));
+  if(pr)d=d.filter(l=>(l.product||'').toLowerCase().includes(pr));
+  const lc=document.getElementById('lc'); if(lc)lc.textContent=d.length+' leads';
+  renderLeadsTable(d);
+}
+
+function renderLeadsTable(data){
+  const el=document.getElementById('ltbl'); if(!el)return;
+  if(!data.length){el.innerHTML=emptyBox('👥','No leads found','Add manually or upload a CSV/Excel file');return;}
+  el.innerHTML=`<div class="tbl-wrap" style="border:none"><table>
+    <thead><tr><th>Name</th><th>Company</th><th>Phone</th><th>Product</th><th>Qty</th><th>Country</th><th>Status</th><th></th></tr></thead>
+    <tbody>${data.map(l=>`<tr>
+      <td><span class="bold">${esc(l.name)}</span>${l.is_duplicate?'<span class="muted sm"> ⚠dup</span>':''}</td>
+      <td>${esc(l.company||'—')}</td>
+      <td style="${!l.phone_valid?'color:var(--danger)':''}">${esc(l.phone)}</td>
+      <td>${esc(l.product||'—')}</td><td>${esc(l.quantity||'—')}</td>
+      <td>${esc(l.country||'—')}</td>
+      <td>${badge(l.status)}</td>
+      <td><div class="row" style="gap:3px">
+        <button class="btn-ghost btn-icon btn-sm" onclick='openLeadForm(${JSON.stringify(l).replace(/'/g,"&#39;")})'>✏️</button>
+        <button class="btn-ghost btn-icon btn-sm" onclick="delLead('${l.id}','${esc(l.name)}')">🗑️</button>
+      </div></td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+
+function openLeadForm(lead){
+  const edit=!!lead; const v=lead||{name:'',company:'',phone:'',email:'',product:'',quantity:'',country:'',status:'New'};
+  openModal(`<div class="modal-title">${edit?'Edit':'Add'} Lead</div>
+    <div class="grid-2">
+      <div class="field" style="grid-column:1/-1"><label>Name *</label><input id="lf-n" value="${esc(v.name)}"></div>
+      <div class="field"><label>Company</label><input id="lf-c" value="${esc(v.company||'')}"></div>
+      <div class="field"><label>WhatsApp * (+country code)</label><input id="lf-p" value="${esc(v.phone)}" placeholder="+91XXXXXXXXXX"></div>
+      <div class="field"><label>Email</label><input id="lf-e" value="${esc(v.email||'')}"></div>
+      <div class="field"><label>Product</label><input id="lf-pr" value="${esc(v.product||'')}"></div>
+      <div class="field"><label>Quantity</label><input id="lf-q" value="${esc(v.quantity||'')}"></div>
+      <div class="field"><label>Country</label><input id="lf-ct" value="${esc(v.country||'')}"></div>
+      <div class="field"><label>Status</label><select id="lf-st">
+        ${['New','Sent','Delivered','Read','Interested','Not Interested','Follow Up','No Reply'].map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}
+      </select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveLead(${edit?`'${v.id}'`:'null'})">${edit?'Update':'Save'}</button>
+    </div>`);
+}
+
+async function saveLead(id){
+  const phone=norm(document.getElementById('lf-p').value);
+  const name=document.getElementById('lf-n').value.trim();
+  if(!name) return toast('Name required','','error');
+  if(!validPhone(phone)) return toast('Invalid phone','Use international format +XXXXXXXXXXXX','error');
+  const payload={name,company:document.getElementById('lf-c').value.trim(),phone,
+    email:document.getElementById('lf-e').value.trim(),product:document.getElementById('lf-pr').value.trim(),
+    quantity:document.getElementById('lf-q').value.trim(),country:document.getElementById('lf-ct').value.trim(),
+    status:document.getElementById('lf-st').value,phone_valid:true};
+  try{
+    if(id) await PATCH('/api/leads/'+id,payload); else await POST('/api/leads',payload);
+    toast(id?'Lead updated':'Lead added','','success'); closeModal(); await fetchLeads();
+  }catch(e){toast('Error',e.message,'error');}
+}
+
+async function delLead(id,name){
+  confirm$('Delete lead?',`"${name}" will be permanently removed.`,async()=>{
+    try{await DEL('/api/leads/'+id);toast('Deleted','','success');await fetchLeads();}
+    catch(e){toast('Error',e.message,'error');}
+  },true);
+}
+
+/* Upload CSV / Excel */
+function openUpload(){
+  openModal(`<div class="modal-title">Upload CSV / Excel</div>
+    <div class="modal-sub">Columns auto-mapped: Name, Company, Phone, Email, Product, Qty, Country</div>
+    <div id="up-body">
+      <label class="upload-zone" id="upz">
+        <div style="font-size:36px">📁</div>
+        <div class="bold" style="margin-top:8px">Click or drag & drop</div>
+        <div class="muted sm">Supports .csv and .xlsx / .xls files</div>
+        <input type="file" accept=".csv,.xlsx,.xls" onchange="handleFile(this.files[0])">
+      </label>
+    </div>`);
+  const z=document.getElementById('upz');
+  z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('drag');});
+  z.addEventListener('dragleave',()=>z.classList.remove('drag'));
+  z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('drag');handleFile(e.dataTransfer.files[0]);});
+}
+
+async function handleFile(file){
+  if(!file)return;
+  try{
+    let headers,data;
+    if(file.name.match(/\.xlsx?$/i)){({headers,data}=await parseExcel(file));}
+    else{({headers,data}=parseCSV(await file.text()));}
+    if(!data.length)return toast('Empty file','','error');
+    const map=mapHeaders(headers);
+    const leads=buildLeads(data,map);
+    const valid=leads.filter(l=>l.phone_valid);
+    document.getElementById('up-body').innerHTML=`
+      <p class="muted sm" style="margin-bottom:8px">${leads.length} rows — ${valid.length} valid, ${leads.length-valid.length} invalid (will skip)</p>
+      <div style="max-height:260px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm)">
+      <table style="font-size:12px"><thead><tr><th>Name</th><th>Phone</th><th>Product</th><th>Country</th><th>OK?</th></tr></thead>
+      <tbody>${leads.slice(0,80).map(l=>`<tr>
+        <td>${esc(l.name)}</td><td>${esc(l.phone)}</td><td>${esc(l.product)}</td><td>${esc(l.country)}</td>
+        <td>${l.phone_valid?'✅':'❌'}</td></tr>`).join('')}</tbody></table></div>
+      <div class="modal-foot">
+        <button class="btn-outline" onclick="openUpload()">← Back</button>
+        <button class="btn-primary" onclick="doImport()">Import ${valid.length} Leads</button>
+      </div>`;
+    window._importLeads = valid;
+  }catch(e){toast('Parse error',e.message,'error');}
+}
+
+async function doImport(){
+  try{
+    const r=await POST('/api/leads/bulk',{leads:window._importLeads});
+    toast('Import complete',r.inserted+' inserted of '+r.total,'success');
+    closeModal(); await fetchLeads();
+  }catch(e){toast('Import failed',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: TEMPLATES
+══════════════════════════════════════════════ */
+const SAMPLE={name:'Rohit Sharma',company:'Buygenix Solutions',product:'Cotton T-Shirts',quantity:'5000 units',country:'UAE',email:'rohit@example.com'};
+
+async function pgTemplates(){
+  document.getElementById('tb-actions').innerHTML=`<button class="btn-primary" onclick="openTplForm(null)">＋ New Template</button>`;
+  document.getElementById('page').innerHTML=`<div id="tpl-wrap">Loading…</div>`;
+  await loadTpls();
+}
+
+async function loadTpls(){
+  try{
+    const {templates}=await GET('/api/templates');
+    const el=document.getElementById('tpl-wrap');
+    if(!templates.length){el.innerHTML=emptyBox('📝','No templates yet','Create your first message template');return;}
+    el.innerHTML=`<div class="grid-3">${templates.map(t=>`
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+          <span class="bold">${esc(t.name)}</span><span class="badge b-new">${t.times_used||0} used</span>
+        </div>
+        <p class="muted sm" style="white-space:pre-wrap;max-height:78px;overflow:hidden">${esc(t.content)}</p>
+        <div class="row" style="justify-content:flex-end;margin-top:12px;gap:4px">
+          <button class="btn-ghost btn-sm" onclick='openTplForm(${JSON.stringify(t).replace(/'/g,"&#39;")})'>✏️ Edit</button>
+          <button class="btn-ghost btn-sm" onclick="delTpl('${t.id}','${esc(t.name)}')">🗑️</button>
+        </div>
+      </div>`).join('')}</div>`;
+  }catch(e){document.getElementById('tpl-wrap').innerHTML=errBox(e.message);}
+}
+
+function openTplForm(t){
+  const edit=!!t;
+  const def="Hi {{name}}\nI am from your company.\nWe have verified manufacturers and exporters of {{product}}.\nQuantity Required: {{qty}}\nCountry: {{country}}\nIf you're looking for suppliers, kindly let us know.\nThank you.";
+  openModal(`<div class="modal-title">${edit?'Edit':'New'} Template</div>
+    <div class="field"><label>Name</label><input id="tn" value="${esc(t?.name||'')}"></div>
+    <div class="field"><label>Message</label><textarea id="tc" rows="8" style="font-family:monospace;font-size:12.5px" oninput="tplPreview()">${esc(t?.content||def)}</textarea></div>
+    <div class="field"><label>Insert Variable</label>
+      <div class="row">${['name','company','product','qty','country','email'].map(v=>`<span class="chip" onclick="insVar('${v}')">{{${v}}}</span>`).join('')}</div>
+    </div>
+    <div class="field"><label>Live Preview</label><div class="wa-bubble" id="tp"></div></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveTpl(${edit?`'${t.id}'`:'null'})">${edit?'Update':'Save'}</button>
+    </div>`);
+  tplPreview();
+}
+function insVar(v){const ta=document.getElementById('tc');ta.value+=`{{${v}}}`;tplPreview();}
+function tplPreview(){const el=document.getElementById('tp');if(el)el.textContent=renderMsg(document.getElementById('tc')?.value||'',SAMPLE);}
+
+async function saveTpl(id){
+  const name=document.getElementById('tn').value.trim();
+  const content=document.getElementById('tc').value.trim();
+  if(!name||!content)return toast('Name and content required','','error');
+  try{
+    if(id) await PATCH('/api/templates/'+id,{name,content}); else await POST('/api/templates',{name,content});
+    toast(id?'Updated':'Created','','success'); closeModal(); await loadTpls();
+  }catch(e){toast('Error',e.message,'error');}
+}
+async function delTpl(id,name){
+  confirm$('Delete template?',`"${name}" will be removed.`,async()=>{
+    try{await DEL('/api/templates/'+id);toast('Deleted','','success');await loadTpls();}
+    catch(e){toast('Error',e.message,'error');}
+  },true);
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: CAMPAIGNS
+══════════════════════════════════════════════ */
+let _sse=null;
+
+async function pgCampaigns(){
+  document.getElementById('tb-actions').innerHTML=`<button class="btn-primary" onclick="openWizard()">＋ New Campaign</button>`;
+  document.getElementById('page').innerHTML=`<div id="camp-wrap">Loading…</div>`;
+  await loadCamps();
+}
+
+async function loadCamps(){
+  try{
+    const {campaigns}=await GET('/api/campaigns');
+    const el=document.getElementById('camp-wrap');
+    if(!campaigns.length){el.innerHTML=emptyBox('📤','No campaigns yet','Create a new campaign to start sending');return;}
+    el.innerHTML=campaigns.map(c=>`
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <div class="row" style="margin-bottom:6px"><span class="bold">${esc(c.name)}</span>${badge(c.status)}</div>
+            <div class="muted sm">${c.sent_count}/${c.total_leads} sent · ${c.failed_count} failed · ${c.skipped_count} skipped · ${fmtDT(c.created_at)}</div>
+            ${c.total_leads>0?`<div class="prog-bar" style="width:260px;margin-top:8px"><div class="prog-fill" style="width:${c.success_rate_pct||0}%"></div></div>`:''}
+          </div>
+          <div class="row">
+            ${(c.status==='Draft'||c.pending_count>0)&&c.status!=='Running'&&c.status!=='Paused'?`<button class="btn-primary btn-sm" onclick="startCamp('${c.id}','${esc(c.name)}')">🚀 Start</button>`:''}
+            ${c.status==='Running'?`<button class="btn-warn btn-sm" onclick="pauseCamp('${c.id}')">⏸ Pause</button>`:''}
+            ${c.status==='Paused'?`<button class="btn-primary btn-sm" onclick="resumeCamp('${c.id}','${esc(c.name)}')">▶ Resume</button>`:''}
+            ${['Running','Paused'].includes(c.status)?`<button class="btn-danger btn-sm" onclick="cancelCamp('${c.id}')">✕ Cancel</button>`:''}
+            <button class="btn-outline btn-sm" onclick="viewProgress('${c.id}','${esc(c.name)}')">📊 Progress</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){document.getElementById('camp-wrap').innerHTML=errBox(e.message);}
+}
+
+async function startCamp(id,name){
+  try{
+    const r=await POST('/api/campaigns/'+id+'/start');
+    toast('Sending started',r.message||'','success');
+    viewProgress(id,name);
+  }catch(e){toast('Error',e.message,'error');}
+}
+async function pauseCamp(id){
+  try{await POST('/api/campaigns/'+id+'/pause');toast('Paused','','warning');await loadCamps();}catch(e){toast('Error',e.message,'error');}
+}
+async function resumeCamp(id,name){
+  try{const r=await POST('/api/campaigns/'+id+'/resume');toast('Resumed','','success');viewProgress(id,name);}catch(e){toast('Error',e.message,'error');}
+}
+async function cancelCamp(id){
+  confirm$('Cancel campaign?','Remaining messages will not be sent.',async()=>{
+    try{await POST('/api/campaigns/'+id+'/cancel');toast('Cancelled','','warning');await loadCamps();}
+    catch(e){toast('Error',e.message,'error');}
+  },true);
+}
+
+function viewProgress(id,name){
+  if(_sse){_sse.close();_sse=null;}
+  document.getElementById('page').innerHTML=`
+    <div class="row" style="margin-bottom:16px">
+      <button class="btn-outline btn-sm" onclick="closeProg()">← Back</button>
+      <span class="bold">${esc(name)}</span>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div class="muted sm" id="prog-sum">Connecting to live feed…</div>
+        <div class="row">
+          <button class="btn-warn btn-sm" onclick="pauseCamp('${id}')">⏸ Pause</button>
+          <button class="btn-primary btn-sm" onclick="resumeCamp('${id}','${esc(name)}')">▶ Resume</button>
+          <button class="btn-danger btn-sm" onclick="cancelCamp('${id}')">✕ Cancel</button>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="pbar" style="width:0%"></div></div>
+      <div class="muted sm" style="margin-top:5px" id="ppct">0%</div>
+    </div>
+    <div class="card"><div class="bold sm" style="margin-bottom:10px">📡 Live Log</div>
+      <div class="log-stream" id="llog">Waiting for events…</div>
+    </div>`;
+
+  const logEl=document.getElementById('llog');
+  function addLog(cls,txt){
+    const d=document.createElement('div');d.className=cls;d.textContent=txt;
+    logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;
+  }
+
+  if(!BACKEND){addLog('l-err','⛔ Backend URL not set — go to Settings first');return;}
+
+  _sse=new EventSource(BACKEND+'/api/campaigns/'+id+'/progress');
+  _sse.onmessage=e=>{
+    try{
+      const ev=JSON.parse(e.data);
+      const sum=document.getElementById('prog-sum');
+      const bar=document.getElementById('pbar');
+      const pct=document.getElementById('ppct');
+      if(ev.event==='sent'){
+        addLog('l-ok',`✅ [${ev.index}/${ev.total}] ${ev.leadName} (${ev.phone}) — sent`);
+        const p=(ev.sent+ev.failed+ev.skipped)/ev.total*100;
+        if(bar)bar.style.width=Math.round(p)+'%';
+        if(pct)pct.textContent=Math.round(p)+'%';
+        if(sum)sum.textContent=`${ev.sent} sent · ${ev.failed} failed · ${ev.skipped} skipped`;
+      }else if(ev.event==='failed'){
+        addLog('l-err',`❌ [${ev.index}/${ev.total}] ${ev.leadName} — ${ev.error}`);
+      }else if(ev.event==='skipped'){
+        addLog('l-skip',`⏭ Skipped ${ev.leadName} (invalid phone)`);
+      }else if(ev.event==='waiting'){
+        addLog('l-wait',`⏱ Waiting ${ev.delay_sec}s → next: ${ev.next_lead}`);
+      }else if(ev.event==='completed'){
+        addLog('l-ok',`🎉 Done — ${ev.sent} sent, ${ev.failed} failed, ${ev.skipped} skipped`);
+        if(bar)bar.style.width='100%'; if(pct)pct.textContent='100%';
+        _sse.close();_sse=null;
+      }else if(ev.event==='paused'){addLog('l-wait','⏸ Paused');}
+      else if(ev.event==='resumed'){addLog('l-info','▶ Resumed');}
+      else if(ev.event==='cancelled'){addLog('l-err','✕ Cancelled');_sse.close();_sse=null;}
+    }catch{}
+  };
+  _sse.onerror=()=>addLog('l-err','⚠ Connection lost — refresh to reconnect');
+}
+
+function closeProg(){ if(_sse){_sse.close();_sse=null;} pgCampaigns(); }
+
+/* Wizard */
+let _wiz={tid:'',lids:new Set()};
+async function openWizard(){
+  _wiz={tid:'',lids:new Set()};
+  const [tR,lR,sR]=await Promise.all([
+    GET('/api/templates').catch(()=>({templates:[]})),
+    GET('/api/leads').catch(()=>({leads:[]})),
+    GET('/api/settings').catch(()=>({settings:{}})),
+  ]);
+  const tpls=tR.templates||[];
+  const leads=(lR.leads||[]).filter(l=>['New','Follow Up','No Reply'].includes(l.status));
+  const s=sR.settings||{};
+  openModal(`<div class="modal-title">New Campaign</div>
+    <div class="field"><label>Campaign Name</label><input id="wn" placeholder="e.g. UAE Buyers — July 2026"></div>
+    <div class="grid-2">
+      <div class="field"><label>Template</label><select id="wt" onchange="wizPrev()">
+        <option value="">Select template</option>
+        ${tpls.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}
+      </select></div>
+      <div></div>
+      <div class="field"><label>Min Delay (seconds)</label><input type="number" id="wmin" value="${s.min_delay_sec||20}"></div>
+      <div class="field"><label>Max Delay (seconds)</label><input type="number" id="wmax" value="${s.max_delay_sec||60}"></div>
+    </div>
+    <div class="field">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <label style="margin:0">Leads — ${leads.length} eligible (New / Follow Up / No Reply)</label>
+        <button class="btn-ghost btn-sm" onclick="wizAll()">Select all</button>
+      </div>
+      <div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px" id="wlst">
+        ${!leads.length?'<p class="muted sm" style="padding:8px">No eligible leads</p>':
+          leads.map(l=>`<label style="display:flex;align-items:center;gap:8px;padding:7px;border-radius:6px;cursor:pointer;font-size:13px">
+            <input type="checkbox" class="wlcb" value="${l.id}" onchange="wizChk('${l.id}',this.checked)">
+            <span>${esc(l.name)}</span><span class="muted sm">— ${esc(l.company||'')} (${esc(l.country||'—')})</span>
+          </label>`).join('')}
+      </div>
+      <div class="muted sm" id="wsel" style="margin-top:6px">0 selected</div>
+    </div>
+    <div id="wprev-wrap" style="display:none" class="field"><label>Preview</label><div class="wa-bubble" id="wprev"></div></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="createCamp()">🚀 Create & Start</button>
+    </div>`);
+}
+
+function wizChk(id,on){ on?_wiz.lids.add(id):_wiz.lids.delete(id); const el=document.getElementById('wsel'); if(el)el.textContent=_wiz.lids.size+' selected'; }
+function wizAll(){ document.querySelectorAll('.wlcb').forEach(cb=>{cb.checked=true;_wiz.lids.add(cb.value);}); const el=document.getElementById('wsel'); if(el)el.textContent=_wiz.lids.size+' selected'; }
+async function wizPrev(){
+  _wiz.tid=document.getElementById('wt')?.value||'';
+  const w=document.getElementById('wprev-wrap'); const p=document.getElementById('wprev');
+  if(!_wiz.tid||!w||!p){if(w)w.style.display='none';return;}
+  try{const {templates}=await GET('/api/templates');const t=templates.find(x=>x.id===_wiz.tid);if(!t){w.style.display='none';return;}w.style.display='';p.textContent=renderMsg(t.content,SAMPLE);}catch{}
+}
+
+async function createCamp(){
+  const name=document.getElementById('wn')?.value.trim();
+  _wiz.tid=document.getElementById('wt')?.value;
+  if(!name||!_wiz.tid||!_wiz.lids.size) return toast('Missing info','Name, template and at least one lead required','warning');
+  try{
+    const r=await POST('/api/campaigns',{name,template_id:_wiz.tid,lead_ids:[..._wiz.lids],
+      min_delay_sec:parseInt(document.getElementById('wmin')?.value)||20,
+      max_delay_sec:parseInt(document.getElementById('wmax')?.value)||60});
+    toast('Campaign created',r.queued+' messages queued','success');
+    closeModal();
+    viewProgress(r.campaign.id,name);
+    await POST('/api/campaigns/'+r.campaign.id+'/start');
+  }catch(e){toast('Error',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: HISTORY
+══════════════════════════════════════════════ */
+async function pgHistory(){
+  document.getElementById('tb-actions').innerHTML=`
+    <div class="search-wrap"><span class="search-ic">🔎</span><input id="hs" placeholder="Search…" oninput="loadHist()"></div>
+    <button class="btn-outline" onclick="exportHist()">⬇ Export CSV</button>`;
+  document.getElementById('page').innerHTML=`<div id="hist">Loading…</div>`;
+  await loadHist();
+}
+
+async function loadHist(){
+  const s=document.getElementById('hs')?.value||'';
+  try{
+    const {logs}=await GET('/api/logs?limit=300'+(s?'&search='+encodeURIComponent(s):''));
+    const el=document.getElementById('hist');
+    if(!logs.length){el.innerHTML=emptyBox('🕐','No message history','Sent campaigns will appear here');return;}
+    el.innerHTML=`<div class="tbl-wrap"><table>
+      <thead><tr><th>Lead</th><th>Phone</th><th>Message</th><th>Status</th><th>Sent At</th><th>Error</th></tr></thead>
+      <tbody>${logs.map(l=>`<tr>
+        <td class="bold">${esc(l.lead_name||'—')}</td>
+        <td>${esc(l.phone||'—')}</td>
+        <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" class="muted sm">${esc(l.message_body||'—')}</td>
+        <td>${badge(l.status)}</td>
+        <td class="muted sm">${fmtDT(l.sent_at)}</td>
+        <td class="sm" style="color:var(--danger)">${esc(l.error_msg||'')}</td>
+      </tr>`).join('')}</tbody></table></div>`;
+  }catch(e){document.getElementById('hist').innerHTML=errBox(e.message);}
+}
+
+function exportHist(){
+  const rows=document.querySelectorAll('#hist tbody tr');
+  if(!rows.length)return toast('No data','Nothing to export','warning');
+  const csv=['Lead,Phone,Message,Status,SentAt,Error'];
+  rows.forEach(r=>csv.push([...r.querySelectorAll('td')].map(td=>`"${td.textContent.trim().replace(/"/g,'""')}"`).join(',')));
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv.join('\n')],{type:'text/csv'})); a.download='message-logs.csv'; a.click();
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: ANALYTICS
+══════════════════════════════════════════════ */
+async function pgAnalytics(){
+  document.getElementById('page').innerHTML=`<div id="ana">Loading…</div>`;
+  try{
+    const [sR,cR]=await Promise.all([GET('/api/stats'),GET('/api/campaigns')]);
+    const s=sR.stats||{}; const camps=cR.campaigns||[];
+    const ir=s.total_leads>0?Math.round((s.interested||0)/s.total_leads*100):0;
+    const rr=s.total_sent>0?Math.round((s.interested||0)/s.total_sent*100):0;
+    document.getElementById('ana').innerHTML=`
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--primary-soft);color:var(--primary-d)">📈</div><div><div class="stat-val">${ir}%</div><div class="stat-lbl">Interest Rate</div></div></div>
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--blue-soft);color:var(--blue)">💬</div><div><div class="stat-val">${rr}%</div><div class="stat-lbl">Response Rate</div></div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Campaign Performance</div>
+        ${!camps.length?'<p class="muted sm">No campaigns yet</p>':
+        `<div class="tbl-wrap"><table>
+          <thead><tr><th>Name</th><th>Status</th><th>Total</th><th>Sent</th><th>Failed</th><th>Skipped</th><th>Success %</th><th>Created</th></tr></thead>
+          <tbody>${camps.map(c=>`<tr><td class="bold">${esc(c.name)}</td><td>${badge(c.status)}</td>
+            <td>${c.total_leads}</td><td>${c.sent_count}</td><td>${c.failed_count}</td><td>${c.skipped_count}</td>
+            <td>${c.success_rate_pct||0}%</td><td class="muted sm">${fmtDT(c.created_at)}</td></tr>`).join('')}
+          </tbody></table></div>`}
+      </div>`;
+  }catch(e){document.getElementById('ana').innerHTML=errBox(e.message);}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: SETTINGS
+══════════════════════════════════════════════ */
+async function pgSettings(){
+  let s={};
+  try{const r=await GET('/api/settings');s=r.settings||{};}catch{}
+  document.getElementById('page').innerHTML=`
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">🔗 Backend Connection</div>
+        <div class="field"><label>Render Backend URL</label><input id="su" value="${esc(BACKEND)}" placeholder="https://your-app.onrender.com"></div>
+        <div class="field"><label>API Secret</label><input id="ss" type="password" value="${esc(SECRET)}" placeholder="Match RENDER API_SECRET env var"></div>
+        <button class="btn-primary" onclick="saveConn()">Save & Test</button>
+        <div id="conn-res" style="margin-top:10px"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">📱 WhatsApp</div>
+        <div id="wa-sett">Checking…</div>
+        <hr class="sep">
+        <button class="btn-danger btn-sm" onclick="doLogout()">Logout / Reset QR</button>
+      </div>
+      <div class="card">
+        <div class="card-title">🏢 Company Profile</div>
+        <div class="field"><label>Company Name</label><input id="sc" value="${esc(s.company_name||'')}"></div>
+        <div class="field"><label>Sender Name</label><input id="sn" value="${esc(s.sender_name||'')}"></div>
+        <button class="btn-primary" onclick="saveProfile()">Save Profile</button>
+      </div>
+      <div class="card">
+        <div class="card-title">⏱ Message Delays</div>
+        <p class="muted sm" style="margin-bottom:12px">Keep 20–60s for safe sending (100–500 msgs/day).</p>
+        <div class="grid-2">
+          <div class="field"><label>Min (seconds)</label><input type="number" id="sdmin" value="${s.min_delay_sec||20}"></div>
+          <div class="field"><label>Max (seconds)</label><input type="number" id="sdmax" value="${s.max_delay_sec||60}"></div>
+        </div>
+        <button class="btn-primary" onclick="saveDelays()">Save Delays</button>
+      </div>
+    </div>`;
+  try{
+    const w=await GET('/api/status');
+    document.getElementById('wa-sett').innerHTML=w.connected
+      ?`<div style="color:var(--primary-d);font-weight:700"><span class="dot dot-green"></span>Connected</div><p class="muted sm" style="margin-top:6px">Ready to send campaigns.</p>`
+      :w.qr
+      ?`<div style="color:var(--warn);font-weight:700"><span class="dot dot-yellow"></span>Waiting for QR</div><img src="${w.qr}" style="width:150px;margin-top:10px;border-radius:8px">`
+      :`<div style="color:var(--danger);font-weight:700"><span class="dot dot-red"></span>Disconnected</div>`;
+  }catch(e){document.getElementById('wa-sett').innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;}
+}
+
+async function saveConn(){
+  const url=document.getElementById('su').value.trim().replace(/\/$/,'');
+  const secret=document.getElementById('ss').value.trim();
+  localStorage.setItem('crm_backend_url',url);
+  localStorage.setItem('crm_api_secret',secret);
+  BACKEND=url; SECRET=secret;
+  const el=document.getElementById('conn-res');
+  el.innerHTML='<span class="muted sm">Testing…</span>';
+  try{
+    const r=await fetch(url+'/api/status',{headers:{'x-api-secret':secret}});
+    const d=await r.json();
+    el.innerHTML=`<span style="color:var(--primary-d)">✅ Connected — WhatsApp: ${d.connected?'ready':'waiting for QR'}</span>`;
+    toast('Saved','Backend URL saved successfully','success');
+  }catch(e){el.innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;}
+}
+async function saveProfile(){
+  try{await PATCH('/api/settings',{company_name:document.getElementById('sc').value.trim(),sender_name:document.getElementById('sn').value.trim()});toast('Saved','','success');}
+  catch(e){toast('Error',e.message,'error');}
+}
+async function saveDelays(){
+  try{await PATCH('/api/settings',{min_delay_sec:+document.getElementById('sdmin').value||20,max_delay_sec:+document.getElementById('sdmax').value||60});toast('Saved','','success');}
+  catch(e){toast('Error',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════ */
+function emptyBox(ico,h,p){ return `<div class="empty"><div class="empty-ico">${ico}</div><h3>${esc(h)}</h3><p>${esc(p)}</p></div>`; }
+function errBox(msg){ return `<div class="empty"><div class="empty-ico">⛔</div><h3>Error</h3><p>${esc(msg)}</p></div>`; }
+
+/* ══════════════════════════════════════════════
+   BOOT
+══════════════════════════════════════════════ */
+renderNav();
+go('dashboard');
+pollWA();
+if(!BACKEND) setTimeout(()=>toast('Setup required','Go to Settings → enter your Render backend URL','warning'),1000);
+</script>
+</body>
+</html>
