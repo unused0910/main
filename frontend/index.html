@@ -459,19 +459,29 @@ async function doLogout(){
    PAGE: LEADS
 ══════════════════════════════════════════════ */
 let _leads=[];
+let _selLeads=new Set();
+
 async function pgLeads(){
+  _selLeads=new Set();
   document.getElementById('tb-actions').innerHTML=`
     <button class="btn-outline" onclick="openUpload()">📁 Upload CSV/Excel</button>
     <button class="btn-primary" onclick="openLeadForm(null)">＋ Add Lead</button>`;
   document.getElementById('page').innerHTML=`
-    <div class="row" style="margin-bottom:14px">
-      <div class="search-wrap"><span class="search-ic">🔎</span><input id="ls" placeholder="Search…" oninput="filterLeads()"></div>
-      <select id="lf-st" onchange="filterLeads()"><option value="">All Status</option>
-        ${['New','Sent','Delivered','Read','Interested','Not Interested','Follow Up','No Reply'].map(s=>`<option>${s}</option>`).join('')}
-      </select>
-      <input id="lf-co" placeholder="Country" style="width:110px" oninput="filterLeads()">
-      <input id="lf-pr" placeholder="Product"  style="width:110px" oninput="filterLeads()">
-      <span class="muted sm" id="lc"></span>
+    <div class="row" style="margin-bottom:14px;justify-content:space-between">
+      <div class="row">
+        <div class="search-wrap"><span class="search-ic">🔎</span><input id="ls" placeholder="Search…" oninput="filterLeads()"></div>
+        <select id="lf-st" onchange="filterLeads()"><option value="">All Status</option>
+          ${['New','Sent','Delivered','Read','Interested','Not Interested','Follow Up','No Reply'].map(s=>`<option>${s}</option>`).join('')}
+        </select>
+        <input id="lf-co" placeholder="Country" style="width:110px" oninput="filterLeads()">
+        <input id="lf-pr" placeholder="Product"  style="width:110px" oninput="filterLeads()">
+        <span class="muted sm" id="lc"></span>
+      </div>
+      <div class="row" id="bulk-bar" style="display:none">
+        <span class="muted sm" id="sel-count">0 selected</span>
+        <button class="btn-danger btn-sm" onclick="bulkDelLeads()">🗑️ Delete Selected</button>
+        <button class="btn-outline btn-sm" onclick="clearSelLeads()">✕ Clear</button>
+      </div>
     </div>
     <div class="card" style="padding:0" id="ltbl">Loading…</div>`;
   await fetchLeads();
@@ -497,12 +507,56 @@ function filterLeads(){
   renderLeadsTable(d);
 }
 
+function toggleLeadSel(id,checked){
+  if(checked) _selLeads.add(id); else _selLeads.delete(id);
+  const bar=document.getElementById('bulk-bar');
+  const cnt=document.getElementById('sel-count');
+  const allCb=document.getElementById('chk-all-leads');
+  if(bar) bar.style.display=_selLeads.size>0?'flex':'none';
+  if(cnt) cnt.textContent=_selLeads.size+' selected';
+  if(allCb) allCb.indeterminate=_selLeads.size>0 && _selLeads.size<_leads.length;
+}
+
+function toggleAllLeads(checked){
+  const visibleIds=[...document.querySelectorAll('.lead-chk')].map(c=>c.value);
+  visibleIds.forEach(id=>{if(checked)_selLeads.add(id);else _selLeads.delete(id);});
+  document.querySelectorAll('.lead-chk').forEach(c=>c.checked=checked);
+  const bar=document.getElementById('bulk-bar');
+  const cnt=document.getElementById('sel-count');
+  if(bar) bar.style.display=_selLeads.size>0?'flex':'none';
+  if(cnt) cnt.textContent=_selLeads.size+' selected';
+}
+
+function clearSelLeads(){
+  _selLeads=new Set();
+  document.querySelectorAll('.lead-chk').forEach(c=>c.checked=false);
+  const bar=document.getElementById('bulk-bar');
+  if(bar) bar.style.display='none';
+}
+
+async function bulkDelLeads(){
+  if(!_selLeads.size) return;
+  confirm$('Delete '+_selLeads.size+' leads?','This cannot be undone.',async()=>{
+    let done=0;
+    for(const id of _selLeads){
+      try{ await DEL('/api/leads/'+id); done++; }catch{}
+    }
+    toast(done+' leads deleted','','success');
+    _selLeads=new Set();
+    await fetchLeads();
+  },true);
+}
+
 function renderLeadsTable(data){
   const el=document.getElementById('ltbl'); if(!el)return;
   if(!data.length){el.innerHTML=emptyBox('👥','No leads found','Add manually or upload a CSV/Excel file');return;}
   el.innerHTML=`<div class="tbl-wrap" style="border:none"><table>
-    <thead><tr><th>Name</th><th>Company</th><th>Phone</th><th>Product</th><th>Qty</th><th>Country</th><th>Status</th><th></th></tr></thead>
+    <thead><tr>
+      <th><input type="checkbox" id="chk-all-leads" onchange="toggleAllLeads(this.checked)" style="width:16px;height:16px"></th>
+      <th>Name</th><th>Company</th><th>Phone</th><th>Product</th><th>Qty</th><th>Country</th><th>Status</th><th>Actions</th>
+    </tr></thead>
     <tbody>${data.map(l=>`<tr>
+      <td><input type="checkbox" class="lead-chk" value="${l.id}" ${_selLeads.has(l.id)?'checked':''} onchange="toggleLeadSel('${l.id}',this.checked)" style="width:16px;height:16px"></td>
       <td><span class="bold">${esc(l.name)}</span>${l.is_duplicate?'<span class="muted sm"> ⚠dup</span>':''}</td>
       <td>${esc(l.company||'—')}</td>
       <td style="${!l.phone_valid?'color:var(--danger)':''}">${esc(l.phone)}</td>
@@ -614,8 +668,10 @@ async function doImport(){
    PAGE: TEMPLATES
 ══════════════════════════════════════════════ */
 const SAMPLE={name:'Rohit Sharma',company:'Buygenix Solutions',product:'Cotton T-Shirts',quantity:'5000 units',country:'UAE',email:'rohit@example.com'};
+let _selTpls=new Set();
 
 async function pgTemplates(){
+  _selTpls=new Set();
   document.getElementById('tb-actions').innerHTML=`<button class="btn-primary" onclick="openTplForm(null)">＋ New Template</button>`;
   document.getElementById('page').innerHTML=`<div id="tpl-wrap">Loading…</div>`;
   await loadTpls();
@@ -626,18 +682,65 @@ async function loadTpls(){
     const {templates}=await GET('/api/templates');
     const el=document.getElementById('tpl-wrap');
     if(!templates.length){el.innerHTML=emptyBox('📝','No templates yet','Create your first message template');return;}
-    el.innerHTML=`<div class="grid-3">${templates.map(t=>`
-      <div class="card">
-        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
-          <span class="bold">${esc(t.name)}</span><span class="badge b-new">${t.times_used||0} used</span>
+    el.innerHTML=`
+      <div class="row" style="margin-bottom:14px;justify-content:space-between">
+        <div class="row">
+          <input type="checkbox" id="chk-all-tpls" style="width:16px;height:16px" onchange="toggleAllTpls(this.checked,${JSON.stringify(templates.map(t=>t.id))})">
+          <label style="margin:0;color:var(--muted);cursor:pointer" for="chk-all-tpls">Select All</label>
         </div>
-        <p class="muted sm" style="white-space:pre-wrap;max-height:78px;overflow:hidden">${esc(t.content)}</p>
-        <div class="row" style="justify-content:flex-end;margin-top:12px;gap:4px">
-          <button class="btn-ghost btn-sm" onclick='openTplForm(${JSON.stringify(t).replace(/'/g,"&#39;")})'>✏️ Edit</button>
-          <button class="btn-ghost btn-sm" onclick="delTpl('${t.id}','${esc(t.name)}')">🗑️</button>
+        <div class="row" id="tpl-bulk-bar" style="display:none">
+          <span class="muted sm" id="tpl-sel-count">0 selected</span>
+          <button class="btn-danger btn-sm" onclick="bulkDelTpls()">🗑️ Delete Selected</button>
+          <button class="btn-outline btn-sm" onclick="clearSelTpls()">✕ Clear</button>
         </div>
-      </div>`).join('')}</div>`;
+      </div>
+      <div class="grid-3">${templates.map(t=>`
+        <div class="card" style="position:relative">
+          <div style="position:absolute;top:12px;left:12px">
+            <input type="checkbox" class="tpl-chk" value="${t.id}" style="width:16px;height:16px" onchange="toggleTplSel('${t.id}',this.checked)">
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;padding-left:24px">
+            <span class="bold">${esc(t.name)}</span><span class="badge b-new">${t.times_used||0} used</span>
+          </div>
+          <p class="muted sm" style="white-space:pre-wrap;max-height:78px;overflow:hidden">${esc(t.content)}</p>
+          <div class="row" style="justify-content:flex-end;margin-top:12px;gap:4px">
+            <button class="btn-ghost btn-sm" onclick='openTplForm(${JSON.stringify(t).replace(/'/g,"&#39;")})'>✏️ Edit</button>
+            <button class="btn-ghost btn-sm" onclick="delTpl('${t.id}','${esc(t.name)}')">🗑️</button>
+          </div>
+        </div>`).join('')}</div>`;
   }catch(e){document.getElementById('tpl-wrap').innerHTML=errBox(e.message);}
+}
+
+function toggleTplSel(id,checked){
+  if(checked)_selTpls.add(id);else _selTpls.delete(id);
+  const bar=document.getElementById('tpl-bulk-bar');
+  const cnt=document.getElementById('tpl-sel-count');
+  if(bar)bar.style.display=_selTpls.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selTpls.size+' selected';
+}
+function toggleAllTpls(checked,ids){
+  ids.forEach(id=>{if(checked)_selTpls.add(id);else _selTpls.delete(id);});
+  document.querySelectorAll('.tpl-chk').forEach(c=>c.checked=checked);
+  const bar=document.getElementById('tpl-bulk-bar');
+  const cnt=document.getElementById('tpl-sel-count');
+  if(bar)bar.style.display=_selTpls.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selTpls.size+' selected';
+}
+function clearSelTpls(){
+  _selTpls=new Set();
+  document.querySelectorAll('.tpl-chk').forEach(c=>c.checked=false);
+  const bar=document.getElementById('tpl-bulk-bar');
+  if(bar)bar.style.display='none';
+}
+async function bulkDelTpls(){
+  if(!_selTpls.size)return;
+  confirm$('Delete '+_selTpls.size+' templates?','This cannot be undone.',async()=>{
+    let done=0;
+    for(const id of _selTpls){try{await DEL('/api/templates/'+id);done++;}catch{}}
+    toast(done+' templates deleted','','success');
+    _selTpls=new Set();
+    await loadTpls();
+  },true);
 }
 
 function openTplForm(t){
@@ -691,13 +794,29 @@ async function loadCamps(){
     const {campaigns}=await GET('/api/campaigns');
     const el=document.getElementById('camp-wrap');
     if(!campaigns.length){el.innerHTML=emptyBox('📤','No campaigns yet','Create a new campaign to start sending');return;}
-    el.innerHTML=campaigns.map(c=>`
+    let _selCamps=new Set();
+    el.innerHTML=`
+      <div class="row" style="margin-bottom:12px;justify-content:space-between">
+        <div class="row">
+          <input type="checkbox" id="chk-all-camps" style="width:16px;height:16px" onchange="toggleAllCamps(this.checked)">
+          <label style="margin:0;color:var(--muted);cursor:pointer" for="chk-all-camps">Select All</label>
+        </div>
+        <div class="row" id="camp-bulk-bar" style="display:none">
+          <span class="muted sm" id="camp-sel-count">0 selected</span>
+          <button class="btn-danger btn-sm" onclick="bulkDelCamps()">🗑️ Delete Selected</button>
+          <button class="btn-outline btn-sm" onclick="clearSelCamps()">✕ Clear</button>
+        </div>
+      </div>
+      ${campaigns.map(c=>`
       <div class="card" style="margin-bottom:12px">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
-          <div>
-            <div class="row" style="margin-bottom:6px"><span class="bold">${esc(c.name)}</span>${badge(c.status)}</div>
-            <div class="muted sm">${c.sent_count}/${c.total_leads} sent · ${c.failed_count} failed · ${c.skipped_count} skipped · ${fmtDT(c.created_at)}</div>
-            ${c.total_leads>0?`<div class="prog-bar" style="width:260px;margin-top:8px"><div class="prog-fill" style="width:${c.success_rate_pct||0}%"></div></div>`:''}
+          <div class="row" style="align-items:flex-start;gap:10px;flex:1">
+            <input type="checkbox" class="camp-chk" value="${c.id}" style="width:16px;height:16px;margin-top:4px" onchange="toggleCampSel('${c.id}',this.checked)">
+            <div>
+              <div class="row" style="margin-bottom:6px"><span class="bold">${esc(c.name)}</span>${badge(c.status)}</div>
+              <div class="muted sm">${c.sent_count}/${c.total_leads} sent · ${c.failed_count} failed · ${c.skipped_count} skipped · ${fmtDT(c.created_at)}</div>
+              ${c.total_leads>0?`<div class="prog-bar" style="width:260px;margin-top:8px"><div class="prog-fill" style="width:${c.success_rate_pct||0}%"></div></div>`:''}
+            </div>
           </div>
           <div class="row">
             ${(c.status==='Draft'||c.pending_count>0)&&c.status!=='Running'&&c.status!=='Paused'?`<button class="btn-primary btn-sm" onclick="startCamp('${c.id}','${esc(c.name)}')">🚀 Start</button>`:''}
@@ -705,10 +824,54 @@ async function loadCamps(){
             ${c.status==='Paused'?`<button class="btn-primary btn-sm" onclick="resumeCamp('${c.id}','${esc(c.name)}')">▶ Resume</button>`:''}
             ${['Running','Paused'].includes(c.status)?`<button class="btn-danger btn-sm" onclick="cancelCamp('${c.id}')">✕ Cancel</button>`:''}
             <button class="btn-outline btn-sm" onclick="viewProgress('${c.id}','${esc(c.name)}')">📊 Progress</button>
+            <button class="btn-ghost btn-icon btn-sm" onclick="delCamp('${c.id}','${esc(c.name)}')">🗑️</button>
           </div>
         </div>
-      </div>`).join('');
+      </div>`).join('')}`;
+
+    window._campIds=campaigns.map(c=>c.id);
   }catch(e){document.getElementById('camp-wrap').innerHTML=errBox(e.message);}
+}
+
+function toggleCampSel(id,checked){
+  const s=window._selCampsSet||(window._selCampsSet=new Set());
+  if(checked)s.add(id);else s.delete(id);
+  const bar=document.getElementById('camp-bulk-bar');
+  const cnt=document.getElementById('camp-sel-count');
+  if(bar)bar.style.display=s.size>0?'flex':'none';
+  if(cnt)cnt.textContent=s.size+' selected';
+}
+function toggleAllCamps(checked){
+  window._selCampsSet=new Set();
+  const s=window._selCampsSet;
+  document.querySelectorAll('.camp-chk').forEach(c=>{c.checked=checked;if(checked)s.add(c.value);});
+  const bar=document.getElementById('camp-bulk-bar');
+  const cnt=document.getElementById('camp-sel-count');
+  if(bar)bar.style.display=s.size>0?'flex':'none';
+  if(cnt)cnt.textContent=s.size+' selected';
+}
+function clearSelCamps(){
+  window._selCampsSet=new Set();
+  document.querySelectorAll('.camp-chk').forEach(c=>c.checked=false);
+  const bar=document.getElementById('camp-bulk-bar');
+  if(bar)bar.style.display='none';
+}
+async function bulkDelCamps(){
+  const s=window._selCampsSet;
+  if(!s||!s.size)return;
+  confirm$('Delete '+s.size+' campaigns?','All queue data for these campaigns will be deleted.',async()=>{
+    let done=0;
+    for(const id of s){try{await DEL('/api/campaigns/'+id);done++;}catch{}}
+    toast(done+' campaigns deleted','','success');
+    window._selCampsSet=new Set();
+    await loadCamps();
+  },true);
+}
+async function delCamp(id,name){
+  confirm$('Delete campaign?',`"${name}" and all its queue data will be removed.`,async()=>{
+    try{await DEL('/api/campaigns/'+id);toast('Deleted','','success');await loadCamps();}
+    catch(e){toast('Error',e.message,'error');}
+  },true);
 }
 
 async function startCamp(id,name){
@@ -866,7 +1029,10 @@ async function createCamp(){
 /* ══════════════════════════════════════════════
    PAGE: HISTORY
 ══════════════════════════════════════════════ */
+let _selLogs=new Set();
+
 async function pgHistory(){
+  _selLogs=new Set();
   document.getElementById('tb-actions').innerHTML=`
     <div class="search-wrap"><span class="search-ic">🔎</span><input id="hs" placeholder="Search…" oninput="loadHist()"></div>
     <button class="btn-outline" onclick="exportHist()">⬇ Export CSV</button>`;
@@ -876,21 +1042,77 @@ async function pgHistory(){
 
 async function loadHist(){
   const s=document.getElementById('hs')?.value||'';
+  _selLogs=new Set();
   try{
     const {logs}=await GET('/api/logs?limit=300'+(s?'&search='+encodeURIComponent(s):''));
     const el=document.getElementById('hist');
     if(!logs.length){el.innerHTML=emptyBox('🕐','No message history','Sent campaigns will appear here');return;}
-    el.innerHTML=`<div class="tbl-wrap"><table>
-      <thead><tr><th>Lead</th><th>Phone</th><th>Message</th><th>Status</th><th>Sent At</th><th>Error</th></tr></thead>
+    el.innerHTML=`
+      <div class="row" style="margin-bottom:12px;justify-content:space-between">
+        <div class="row">
+          <input type="checkbox" id="chk-all-logs" style="width:16px;height:16px" onchange="toggleAllLogs(this.checked,${JSON.stringify(logs.map(l=>l.id))})">
+          <label style="margin:0;color:var(--muted);cursor:pointer" for="chk-all-logs">Select All</label>
+        </div>
+        <div class="row" id="log-bulk-bar" style="display:none">
+          <span class="muted sm" id="log-sel-count">0 selected</span>
+          <button class="btn-danger btn-sm" onclick="bulkDelLogs()">🗑️ Delete Selected</button>
+          <button class="btn-outline btn-sm" onclick="clearSelLogs()">✕ Clear</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table>
+      <thead><tr>
+        <th></th><th>Lead</th><th>Phone</th><th>Message</th><th>Status</th><th>Sent At</th><th>Error</th><th></th>
+      </tr></thead>
       <tbody>${logs.map(l=>`<tr>
+        <td><input type="checkbox" class="log-chk" value="${l.id}" style="width:16px;height:16px" onchange="toggleLogSel('${l.id}',this.checked)"></td>
         <td class="bold">${esc(l.lead_name||'—')}</td>
         <td>${esc(l.phone||'—')}</td>
         <td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" class="muted sm">${esc(l.message_body||'—')}</td>
         <td>${badge(l.status)}</td>
         <td class="muted sm">${fmtDT(l.sent_at)}</td>
         <td class="sm" style="color:var(--danger)">${esc(l.error_msg||'')}</td>
+        <td><button class="btn-ghost btn-icon btn-sm" onclick="delLog('${l.id}')">🗑️</button></td>
       </tr>`).join('')}</tbody></table></div>`;
   }catch(e){document.getElementById('hist').innerHTML=errBox(e.message);}
+}
+
+function toggleLogSel(id,checked){
+  if(checked)_selLogs.add(id);else _selLogs.delete(id);
+  const bar=document.getElementById('log-bulk-bar');
+  const cnt=document.getElementById('log-sel-count');
+  if(bar)bar.style.display=_selLogs.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selLogs.size+' selected';
+}
+function toggleAllLogs(checked,ids){
+  _selLogs=new Set();
+  if(checked)ids.forEach(id=>_selLogs.add(id));
+  document.querySelectorAll('.log-chk').forEach(c=>c.checked=checked);
+  const bar=document.getElementById('log-bulk-bar');
+  const cnt=document.getElementById('log-sel-count');
+  if(bar)bar.style.display=_selLogs.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selLogs.size+' selected';
+}
+function clearSelLogs(){
+  _selLogs=new Set();
+  document.querySelectorAll('.log-chk').forEach(c=>c.checked=false);
+  const bar=document.getElementById('log-bulk-bar');
+  if(bar)bar.style.display='none';
+}
+async function delLog(id){
+  confirm$('Delete this log entry?','This record will be permanently removed.',async()=>{
+    try{await DEL('/api/logs/'+id);toast('Deleted','','success');await loadHist();}
+    catch(e){toast('Error',e.message,'error');}
+  },true);
+}
+async function bulkDelLogs(){
+  if(!_selLogs.size)return;
+  confirm$('Delete '+_selLogs.size+' log entries?','This cannot be undone.',async()=>{
+    let done=0;
+    for(const id of _selLogs){try{await DEL('/api/logs/'+id);done++;}catch{}}
+    toast(done+' entries deleted','','success');
+    _selLogs=new Set();
+    await loadHist();
+  },true);
 }
 
 function exportHist(){
