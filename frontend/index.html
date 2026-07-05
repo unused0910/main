@@ -527,7 +527,7 @@ function openLeadForm(lead){
       <div class="field"><label>Product</label><input id="lf-pr" value="${esc(v.product||'')}"></div>
       <div class="field"><label>Quantity</label><input id="lf-q" value="${esc(v.quantity||'')}"></div>
       <div class="field"><label>Country</label><input id="lf-ct" value="${esc(v.country||'')}"></div>
-      <div class="field"><label>Status</label><select id="lf-st">
+      <div class="field"><label>Status</label><select id="lf-form-st">
         ${['New','Sent','Delivered','Read','Interested','Not Interested','Follow Up','No Reply'].map(s=>`<option ${v.status===s?'selected':''}>${s}</option>`).join('')}
       </select></div>
     </div>
@@ -545,7 +545,7 @@ async function saveLead(id){
   const payload={name,company:document.getElementById('lf-c').value.trim(),phone,
     email:document.getElementById('lf-e').value.trim(),product:document.getElementById('lf-pr').value.trim(),
     quantity:document.getElementById('lf-q').value.trim(),country:document.getElementById('lf-ct').value.trim(),
-    status:document.getElementById('lf-st').value,phone_valid:true};
+    status:document.getElementById('lf-form-st').value,phone_valid:true};
   try{
     if(id) await PATCH('/api/leads/'+id,payload); else await POST('/api/leads',payload);
     toast(id?'Lead updated':'Lead added','','success'); closeModal(); await fetchLeads();
