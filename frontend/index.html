@@ -193,13 +193,26 @@ tr:hover td{background:var(--surface2)}
 </div>
 
 <!-- LOGIN PAGE -->
-<div id="login-page" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:16px">
-  <div style="width:100%;max-width:400px;padding:16px">
+<div id="login-page" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:16px;overflow-y:auto;padding:16px">
+  <div style="width:100%;max-width:420px">
     <div style="text-align:center;margin-bottom:24px">
       <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">💬</div>
       <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">WhatsApp CRM</h2>
       <p class="muted sm">Enter your credentials to continue</p>
     </div>
+
+    <!-- Backend URL — always visible on login page -->
+    <div class="card" style="margin-bottom:12px;padding:14px">
+      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">🔗 BACKEND CONNECTION</div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <input id="inline-backend-url" placeholder="https://your-app.onrender.com" style="flex:1;font-size:12px"
+          value="">
+        <input id="inline-api-secret" type="password" placeholder="API Secret" style="width:110px;font-size:12px">
+        <button class="btn-primary btn-sm" onclick="saveInlineBackend()">Save</button>
+      </div>
+      <div id="inline-conn-status" style="font-size:11px;margin-top:6px;color:var(--muted)"></div>
+    </div>
+
     <div class="card">
       <!-- Step 1: Username + Password -->
       <div id="login-step1">
@@ -207,20 +220,18 @@ tr:hover td{background:var(--surface2)}
         <div class="field"><label>Password</label><input id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password"
           onkeydown="if(event.key==='Enter')doLogin()"></div>
         <div id="login-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;min-height:16px"></div>
-        <button class="btn-primary" id="login-btn" onclick="doLogin()" style="width:100%;justify-content:center">Send OTP to WhatsApp</button>
+        <button class="btn-primary" id="login-btn" onclick="doLogin()" style="width:100%;justify-content:center">Login</button>
       </div>
       <!-- Step 2: OTP Input -->
       <div id="login-step2" style="display:none">
-        <p class="muted sm" style="margin-bottom:14px">📱 An OTP has been sent to your registered WhatsApp number. It expires in 5 minutes.</p>
-        <div class="field"><label>Enter OTP</label><input id="login-otp" placeholder="6-digit OTP" maxlength="6" style="letter-spacing:6px;font-size:22px;font-weight:800;text-align:center"
+        <p class="muted sm" style="margin-bottom:14px">📱 OTP sent to your WhatsApp. Expires in 5 minutes.</p>
+        <div class="field"><label>Enter OTP</label><input id="login-otp" placeholder="6-digit OTP" maxlength="6"
+          style="letter-spacing:6px;font-size:22px;font-weight:800;text-align:center"
           onkeydown="if(event.key==='Enter')doVerifyOtp()"></div>
-        <div id="login-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;min-height:16px"></div>
+        <div id="login-err2" style="color:var(--danger);font-size:12px;margin-bottom:10px;min-height:16px"></div>
         <button class="btn-primary" id="otp-btn" onclick="doVerifyOtp()" style="width:100%;justify-content:center;margin-bottom:8px">Verify OTP</button>
         <button class="btn-ghost" onclick="document.getElementById('login-step1').style.display='block';document.getElementById('login-step2').style.display='none'" style="width:100%;justify-content:center">← Back</button>
       </div>
-    </div>
-    <div style="text-align:center;margin-top:12px">
-      <button class="btn-ghost btn-sm" onclick="openBackendSetup()">⚙️ Set Backend URL</button>
     </div>
   </div>
 </div>
@@ -1406,6 +1417,7 @@ function clearSession(){
 function showLoginPage(){
   document.querySelector('.app').style.display='none';
   document.getElementById('login-page').style.display='flex';
+  setTimeout(prefillLoginBackend, 50);
 }
 function showApp(){
   document.getElementById('login-page').style.display='none';
@@ -1470,6 +1482,26 @@ async function doVerifyOtp(){
 function loginErr(msg){
   const el=document.getElementById('login-err');
   if(el) el.textContent=msg;
+  const el2=document.getElementById('login-err2');
+  if(el2) el2.textContent=msg;
+}
+
+function saveInlineBackend(){
+  const url=(document.getElementById('inline-backend-url')?.value||'').trim().replace(/\/$/,'');
+  const sec=(document.getElementById('inline-api-secret')?.value||'').trim();
+  if(!url) return;
+  localStorage.setItem('crm_backend_url', url);
+  localStorage.setItem('crm_api_secret', sec);
+  BACKEND=url; SECRET=sec;
+  const st=document.getElementById('inline-conn-status');
+  if(st) st.innerHTML='<span style="color:var(--primary-d)">✅ Saved! Now login below.</span>';
+}
+
+function prefillLoginBackend(){
+  const urlEl=document.getElementById('inline-backend-url');
+  const secEl=document.getElementById('inline-api-secret');
+  if(urlEl && BACKEND) urlEl.value=BACKEND;
+  if(secEl && SECRET) secEl.value=SECRET;
 }
 
 function doLogout2(){
