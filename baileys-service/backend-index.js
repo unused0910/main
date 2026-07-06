@@ -523,6 +523,82 @@ function renderTemplate(content, lead) {
   );
 }
 
+// ─── AUTH — OTP LOGIN ─────────────────────────────────────────
+// Credentials set via Render env vars: ADMIN_USERNAME, ADMIN_PASSWORD, ADMIN_PHONE
+// OTP is sent to ADMIN_PHONE via WhatsApp. Expires in 5 minutes.
+const otpStore = new Map(); // { username -> { otp, expires } }
+
+app.post('/api/auth/request-otp', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const validUser = process.env.ADMIN_USERNAME || 'admin';
+    const validPass = process.env.ADMIN_PASSWORD || 'admin123';
+    const adminPhone = process.env.ADMIN_PHONE || '';
+
+    if (username !== validUser || password !== validPass) {
+      return res.status(401).json({ error: 'Invalid username or password' });
+    }
+
+    if (!adminPhone) {
+      // No admin phone set — skip OTP, return token directly (dev mode)
+      const token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      return res.json({ ok: true, token, message: 'ADMIN_PHONE not set — OTP skipped (dev mode)' });
+    }
+
+    if (!isConnected) {
+      return res.status(503).json({ error: 'WhatsApp not connected — cannot send OTP. Use dev mode (remove ADMIN_PHONE env var) or connect WhatsApp first.' });
+    }
+
+    // Generate 6-digit OTP
+    const otp = String(Math.floor(100000 + Math.random() * 900000));
+    otpStore.set(username, { otp, expires: Date.now() + 5 * 60 * 1000 });
+
+    // Send via WhatsApp
+    const jid = adminPhone.replace(/[^\d]/g, '') + '@s.whatsapp.net';
+    await sock.sendMessage(jid, {
+      text: `🔐 *WhatsApp CRM Login OTP*\n\nYour OTP is: *${otp}*\n\nExpires in 5 minutes. Do not share this with anyone.`
+    });
+
+    res.json({ ok: true, message: 'OTP sent to your WhatsApp' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/auth/verify-otp', async (req, res) => {
+  try {
+    const { username, otp } = req.body;
+    const validUser = process.env.ADMIN_USERNAME || 'admin';
+    const adminPhone = process.env.ADMIN_PHONE || '';
+
+    // Dev mode: no phone set, no OTP needed
+    if (!adminPhone) {
+      const token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      return res.json({ ok: true, token });
+    }
+
+    if (username !== validUser) {
+      return res.status(401).json({ error: 'Invalid username' });
+    }
+
+    const record = otpStore.get(username);
+    if (!record) return res.status(401).json({ error: 'No OTP requested — request one first' });
+    if (Date.now() > record.expires) {
+      otpStore.delete(username);
+      return res.status(401).json({ error: 'OTP expired — request a new one' });
+    }
+    if (record.otp !== String(otp).trim()) {
+      return res.status(401).json({ error: 'Incorrect OTP' });
+    }
+
+    otpStore.delete(username); // single-use
+    const token = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    res.json({ ok: true, token });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ── Start everything ──────────────────────────────────────────
 app.listen(PORT, async () => {
   console.log(`🚀 WhatsApp CRM Backend running on port ${PORT}`);
