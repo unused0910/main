@@ -178,7 +178,10 @@ tr:hover td{background:var(--surface2)}
       <div><div class="brand-name">WhatsApp CRM</div><div class="brand-sub">Outreach Platform</div></div>
     </div>
     <nav class="nav" id="nav"></nav>
-    <div class="sidebar-foot" id="wa-foot">Checking WhatsApp…</div>
+    <div class="sidebar-foot">
+      <div id="wa-foot" style="margin-bottom:8px">Checking WhatsApp…</div>
+      <button class="btn-ghost btn-sm" style="width:100%;justify-content:center" onclick="doLogout2()">🚪 Logout</button>
+    </div>
   </aside>
   <div class="main">
     <div class="topbar">
@@ -188,6 +191,40 @@ tr:hover td{background:var(--surface2)}
     <div class="page" id="page">Loading…</div>
   </div>
 </div>
+
+<!-- LOGIN PAGE -->
+<div id="login-page" style="display:none;position:fixed;inset:0;background:var(--bg);z-index:1000;align-items:center;justify-content:center;flex-direction:column;gap:16px">
+  <div style="width:100%;max-width:400px;padding:16px">
+    <div style="text-align:center;margin-bottom:24px">
+      <div style="width:56px;height:56px;border-radius:16px;background:linear-gradient(135deg,#25d366,#128c7e);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">💬</div>
+      <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">WhatsApp CRM</h2>
+      <p class="muted sm">Enter your credentials to continue</p>
+    </div>
+    <div class="card">
+      <!-- Step 1: Username + Password -->
+      <div id="login-step1">
+        <div class="field"><label>Username</label><input id="login-user" placeholder="Enter username" autocomplete="username"></div>
+        <div class="field"><label>Password</label><input id="login-pass" type="password" placeholder="Enter password" autocomplete="current-password"
+          onkeydown="if(event.key==='Enter')doLogin()"></div>
+        <div id="login-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;min-height:16px"></div>
+        <button class="btn-primary" id="login-btn" onclick="doLogin()" style="width:100%;justify-content:center">Send OTP to WhatsApp</button>
+      </div>
+      <!-- Step 2: OTP Input -->
+      <div id="login-step2" style="display:none">
+        <p class="muted sm" style="margin-bottom:14px">📱 An OTP has been sent to your registered WhatsApp number. It expires in 5 minutes.</p>
+        <div class="field"><label>Enter OTP</label><input id="login-otp" placeholder="6-digit OTP" maxlength="6" style="letter-spacing:6px;font-size:22px;font-weight:800;text-align:center"
+          onkeydown="if(event.key==='Enter')doVerifyOtp()"></div>
+        <div id="login-err" style="color:var(--danger);font-size:12px;margin-bottom:10px;min-height:16px"></div>
+        <button class="btn-primary" id="otp-btn" onclick="doVerifyOtp()" style="width:100%;justify-content:center;margin-bottom:8px">Verify OTP</button>
+        <button class="btn-ghost" onclick="document.getElementById('login-step1').style.display='block';document.getElementById('login-step2').style.display='none'" style="width:100%;justify-content:center">← Back</button>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px">
+      <button class="btn-ghost btn-sm" onclick="openBackendSetup()">⚙️ Set Backend URL</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-wrap" id="toasts"></div>
 <div id="modal-root"></div>
 
@@ -465,6 +502,7 @@ async function pgLeads(){
   _selLeads=new Set();
   document.getElementById('tb-actions').innerHTML=`
     <button class="btn-outline" onclick="openUpload()">📁 Upload CSV/Excel</button>
+    <button class="btn-danger btn-sm" onclick="deleteAllLeads()">🗑️ Delete All</button>
     <button class="btn-primary" onclick="openLeadForm(null)">＋ Add Lead</button>`;
   document.getElementById('page').innerHTML=`
     <div class="row" style="margin-bottom:14px;justify-content:space-between">
@@ -545,6 +583,30 @@ async function bulkDelLeads(){
     _selLeads=new Set();
     await fetchLeads();
   },true);
+}
+
+async function deleteAllLeads(){
+  if(!_leads.length) return toast('No leads','Nothing to delete','warning');
+  openModal(`<div class="modal-title" style="color:var(--danger)">⚠️ Delete ALL Leads?</div>
+    <div class="modal-sub">This will permanently delete <b>${_leads.length} leads</b>. This action CANNOT be undone.</div>
+    <div class="field"><label>Type <b>DELETE ALL</b> to confirm</label><input id="del-confirm" placeholder="DELETE ALL"></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-danger" onclick="confirmDeleteAllLeads()">Delete All ${_leads.length} Leads</button>
+    </div>`);
+}
+async function confirmDeleteAllLeads(){
+  const val=document.getElementById('del-confirm')?.value.trim();
+  if(val!=='DELETE ALL') return toast('Type DELETE ALL to confirm','','error');
+  closeModal();
+  toast('Deleting all leads…','Please wait','warning');
+  let done=0;
+  for(const lead of _leads){
+    try{await DEL('/api/leads/'+lead.id);done++;}catch{}
+  }
+  toast(done+' leads deleted','','success');
+  _selLeads=new Set();
+  await fetchLeads();
 }
 
 function renderLeadsTable(data){
@@ -1127,28 +1189,115 @@ function exportHist(){
    PAGE: ANALYTICS
 ══════════════════════════════════════════════ */
 async function pgAnalytics(){
+  document.getElementById('tb-actions').innerHTML=`
+    <button class="btn-outline" onclick="exportAnalytics()">⬇ Export CSV</button>`;
   document.getElementById('page').innerHTML=`<div id="ana">Loading…</div>`;
   try{
-    const [sR,cR]=await Promise.all([GET('/api/stats'),GET('/api/campaigns')]);
-    const s=sR.stats||{}; const camps=cR.campaigns||[];
+    const [sR,cR,lR]=await Promise.all([
+      GET('/api/stats'),
+      GET('/api/campaigns'),
+      GET('/api/leads'),
+    ]);
+    const s=sR.stats||{};
+    const camps=cR.campaigns||[];
+    const leads=lR.leads||[];
+
+    // compute breakdowns from leads
     const ir=s.total_leads>0?Math.round((s.interested||0)/s.total_leads*100):0;
     const rr=s.total_sent>0?Math.round((s.interested||0)/s.total_sent*100):0;
+
+    // Country wise
+    const byCountry={};
+    leads.forEach(l=>{const k=l.country||'Unknown';byCountry[k]=(byCountry[k]||0)+1;});
+    const topCountry=Object.entries(byCountry).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    // Product wise
+    const byProduct={};
+    leads.forEach(l=>{const k=l.product||'Unknown';byProduct[k]=(byProduct[k]||0)+1;});
+    const topProduct=Object.entries(byProduct).sort((a,b)=>b[1]-a[1]).slice(0,10);
+
+    // Status wise
+    const byStatus={};
+    leads.forEach(l=>{byStatus[l.status]=(byStatus[l.status]||0)+1;});
+    const statusList=Object.entries(byStatus).sort((a,b)=>b[1]-a[1]);
+
+    const maxCountry=topCountry[0]?.[1]||1;
+    const maxProduct=topProduct[0]?.[1]||1;
+
     document.getElementById('ana').innerHTML=`
-      <div class="grid-2" style="margin-bottom:16px">
+      <!-- KPI Cards -->
+      <div class="stat-grid" style="margin-bottom:20px">
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--primary-soft);color:var(--primary-d)">👥</div><div><div class="stat-val">${s.total_leads||0}</div><div class="stat-lbl">Total Leads</div></div></div>
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--blue-soft);color:var(--blue)">📤</div><div><div class="stat-val">${s.total_sent||0}</div><div class="stat-lbl">Total Sent</div></div></div>
         <div class="card stat-card"><div class="stat-ico" style="background:var(--primary-soft);color:var(--primary-d)">📈</div><div><div class="stat-val">${ir}%</div><div class="stat-lbl">Interest Rate</div></div></div>
-        <div class="card stat-card"><div class="stat-ico" style="background:var(--blue-soft);color:var(--blue)">💬</div><div><div class="stat-val">${rr}%</div><div class="stat-lbl">Response Rate</div></div></div>
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--accent-soft);color:var(--accent)">💬</div><div><div class="stat-val">${rr}%</div><div class="stat-lbl">Response Rate</div></div></div>
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--warn-soft);color:var(--warn)">⏳</div><div><div class="stat-val">${s.pending||0}</div><div class="stat-lbl">Pending</div></div></div>
+        <div class="card stat-card"><div class="stat-ico" style="background:var(--blue-soft);color:var(--blue)">🚀</div><div><div class="stat-val">${s.active_campaigns||0}</div><div class="stat-lbl">Active Campaigns</div></div></div>
       </div>
+
+      <!-- Country + Product -->
+      <div class="grid-2" style="margin-bottom:16px">
+        <div class="card">
+          <div class="card-title">🌍 Country Wise Leads</div>
+          ${!topCountry.length?'<p class="muted sm">No data</p>':topCountry.map(([k,v])=>`
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span class="sm bold">${esc(k)}</span><span class="sm muted">${v} leads</span>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:${Math.round(v/maxCountry*100)}%"></div></div>
+            </div>`).join('')}
+        </div>
+        <div class="card">
+          <div class="card-title">📦 Product Wise Leads</div>
+          ${!topProduct.length?'<p class="muted sm">No data</p>':topProduct.map(([k,v])=>`
+            <div style="margin-bottom:10px">
+              <div style="display:flex;justify-content:space-between;margin-bottom:4px">
+                <span class="sm bold">${esc(k)}</span><span class="sm muted">${v} leads</span>
+              </div>
+              <div class="prog-bar"><div class="prog-fill" style="width:${Math.round(v/maxProduct*100)};background:linear-gradient(90deg,var(--accent),var(--blue))"></div></div>
+            </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Status Wise -->
+      <div class="card" style="margin-bottom:16px">
+        <div class="card-title">📊 Status Wise Leads</div>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          ${statusList.map(([k,v])=>`<div style="display:flex;align-items:center;gap:8px;background:var(--surface2);border-radius:var(--radius-sm);padding:8px 14px">
+            ${badge(k)}<span class="bold">${v}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Campaign Performance -->
       <div class="card">
-        <div class="card-title">Campaign Performance</div>
+        <div class="card-title">🏆 Campaign Performance</div>
         ${!camps.length?'<p class="muted sm">No campaigns yet</p>':
         `<div class="tbl-wrap"><table>
           <thead><tr><th>Name</th><th>Status</th><th>Total</th><th>Sent</th><th>Failed</th><th>Skipped</th><th>Success %</th><th>Created</th></tr></thead>
-          <tbody>${camps.map(c=>`<tr><td class="bold">${esc(c.name)}</td><td>${badge(c.status)}</td>
+          <tbody>${camps.map(c=>`<tr>
+            <td class="bold">${esc(c.name)}</td><td>${badge(c.status)}</td>
             <td>${c.total_leads}</td><td>${c.sent_count}</td><td>${c.failed_count}</td><td>${c.skipped_count}</td>
-            <td>${c.success_rate_pct||0}%</td><td class="muted sm">${fmtDT(c.created_at)}</td></tr>`).join('')}
+            <td><div class="prog-bar" style="width:80px;display:inline-block"><div class="prog-fill" style="width:${c.success_rate_pct||0}%"></div></div> ${c.success_rate_pct||0}%</td>
+            <td class="muted sm">${fmtDT(c.created_at)}</td>
+          </tr>`).join('')}
           </tbody></table></div>`}
       </div>`;
+
+    // save for export
+    window._anaData={leads,camps,topCountry,topProduct,statusList,ir,rr};
   }catch(e){document.getElementById('ana').innerHTML=errBox(e.message);}
+}
+
+function exportAnalytics(){
+  if(!window._anaData) return toast('Load analytics first','','warning');
+  const {leads}=window._anaData;
+  const cols=['name','company','phone','email','product','quantity','country','status'];
+  const header=cols.join(',');
+  const body=leads.map(l=>cols.map(c=>`"${(l[c]||'').toString().replace(/"/g,'""')}"`).join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([header+'\n'+body],{type:'text/csv'}));
+  a.download='analytics-leads.csv'; a.click();
 }
 
 /* ══════════════════════════════════════════════
@@ -1229,12 +1378,138 @@ function emptyBox(ico,h,p){ return `<div class="empty"><div class="empty-ico">${
 function errBox(msg){ return `<div class="empty"><div class="empty-ico">⛔</div><h3>Error</h3><p>${esc(msg)}</p></div>`; }
 
 /* ══════════════════════════════════════════════
+   LOGIN SYSTEM
+   - Username + Password (set in Render env vars)
+   - OTP sent to admin's WhatsApp number
+   - Session token stored in localStorage (24hr)
+══════════════════════════════════════════════ */
+const SESSION_KEY = 'crm_session';
+const SESSION_TTL = 24 * 60 * 60 * 1000; // 24 hours
+
+function isLoggedIn(){
+  try{
+    const s = JSON.parse(localStorage.getItem(SESSION_KEY)||'{}');
+    return s.token && s.expires && Date.now() < s.expires;
+  }catch{ return false; }
+}
+
+function setSession(token){
+  localStorage.setItem(SESSION_KEY, JSON.stringify({
+    token, expires: Date.now() + SESSION_TTL
+  }));
+}
+
+function clearSession(){
+  localStorage.removeItem(SESSION_KEY);
+}
+
+function showLoginPage(){
+  document.querySelector('.app').style.display='none';
+  document.getElementById('login-page').style.display='flex';
+}
+function showApp(){
+  document.getElementById('login-page').style.display='none';
+  document.querySelector('.app').style.display='flex';
+}
+
+async function doLogin(){
+  const username = document.getElementById('login-user').value.trim();
+  const password = document.getElementById('login-pass').value.trim();
+  if(!username||!password) return loginErr('Enter username and password');
+  if(!BACKEND) return loginErr('Backend URL not set — click "Set Backend URL" below');
+
+  document.getElementById('login-btn').disabled=true;
+  document.getElementById('login-btn').textContent='Sending OTP…';
+  try{
+    const res = await fetch(BACKEND+'/api/auth/request-otp', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-secret':SECRET},
+      body: JSON.stringify({username, password})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Login failed');
+    // Show OTP input
+    document.getElementById('login-step1').style.display='none';
+    document.getElementById('login-step2').style.display='block';
+    loginErr('');
+    toast('OTP sent','Check your WhatsApp for the OTP code','success');
+  }catch(e){
+    loginErr(e.message);
+  }finally{
+    document.getElementById('login-btn').disabled=false;
+    document.getElementById('login-btn').textContent='Send OTP';
+  }
+}
+
+async function doVerifyOtp(){
+  const username = document.getElementById('login-user').value.trim();
+  const otp = document.getElementById('login-otp').value.trim();
+  if(!otp) return loginErr('Enter the OTP from WhatsApp');
+
+  document.getElementById('otp-btn').disabled=true;
+  document.getElementById('otp-btn').textContent='Verifying…';
+  try{
+    const res = await fetch(BACKEND+'/api/auth/verify-otp', {
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-secret':SECRET},
+      body: JSON.stringify({username, otp})
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error||'Invalid OTP');
+    setSession(data.token);
+    showApp();
+    renderNav(); go('dashboard'); pollWA();
+    toast('Welcome!','Login successful','success');
+  }catch(e){
+    loginErr(e.message);
+    document.getElementById('otp-btn').disabled=false;
+    document.getElementById('otp-btn').textContent='Verify OTP';
+  }
+}
+
+function loginErr(msg){
+  const el=document.getElementById('login-err');
+  if(el) el.textContent=msg;
+}
+
+function doLogout2(){
+  clearSession();
+  showLoginPage();
+  toast('Logged out','','success');
+}
+
+function openBackendSetup(){
+  openModal(`<div class="modal-title">Set Backend URL</div>
+    <div class="modal-sub">Enter your Render backend URL to continue</div>
+    <div class="field"><label>Render Backend URL</label><input id="bl-url" value="${esc(BACKEND)}" placeholder="https://your-app.onrender.com"></div>
+    <div class="field"><label>API Secret</label><input id="bl-sec" type="password" value="${esc(SECRET)}" placeholder="Your API_SECRET"></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveBackendFromLogin()">Save</button>
+    </div>`);
+}
+function saveBackendFromLogin(){
+  const url=document.getElementById('bl-url').value.trim().replace(/\/$/,'');
+  const sec=document.getElementById('bl-sec').value.trim();
+  localStorage.setItem('crm_backend_url',url);
+  localStorage.setItem('crm_api_secret',sec);
+  BACKEND=url; SECRET=sec;
+  closeModal();
+  toast('Backend URL saved','Now try logging in','success');
+}
+
+/* ══════════════════════════════════════════════
    BOOT
 ══════════════════════════════════════════════ */
-renderNav();
-go('dashboard');
-pollWA();
-if(!BACKEND) setTimeout(()=>toast('Setup required','Go to Settings → enter your Render backend URL','warning'),1000);
+if(isLoggedIn()){
+  showApp();
+  renderNav();
+  go('dashboard');
+  pollWA();
+  if(!BACKEND) setTimeout(()=>toast('Setup required','Go to Settings → enter your Render backend URL','warning'),1000);
+} else {
+  showLoginPage();
+}
 </script>
 </body>
 </html>
