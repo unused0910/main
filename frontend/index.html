@@ -200,19 +200,6 @@ tr:hover td{background:var(--surface2)}
       <h2 style="font-size:22px;font-weight:800;margin-bottom:4px">WhatsApp CRM</h2>
       <p class="muted sm">Enter your credentials to continue</p>
     </div>
-
-    <!-- Backend URL — always visible on login page -->
-    <div class="card" style="margin-bottom:12px;padding:14px">
-      <div style="font-size:11px;font-weight:700;color:var(--muted);margin-bottom:8px">🔗 BACKEND CONNECTION</div>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input id="inline-backend-url" placeholder="https://your-app.onrender.com" style="flex:1;font-size:12px"
-          value="">
-        <input id="inline-api-secret" type="password" placeholder="API Secret" style="width:110px;font-size:12px">
-        <button class="btn-primary btn-sm" onclick="saveInlineBackend()">Save</button>
-      </div>
-      <div id="inline-conn-status" style="font-size:11px;margin-top:6px;color:var(--muted)"></div>
-    </div>
-
     <div class="card">
       <!-- Step 1: Username + Password -->
       <div id="login-step1">
@@ -241,13 +228,17 @@ tr:hover td{background:var(--surface2)}
 
 <script>
 /* ══════════════════════════════════════════════
-   CONFIG
+   CONFIG — Pre-configured, no manual setup needed
 ══════════════════════════════════════════════ */
-let BACKEND = (
-  (typeof window.__BACKEND_URL!=='undefined' && window.__BACKEND_URL) ||
-  localStorage.getItem('crm_backend_url') || ''
-).replace(/\/$/,'');
-let SECRET = localStorage.getItem('crm_api_secret') || '';
+const HARDCODED_BACKEND = 'https://whatsapp-crm-backend-awje.onrender.com';
+const HARDCODED_SECRET  = 'mySecret2026CRM';
+
+// Always use hardcoded values — override any localStorage
+localStorage.setItem('crm_backend_url', HARDCODED_BACKEND);
+localStorage.setItem('crm_api_secret',  HARDCODED_SECRET);
+
+let BACKEND = HARDCODED_BACKEND;
+let SECRET  = HARDCODED_SECRET;
 
 /* ══════════════════════════════════════════════
    API
@@ -1320,13 +1311,6 @@ async function pgSettings(){
   document.getElementById('page').innerHTML=`
     <div class="grid-2">
       <div class="card">
-        <div class="card-title">🔗 Backend Connection</div>
-        <div class="field"><label>Render Backend URL</label><input id="su" value="${esc(BACKEND)}" placeholder="https://your-app.onrender.com"></div>
-        <div class="field"><label>API Secret</label><input id="ss" type="password" value="${esc(SECRET)}" placeholder="Match RENDER API_SECRET env var"></div>
-        <button class="btn-primary" onclick="saveConn()">Save & Test</button>
-        <div id="conn-res" style="margin-top:10px"></div>
-      </div>
-      <div class="card">
         <div class="card-title">📱 WhatsApp</div>
         <div id="wa-sett">Checking…</div>
         <hr class="sep">
@@ -1347,6 +1331,13 @@ async function pgSettings(){
         </div>
         <button class="btn-primary" onclick="saveDelays()">Save Delays</button>
       </div>
+      <div class="card">
+        <div class="card-title">🔐 Security</div>
+        <p class="muted sm" style="margin-bottom:12px">Change your login password from Render environment variables (ADMIN_PASSWORD).</p>
+        <div class="field"><label>Current Backend</label>
+          <input value="${HARDCODED_BACKEND}" disabled style="opacity:.6;font-size:12px"></div>
+        <p class="muted sm">Backend is pre-configured. Contact admin to change credentials.</p>
+      </div>
     </div>`;
   try{
     const w=await GET('/api/status');
@@ -1358,21 +1349,6 @@ async function pgSettings(){
   }catch(e){document.getElementById('wa-sett').innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;}
 }
 
-async function saveConn(){
-  const url=document.getElementById('su').value.trim().replace(/\/$/,'');
-  const secret=document.getElementById('ss').value.trim();
-  localStorage.setItem('crm_backend_url',url);
-  localStorage.setItem('crm_api_secret',secret);
-  BACKEND=url; SECRET=secret;
-  const el=document.getElementById('conn-res');
-  el.innerHTML='<span class="muted sm">Testing…</span>';
-  try{
-    const r=await fetch(url+'/api/status',{headers:{'x-api-secret':secret}});
-    const d=await r.json();
-    el.innerHTML=`<span style="color:var(--primary-d)">✅ Connected — WhatsApp: ${d.connected?'ready':'waiting for QR'}</span>`;
-    toast('Saved','Backend URL saved successfully','success');
-  }catch(e){el.innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;}
-}
 async function saveProfile(){
   try{await PATCH('/api/settings',{company_name:document.getElementById('sc').value.trim(),sender_name:document.getElementById('sn').value.trim()});toast('Saved','','success');}
   catch(e){toast('Error',e.message,'error');}
@@ -1417,7 +1393,6 @@ function clearSession(){
 function showLoginPage(){
   document.querySelector('.app').style.display='none';
   document.getElementById('login-page').style.display='flex';
-  setTimeout(prefillLoginBackend, 50);
 }
 function showApp(){
   document.getElementById('login-page').style.display='none';
@@ -1486,48 +1461,10 @@ function loginErr(msg){
   if(el2) el2.textContent=msg;
 }
 
-function saveInlineBackend(){
-  const url=(document.getElementById('inline-backend-url')?.value||'').trim().replace(/\/$/,'');
-  const sec=(document.getElementById('inline-api-secret')?.value||'').trim();
-  if(!url) return;
-  localStorage.setItem('crm_backend_url', url);
-  localStorage.setItem('crm_api_secret', sec);
-  BACKEND=url; SECRET=sec;
-  const st=document.getElementById('inline-conn-status');
-  if(st) st.innerHTML='<span style="color:var(--primary-d)">✅ Saved! Now login below.</span>';
-}
-
-function prefillLoginBackend(){
-  const urlEl=document.getElementById('inline-backend-url');
-  const secEl=document.getElementById('inline-api-secret');
-  if(urlEl && BACKEND) urlEl.value=BACKEND;
-  if(secEl && SECRET) secEl.value=SECRET;
-}
-
 function doLogout2(){
   clearSession();
   showLoginPage();
   toast('Logged out','','success');
-}
-
-function openBackendSetup(){
-  openModal(`<div class="modal-title">Set Backend URL</div>
-    <div class="modal-sub">Enter your Render backend URL to continue</div>
-    <div class="field"><label>Render Backend URL</label><input id="bl-url" value="${esc(BACKEND)}" placeholder="https://your-app.onrender.com"></div>
-    <div class="field"><label>API Secret</label><input id="bl-sec" type="password" value="${esc(SECRET)}" placeholder="Your API_SECRET"></div>
-    <div class="modal-foot">
-      <button class="btn-outline" onclick="closeModal()">Cancel</button>
-      <button class="btn-primary" onclick="saveBackendFromLogin()">Save</button>
-    </div>`);
-}
-function saveBackendFromLogin(){
-  const url=document.getElementById('bl-url').value.trim().replace(/\/$/,'');
-  const sec=document.getElementById('bl-sec').value.trim();
-  localStorage.setItem('crm_backend_url',url);
-  localStorage.setItem('crm_api_secret',sec);
-  BACKEND=url; SECRET=sec;
-  closeModal();
-  toast('Backend URL saved','Now try logging in','success');
 }
 
 /* ══════════════════════════════════════════════
@@ -1538,7 +1475,6 @@ if(isLoggedIn()){
   renderNav();
   go('dashboard');
   pollWA();
-  if(!BACKEND) setTimeout(()=>toast('Setup required','Go to Settings → enter your Render backend URL','warning'),1000);
 } else {
   showLoginPage();
 }
