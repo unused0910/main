@@ -378,22 +378,33 @@ function buildLeads(data,map){
    NAV / ROUTER
 ══════════════════════════════════════════════ */
 const PAGES = [
-  {id:'dashboard',label:'Dashboard',ico:'📊'},
-  {id:'leads',label:'Leads',ico:'👥'},
-  {id:'templates',label:'Templates',ico:'📝'},
-  {id:'campaigns',label:'Campaigns',ico:'📤'},
-  {id:'history',label:'History',ico:'🕐'},
-  {id:'analytics',label:'Analytics',ico:'📈'},
-  {id:'settings',label:'Settings',ico:'⚙️'},
+  {id:'dashboard',      label:'Dashboard',        ico:'📊'},
+  {id:'leads',          label:'Leads',             ico:'👥'},
+  {id:'templates',      label:'WA Templates',      ico:'📝'},
+  {id:'campaigns',      label:'WA Campaigns',      ico:'📤'},
+  {id:'history',        label:'WA History',        ico:'🕐'},
+  {id:'email-templates',label:'Email Templates',   ico:'✉️'},
+  {id:'email-campaigns',label:'Email Campaigns',   ico:'📧'},
+  {id:'email-history',  label:'Email History',     ico:'📬'},
+  {id:'analytics',      label:'Analytics',         ico:'📈'},
+  {id:'settings',       label:'Settings',          ico:'⚙️'},
 ];
 let VIEW = 'dashboard';
 
 function renderNav(){
-  document.getElementById('nav').innerHTML = PAGES.map(p=>
-    `<button class="nav-btn${VIEW===p.id?' active':''}" data-view="${p.id}">
-      <span class="ico">${p.ico}</span>${p.label}
-    </button>`
-  ).join('');
+  const sections = [
+    { label: 'OVERVIEW',  ids: ['dashboard','leads','analytics','settings'] },
+    { label: 'WHATSAPP',  ids: ['templates','campaigns','history'] },
+    { label: 'EMAIL',     ids: ['email-templates','email-campaigns','email-history'] },
+  ];
+  let html = '';
+  sections.forEach(sec => {
+    html += `<div class="nav-label">${sec.label}</div>`;
+    PAGES.filter(p => sec.ids.includes(p.id)).forEach(p => {
+      html += `<button class="nav-btn${VIEW===p.id?' active':''}" data-view="${p.id}"><span class="ico">${p.ico}</span>${p.label}</button>`;
+    });
+  });
+  document.getElementById('nav').innerHTML = html;
 }
 
 function go(view){
@@ -402,8 +413,18 @@ function go(view){
   document.getElementById('pg-title').textContent = PAGES.find(p=>p.id===view)?.label||view;
   document.getElementById('tb-actions').innerHTML = '';
   document.getElementById('page').innerHTML = '<div class="muted" style="padding:20px">Loading…</div>';
-  ({dashboard:pgDashboard,leads:pgLeads,templates:pgTemplates,campaigns:pgCampaigns,
-    history:pgHistory,analytics:pgAnalytics,settings:pgSettings}[view]||(() => {}))();
+  ({
+    dashboard:      pgDashboard,
+    leads:          pgLeads,
+    templates:      pgTemplates,
+    campaigns:      pgCampaigns,
+    history:        pgHistory,
+    'email-templates': pgEmailTemplates,
+    'email-campaigns': pgEmailCampaigns,
+    'email-history':   pgEmailHistory,
+    analytics:      pgAnalytics,
+    settings:       pgSettings,
+  }[view]||(() => {}))();
 }
 
 document.getElementById('nav').addEventListener('click', e=>{
@@ -1338,6 +1359,28 @@ async function pgSettings(){
           <input value="${HARDCODED_BACKEND}" disabled style="opacity:.6;font-size:12px"></div>
         <p class="muted sm">Backend is pre-configured. Contact admin to change credentials.</p>
       </div>
+      <div class="card" style="grid-column:1/-1">
+        <div class="card-title">📧 Email (SMTP) Setup</div>
+        <p class="muted sm" style="margin-bottom:12px">
+          Gmail users: create an <a href="https://myaccount.google.com/apppasswords" target="_blank" style="color:var(--primary-d)">App Password</a>
+          (enable 2FA first, then generate 16-char app password). Use that as your password below — not your Gmail login password.
+        </p>
+        <div class="grid-2">
+          <div class="field"><label>Gmail / Email Address</label><input id="e-user" value="${esc(s.email_user||'')}" placeholder="you@gmail.com"></div>
+          <div class="field"><label>App Password</label><input id="e-pass" type="password" value="${esc(s.email_pass||'')}" placeholder="xxxx xxxx xxxx xxxx"></div>
+          <div class="field"><label>From Name (shown to recipients)</label><input id="e-name" value="${esc(s.email_name||'Sales Team')}" placeholder="Sales Team"></div>
+          <div class="field"><label>From Email (blank = same as above)</label><input id="e-from" value="${esc(s.email_from||'')}" placeholder="optional"></div>
+          <div class="field"><label>SMTP Host</label><input id="e-host" value="${esc(s.email_host||'smtp.gmail.com')}"></div>
+          <div class="field"><label>SMTP Port</label><input id="e-port" type="number" value="${s.email_port||587}"></div>
+        </div>
+        <div class="row" style="margin-top:4px;flex-wrap:wrap">
+          <button class="btn-primary" onclick="saveEmailSettings()">💾 Save Email Settings</button>
+          <button class="btn-outline" onclick="verifyEmail()">🔌 Test Connection</button>
+          <input id="e-test-to" placeholder="Send test to…" style="width:200px">
+          <button class="btn-outline" onclick="sendTestEmailBtn()">📤 Send Test Email</button>
+        </div>
+        <div id="email-status" style="margin-top:10px;font-size:12px;color:var(--muted)"></div>
+      </div>
     </div>`;
   try{
     const w=await GET('/api/status');
@@ -1349,6 +1392,38 @@ async function pgSettings(){
   }catch(e){document.getElementById('wa-sett').innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;}
 }
 
+async function saveEmailSettings(){
+  try{
+    await PATCH('/api/settings',{
+      email_user: document.getElementById('e-user').value.trim(),
+      email_pass: document.getElementById('e-pass').value.trim(),
+      email_name: document.getElementById('e-name').value.trim(),
+      email_from: document.getElementById('e-from').value.trim(),
+      email_host: document.getElementById('e-host').value.trim()||'smtp.gmail.com',
+      email_port: parseInt(document.getElementById('e-port').value)||587,
+    });
+    toast('Email settings saved','','success');
+  }catch(e){toast('Error',e.message,'error');}
+}
+async function verifyEmail(){
+  const el=document.getElementById('email-status');
+  if(el)el.textContent='Testing connection…';
+  try{
+    const r=await POST('/api/email/verify');
+    if(el)el.innerHTML=`<span style="color:var(--primary-d)">✅ ${r.message}</span>`;
+  }catch(e){
+    if(el)el.innerHTML=`<span style="color:var(--danger)">⛔ ${esc(e.message)}</span>`;
+  }
+}
+async function sendTestEmailBtn(){
+  const to=document.getElementById('e-test-to')?.value.trim();
+  if(!to)return toast('Enter recipient email','','warning');
+  try{
+    const r=await POST('/api/email/test',{to});
+    toast('Test email sent!',r.message,'success');
+  }catch(e){toast('Error',e.message,'error');}
+}
+
 async function saveProfile(){
   try{await PATCH('/api/settings',{company_name:document.getElementById('sc').value.trim(),sender_name:document.getElementById('sn').value.trim()});toast('Saved','','success');}
   catch(e){toast('Error',e.message,'error');}
@@ -1356,6 +1431,337 @@ async function saveProfile(){
 async function saveDelays(){
   try{await PATCH('/api/settings',{min_delay_sec:+document.getElementById('sdmin').value||20,max_delay_sec:+document.getElementById('sdmax').value||60});toast('Saved','','success');}
   catch(e){toast('Error',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: EMAIL TEMPLATES
+══════════════════════════════════════════════ */
+let _selETpls = new Set();
+
+async function pgEmailTemplates(){
+  _selETpls = new Set();
+  document.getElementById('tb-actions').innerHTML = `<button class="btn-primary" onclick="openEmailTplForm(null)">＋ New Email Template</button>`;
+  document.getElementById('page').innerHTML = `<div id="etpl-wrap">Loading…</div>`;
+  await loadEmailTpls();
+}
+
+async function loadEmailTpls(){
+  try{
+    const {templates} = await GET('/api/email-templates');
+    const el = document.getElementById('etpl-wrap');
+    if(!templates.length){el.innerHTML=emptyBox('✉️','No email templates yet','Create your first email template'); return;}
+    el.innerHTML=`
+      <div class="row" style="margin-bottom:14px;justify-content:space-between">
+        <div class="row">
+          <input type="checkbox" id="chk-all-etpls" style="width:16px;height:16px" onchange="toggleAllETpls(this.checked,${JSON.stringify(templates.map(t=>t.id))})">
+          <label style="margin:0;color:var(--muted);cursor:pointer" for="chk-all-etpls">Select All</label>
+        </div>
+        <div class="row" id="etpl-bulk-bar" style="display:none">
+          <span class="muted sm" id="etpl-sel-count">0 selected</span>
+          <button class="btn-danger btn-sm" onclick="bulkDelETpls()">🗑️ Delete Selected</button>
+          <button class="btn-outline btn-sm" onclick="clearSelETpls()">✕ Clear</button>
+        </div>
+      </div>
+      <div class="grid-3">${templates.map(t=>`
+        <div class="card" style="position:relative">
+          <div style="position:absolute;top:12px;left:12px">
+            <input type="checkbox" class="etpl-chk" value="${t.id}" style="width:16px;height:16px" onchange="toggleETplSel('${t.id}',this.checked)">
+          </div>
+          <div style="padding-left:24px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+              <span class="bold">${esc(t.name)}</span><span class="badge b-new">${t.times_used||0} used</span>
+            </div>
+            <div class="muted sm" style="margin-bottom:4px">Subject: <b>${esc(t.subject)}</b></div>
+            <p class="muted sm" style="white-space:pre-wrap;max-height:70px;overflow:hidden">${esc(t.body)}</p>
+          </div>
+          <div class="row" style="justify-content:flex-end;margin-top:12px;gap:4px">
+            <button class="btn-ghost btn-sm" onclick='openEmailTplForm(${JSON.stringify(t).replace(/'/g,"&#39;")})'>✏️ Edit</button>
+            <button class="btn-ghost btn-sm" onclick="delEmailTpl('${t.id}','${esc(t.name)}')">🗑️</button>
+          </div>
+        </div>`).join('')}</div>`;
+  }catch(e){document.getElementById('etpl-wrap').innerHTML=errBox(e.message);}
+}
+
+function toggleETplSel(id,checked){
+  if(checked)_selETpls.add(id);else _selETpls.delete(id);
+  const bar=document.getElementById('etpl-bulk-bar');
+  const cnt=document.getElementById('etpl-sel-count');
+  if(bar)bar.style.display=_selETpls.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selETpls.size+' selected';
+}
+function toggleAllETpls(checked,ids){
+  _selETpls=new Set(); if(checked)ids.forEach(id=>_selETpls.add(id));
+  document.querySelectorAll('.etpl-chk').forEach(c=>c.checked=checked);
+  const bar=document.getElementById('etpl-bulk-bar');
+  const cnt=document.getElementById('etpl-sel-count');
+  if(bar)bar.style.display=_selETpls.size>0?'flex':'none';
+  if(cnt)cnt.textContent=_selETpls.size+' selected';
+}
+function clearSelETpls(){ _selETpls=new Set(); document.querySelectorAll('.etpl-chk').forEach(c=>c.checked=false); const b=document.getElementById('etpl-bulk-bar'); if(b)b.style.display='none'; }
+async function bulkDelETpls(){
+  if(!_selETpls.size)return;
+  confirm$('Delete '+_selETpls.size+' email templates?','This cannot be undone.',async()=>{
+    let done=0; for(const id of _selETpls){try{await DEL('/api/email-templates/'+id);done++;}catch{}}
+    toast(done+' deleted','','success'); _selETpls=new Set(); await loadEmailTpls();
+  },true);
+}
+async function delEmailTpl(id,name){
+  confirm$('Delete "'+name+'"?','',async()=>{ try{await DEL('/api/email-templates/'+id);toast('Deleted','','success');await loadEmailTpls();}catch(e){toast('Error',e.message,'error');} },true);
+}
+
+function openEmailTplForm(t){
+  const edit=!!t;
+  openModal(`<div class="modal-title">${edit?'Edit':'New'} Email Template</div>
+    <div class="field"><label>Template Name</label><input id="et-name" value="${esc(t?.name||'')}"></div>
+    <div class="field"><label>Subject Line</label><input id="et-subj" value="${esc(t?.subject||'')}" placeholder="Hi {{name}}, Inquiry about {{product}}">
+      <div style="margin-top:4px">${['name','company','product','qty','country','email'].map(v=>`<span class="chip" style="font-size:11px;margin:2px" onclick="document.getElementById('et-subj').value+='{{'+'${v}'+'}}'">{{${v}}}</span>`).join('')}</div>
+    </div>
+    <div class="field"><label>Email Body</label>
+      <textarea id="et-body" rows="10" style="font-family:monospace;font-size:12.5px" oninput="updateEmailPreview()">${esc(t?.body||"Hi {{name}},\n\nI am reaching out from our company regarding {{product}}.\n\nWe are looking for verified suppliers/exporters.\nQuantity Required: {{qty}}\nDestination Country: {{country}}\n\nKindly let us know if you can assist.\n\nBest regards,\nSales Team")}</textarea>
+      <div style="margin-top:4px">${['name','company','product','qty','country','email'].map(v=>`<span class="chip" style="font-size:11px;margin:2px" onclick="insEmailVar('${v}')">{{${v}}}</span>`).join('')}</div>
+    </div>
+    <div class="field"><label>Preview</label>
+      <div id="et-preview" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;font-size:13px;white-space:pre-wrap;line-height:1.6;max-height:180px;overflow-y:auto"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="saveEmailTpl(${edit?`'${t.id}'`:'null'})">${edit?'Update':'Save'}</button>
+    </div>`);
+  updateEmailPreview();
+}
+function insEmailVar(v){ const ta=document.getElementById('et-body'); ta.value+=`{{${v}}}`; updateEmailPreview(); }
+function updateEmailPreview(){
+  const el=document.getElementById('et-preview'); if(!el)return;
+  el.textContent=renderMsg(document.getElementById('et-body')?.value||'',SAMPLE);
+}
+async function saveEmailTpl(id){
+  const name=document.getElementById('et-name').value.trim();
+  const subject=document.getElementById('et-subj').value.trim();
+  const body=document.getElementById('et-body').value.trim();
+  if(!name||!subject||!body)return toast('Name, subject and body required','','error');
+  try{
+    if(id) await PATCH('/api/email-templates/'+id,{name,subject,body});
+    else    await POST('/api/email-templates',{name,subject,body});
+    toast(id?'Updated':'Created','','success'); closeModal(); await loadEmailTpls();
+  }catch(e){toast('Error',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: EMAIL CAMPAIGNS
+══════════════════════════════════════════════ */
+let _emailSse = null;
+
+async function pgEmailCampaigns(){
+  document.getElementById('tb-actions').innerHTML = `<button class="btn-primary" onclick="openEmailWizard()">＋ New Email Campaign</button>`;
+  document.getElementById('page').innerHTML = `<div id="ecamp-wrap">Loading…</div>`;
+  await loadEmailCamps();
+}
+
+async function loadEmailCamps(){
+  try{
+    const {campaigns} = await GET('/api/email-campaigns');
+    const el = document.getElementById('ecamp-wrap');
+    if(!campaigns.length){el.innerHTML=emptyBox('📧','No email campaigns yet','Create a new campaign to start sending emails'); return;}
+    el.innerHTML = campaigns.map(c=>`
+      <div class="card" style="margin-bottom:12px">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap">
+          <div>
+            <div class="row" style="margin-bottom:6px"><span class="bold">${esc(c.name)}</span>${badge(c.status)}</div>
+            <div class="muted sm">${c.sent_count}/${c.total_leads} sent · ${c.failed_count} failed · ${c.skipped_count} skipped · ${fmtDT(c.created_at)}</div>
+            ${c.total_leads>0?`<div class="prog-bar" style="width:260px;margin-top:8px"><div class="prog-fill" style="width:${Math.round((c.sent_count/c.total_leads)*100)||0}%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>`:''}
+          </div>
+          <div class="row">
+            ${c.status!=='Running'&&c.status!=='Paused'?`<button class="btn-primary btn-sm" onclick="startEmailCamp('${c.id}','${esc(c.name)}')">🚀 Start</button>`:''}
+            ${c.status==='Running'?`<button class="btn-warn btn-sm" onclick="pauseEmailCamp('${c.id}')">⏸ Pause</button>`:''}
+            ${c.status==='Paused'?`<button class="btn-primary btn-sm" onclick="resumeEmailCamp('${c.id}','${esc(c.name)}')">▶ Resume</button>`:''}
+            ${['Running','Paused'].includes(c.status)?`<button class="btn-danger btn-sm" onclick="cancelEmailCamp('${c.id}')">✕ Cancel</button>`:''}
+            <button class="btn-outline btn-sm" onclick="viewEmailProgress('${c.id}','${esc(c.name)}')">📊 Progress</button>
+            <button class="btn-ghost btn-icon btn-sm" onclick="delEmailCamp('${c.id}','${esc(c.name)}')">🗑️</button>
+          </div>
+        </div>
+      </div>`).join('');
+  }catch(e){document.getElementById('ecamp-wrap').innerHTML=errBox(e.message);}
+}
+
+async function startEmailCamp(id,name){ try{const r=await POST('/api/email-campaigns/'+id+'/start');toast('Email campaign started',r.message||'','success');viewEmailProgress(id,name);}catch(e){toast('Error',e.message,'error');} }
+async function pauseEmailCamp(id){ try{await POST('/api/email-campaigns/'+id+'/pause');toast('Paused','','warning');await loadEmailCamps();}catch(e){toast('Error',e.message,'error');} }
+async function resumeEmailCamp(id,name){ try{await POST('/api/email-campaigns/'+id+'/resume');toast('Resumed','','success');viewEmailProgress(id,name);}catch(e){toast('Error',e.message,'error');} }
+async function cancelEmailCamp(id){ confirm$('Cancel email campaign?','Remaining emails will not be sent.',async()=>{ try{await POST('/api/email-campaigns/'+id+'/cancel');toast('Cancelled','','warning');await loadEmailCamps();}catch(e){toast('Error',e.message,'error');} },true); }
+async function delEmailCamp(id,name){ confirm$('Delete "'+name+'"?','All logs will also be removed.',async()=>{ try{await DEL('/api/email-campaigns/'+id);toast('Deleted','','success');await loadEmailCamps();}catch(e){toast('Error',e.message,'error');} },true); }
+
+function viewEmailProgress(id,name){
+  if(_emailSse){_emailSse.close();_emailSse=null;}
+  document.getElementById('page').innerHTML=`
+    <div class="row" style="margin-bottom:16px">
+      <button class="btn-outline btn-sm" onclick="closeEmailProg()">← Back</button>
+      <span class="bold">📧 ${esc(name)}</span>
+    </div>
+    <div class="card" style="margin-bottom:14px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px">
+        <div class="muted sm" id="eprog-sum">Connecting…</div>
+        <div class="row">
+          <button class="btn-warn btn-sm" onclick="pauseEmailCamp('${id}')">⏸ Pause</button>
+          <button class="btn-primary btn-sm" onclick="resumeEmailCamp('${id}','${esc(name)}')">▶ Resume</button>
+          <button class="btn-danger btn-sm" onclick="cancelEmailCamp('${id}')">✕ Cancel</button>
+        </div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="epbar" style="width:0%;background:linear-gradient(90deg,#3b82f6,#6366f1)"></div></div>
+      <div class="muted sm" style="margin-top:5px" id="eppct">0%</div>
+    </div>
+    <div class="card"><div class="bold sm" style="margin-bottom:10px">📡 Live Email Log</div>
+      <div class="log-stream" id="elog">Waiting for events…</div>
+    </div>`;
+  const logEl=document.getElementById('elog');
+  function addLog(cls,txt){const d=document.createElement('div');d.className=cls;d.textContent=txt;logEl.appendChild(d);logEl.scrollTop=logEl.scrollHeight;}
+  _emailSse=new EventSource(BACKEND+'/api/email-campaigns/'+id+'/progress');
+  _emailSse.onmessage=e=>{
+    try{
+      const ev=JSON.parse(e.data);
+      const sum=document.getElementById('eprog-sum'); const bar=document.getElementById('epbar'); const pct=document.getElementById('eppct');
+      if(ev.event==='sent'){ addLog('l-ok',`✅ [${ev.index}/${ev.total}] ${ev.leadName} (${ev.email})`); const p=(ev.sent+ev.failed+ev.skipped)/ev.total*100; if(bar)bar.style.width=Math.round(p)+'%'; if(pct)pct.textContent=Math.round(p)+'%'; if(sum)sum.textContent=`${ev.sent} sent · ${ev.failed} failed · ${ev.skipped} skipped`; }
+      else if(ev.event==='failed'){ addLog('l-err',`❌ [${ev.index}/${ev.total}] ${ev.leadName} — ${ev.error}`); }
+      else if(ev.event==='skipped'){ addLog('l-skip',`⏭ Skipped ${ev.leadName} (no email address)`); }
+      else if(ev.event==='waiting'){ addLog('l-wait',`⏱ Waiting ${ev.delay_sec}s → next: ${ev.next_lead}`); }
+      else if(ev.event==='completed'){ addLog('l-ok',`🎉 Done — ${ev.sent} sent, ${ev.failed} failed, ${ev.skipped} skipped`); if(bar)bar.style.width='100%'; if(pct)pct.textContent='100%'; _emailSse.close();_emailSse=null; }
+      else if(ev.event==='paused'){ addLog('l-wait','⏸ Paused'); }
+      else if(ev.event==='cancelled'){ addLog('l-err','✕ Cancelled'); _emailSse.close();_emailSse=null; }
+    }catch{}
+  };
+  _emailSse.onerror=()=>addLog('l-err','⚠ SSE connection lost');
+}
+function closeEmailProg(){ if(_emailSse){_emailSse.close();_emailSse=null;} pgEmailCampaigns(); }
+
+// Email Campaign Wizard
+let _ewiz = { tid:'', lids: new Set() };
+async function openEmailWizard(){
+  _ewiz = { tid:'', lids: new Set() };
+  const [tR,lR,sR] = await Promise.all([
+    GET('/api/email-templates').catch(()=>({templates:[]})),
+    GET('/api/leads').catch(()=>({leads:[]})),
+    GET('/api/settings').catch(()=>({settings:{}})),
+  ]);
+  const tpls = tR.templates||[];
+  const leads = (lR.leads||[]).filter(l=>l.email && l.email.includes('@'));
+  const allLeads = lR.leads||[];
+  const s = sR.settings||{};
+  openModal(`<div class="modal-title">📧 New Email Campaign</div>
+    <div class="modal-sub">${leads.length} of ${allLeads.length} leads have valid email addresses</div>
+    <div class="field"><label>Campaign Name</label><input id="ewn" placeholder="e.g. Product Inquiry — July 2026"></div>
+    <div class="grid-2">
+      <div class="field"><label>Email Template</label><select id="ewt" onchange="emailWizPrev()">
+        <option value="">Select template</option>
+        ${tpls.map(t=>`<option value="${t.id}">${esc(t.name)}</option>`).join('')}
+      </select></div>
+      <div></div>
+      <div class="field"><label>Min Delay (seconds)</label><input type="number" id="ewmin" value="${s.min_delay_sec||10}"></div>
+      <div class="field"><label>Max Delay (seconds)</label><input type="number" id="ewmax" value="${s.max_delay_sec||30}"></div>
+    </div>
+    <div class="field">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <label style="margin:0">Select Leads (${leads.length} with email)</label>
+        <button class="btn-ghost btn-sm" onclick="ewizAll()">Select all</button>
+      </div>
+      <div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px">
+        ${!leads.length?'<p class="muted sm" style="padding:8px">No leads with email addresses. Add emails to leads first.</p>':
+          leads.map(l=>`<label style="display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;font-size:13px">
+            <input type="checkbox" class="ewcb" value="${l.id}" onchange="ewizChk('${l.id}',this.checked)">
+            <span>${esc(l.name)}</span><span class="muted sm">— ${esc(l.email)}</span>
+          </label>`).join('')}
+      </div>
+      <div class="muted sm" id="ewsel" style="margin-top:5px">0 selected</div>
+    </div>
+    <div id="ewprev-wrap" style="display:none" class="field"><label>Subject Preview</label><div id="ewprev" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:13px"></div></div>
+    <div class="modal-foot">
+      <button class="btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn-primary" onclick="createEmailCamp()">📧 Create & Start</button>
+    </div>`);
+}
+function ewizChk(id,on){ on?_ewiz.lids.add(id):_ewiz.lids.delete(id); const el=document.getElementById('ewsel'); if(el)el.textContent=_ewiz.lids.size+' selected'; }
+function ewizAll(){ document.querySelectorAll('.ewcb').forEach(c=>{c.checked=true;_ewiz.lids.add(c.value);}); const el=document.getElementById('ewsel'); if(el)el.textContent=_ewiz.lids.size+' selected'; }
+async function emailWizPrev(){
+  _ewiz.tid = document.getElementById('ewt')?.value||'';
+  const w=document.getElementById('ewprev-wrap'); const p=document.getElementById('ewprev');
+  if(!_ewiz.tid||!w||!p){if(w)w.style.display='none';return;}
+  try{ const {templates}=await GET('/api/email-templates'); const t=templates.find(x=>x.id===_ewiz.tid); if(!t){w.style.display='none';return;} w.style.display=''; p.textContent='Subject: '+renderMsg(t.subject,SAMPLE); }catch{}
+}
+async function createEmailCamp(){
+  const name=document.getElementById('ewn')?.value.trim();
+  _ewiz.tid = document.getElementById('ewt')?.value;
+  if(!name||!_ewiz.tid||!_ewiz.lids.size) return toast('Missing info','Name, template and at least one lead required','warning');
+  try{
+    const r=await POST('/api/email-campaigns',{name,template_id:_ewiz.tid,lead_ids:[..._ewiz.lids],
+      min_delay_sec:parseInt(document.getElementById('ewmin')?.value)||10,
+      max_delay_sec:parseInt(document.getElementById('ewmax')?.value)||30});
+    const skippedMsg = r.skipped_no_email ? ` (${r.skipped_no_email} skipped — no email)` : '';
+    toast('Campaign created', r.queued+' emails queued'+skippedMsg, 'success');
+    closeModal();
+    viewEmailProgress(r.campaign.id,name);
+    await POST('/api/email-campaigns/'+r.campaign.id+'/start');
+  }catch(e){toast('Error',e.message,'error');}
+}
+
+/* ══════════════════════════════════════════════
+   PAGE: EMAIL HISTORY
+══════════════════════════════════════════════ */
+let _selElogs = new Set();
+async function pgEmailHistory(){
+  _selElogs = new Set();
+  document.getElementById('tb-actions').innerHTML=`
+    <div class="search-wrap"><span class="search-ic">🔎</span><input id="ehs" placeholder="Search…" oninput="loadEmailHist()"></div>
+    <button class="btn-outline" onclick="exportEmailLogs()">⬇ Export CSV</button>`;
+  document.getElementById('page').innerHTML=`<div id="ehist">Loading…</div>`;
+  await loadEmailHist();
+}
+async function loadEmailHist(){
+  const s=document.getElementById('ehs')?.value||'';
+  _selElogs=new Set();
+  try{
+    const {logs}=await GET('/api/email-logs?limit=300'+(s?'&search='+encodeURIComponent(s):''));
+    const el=document.getElementById('ehist');
+    if(!logs.length){el.innerHTML=emptyBox('📬','No email history','Sent campaigns will appear here');return;}
+    el.innerHTML=`
+      <div class="row" style="margin-bottom:12px;justify-content:space-between">
+        <div class="row">
+          <input type="checkbox" id="chk-all-elogs" style="width:16px;height:16px" onchange="toggleAllElogs(this.checked,${JSON.stringify(logs.map(l=>l.id))})">
+          <label style="margin:0;color:var(--muted);cursor:pointer" for="chk-all-elogs">Select All</label>
+        </div>
+        <div class="row" id="elog-bulk-bar" style="display:none">
+          <span class="muted sm" id="elog-sel-count">0 selected</span>
+          <button class="btn-danger btn-sm" onclick="bulkDelElogs()">🗑️ Delete Selected</button>
+          <button class="btn-outline btn-sm" onclick="clearSelElogs()">✕ Clear</button>
+        </div>
+      </div>
+      <div class="tbl-wrap"><table>
+        <thead><tr><th></th><th>Lead</th><th>Email</th><th>Subject</th><th>Status</th><th>Sent At</th><th>Error</th><th></th></tr></thead>
+        <tbody>${logs.map(l=>`<tr>
+          <td><input type="checkbox" class="elog-chk" value="${l.id}" style="width:16px;height:16px" onchange="toggleElogSel('${l.id}',this.checked)"></td>
+          <td class="bold">${esc(l.lead_name||'—')}</td>
+          <td>${esc(l.to_email||'—')}</td>
+          <td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(l.subject||'—')}</td>
+          <td>${badge(l.status)}</td>
+          <td class="muted sm">${fmtDT(l.sent_at)}</td>
+          <td class="sm" style="color:var(--danger)">${esc(l.error_msg||'')}</td>
+          <td><button class="btn-ghost btn-icon btn-sm" onclick="delElog('${l.id}')">🗑️</button></td>
+        </tr>`).join('')}</tbody></table></div>`;
+  }catch(e){document.getElementById('ehist').innerHTML=errBox(e.message);}
+}
+function toggleElogSel(id,checked){ if(checked)_selElogs.add(id);else _selElogs.delete(id); const b=document.getElementById('elog-bulk-bar'); const c=document.getElementById('elog-sel-count'); if(b)b.style.display=_selElogs.size>0?'flex':'none'; if(c)c.textContent=_selElogs.size+' selected'; }
+function toggleAllElogs(checked,ids){ _selElogs=new Set(); if(checked)ids.forEach(id=>_selElogs.add(id)); document.querySelectorAll('.elog-chk').forEach(c=>c.checked=checked); const b=document.getElementById('elog-bulk-bar'); const c=document.getElementById('elog-sel-count'); if(b)b.style.display=_selElogs.size>0?'flex':'none'; if(c)c.textContent=_selElogs.size+' selected'; }
+function clearSelElogs(){ _selElogs=new Set(); document.querySelectorAll('.elog-chk').forEach(c=>c.checked=false); const b=document.getElementById('elog-bulk-bar'); if(b)b.style.display='none'; }
+async function delElog(id){ confirm$('Delete this log?','',async()=>{ try{await DEL('/api/email-logs/'+id);await loadEmailHist();}catch(e){toast('Error',e.message,'error');} },true); }
+async function bulkDelElogs(){
+  if(!_selElogs.size)return;
+  confirm$('Delete '+_selElogs.size+' email logs?','',async()=>{
+    let done=0; for(const id of _selElogs){try{await DEL('/api/email-logs/'+id);done++;}catch{}}
+    toast(done+' deleted','','success'); _selElogs=new Set(); await loadEmailHist();
+  },true);
+}
+function exportEmailLogs(){
+  const rows=document.querySelectorAll('#ehist tbody tr');
+  if(!rows.length)return toast('No data','','warning');
+  const csv=['Lead,Email,Subject,Status,SentAt,Error'];
+  rows.forEach(r=>{ const cells=[...r.querySelectorAll('td')].slice(1,-1).map(td=>`"${td.textContent.trim().replace(/"/g,'""')}"`); csv.push(cells.join(',')); });
+  const a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([csv.join('\n')],{type:'text/csv'})); a.download='email-logs.csv'; a.click();
 }
 
 /* ══════════════════════════════════════════════
