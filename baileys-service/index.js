@@ -18,6 +18,11 @@ import {
   addSseClient, removeSseClient,
 } from './lib/queue.js';
 import { logger } from './lib/logger.js';
+import { sendEmail, sendTestEmail, verifyEmailConfig } from './lib/email.js';
+import {
+  startEmailCampaign, pauseEmailCampaign, resumeEmailCampaign,
+  cancelEmailCampaign, addEmailSseClient, removeEmailSseClient,
+} from './lib/email-queue.js';
 
 // ── Config ────────────────────────────────────────────────────
 const PORT            = process.env.PORT            || 3001;
@@ -505,6 +510,203 @@ app.patch('/api/settings', requireSecret, async (req, res) => {
 // ─── ACTIVE QUEUE STATE ────────────────────────────────────────
 app.get('/api/queue-state', (_req, res) => {
   res.json({ activeQueues: getAllActiveQueues() });
+});
+
+// ═══════════════════════════════════════════════
+// EMAIL ROUTES
+// ═══════════════════════════════════════════════
+
+// ─── Email Settings (verify + test) ───────────────────────────
+app.post('/api/email/verify', requireSecret, async (req, res) => {
+  try {
+    await verifyEmailConfig();
+    res.json({ ok: true, message: 'SMTP connection verified ✅' });
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+});
+
+app.post('/api/email/test', requireSecret, async (req, res) => {
+  try {
+    const { to } = req.body;
+    if (!to) return res.status(400).json({ error: 'Recipient email required' });
+    await sendTestEmail(to);
+    res.json({ ok: true, message: `Test email sent to ${to}` });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Email Templates ──────────────────────────────────────────
+app.get('/api/email-templates', async (_req, res) => {
+  try {
+    const { data, error } = await supabase.from('email_templates').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json({ templates: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/email-templates', requireSecret, async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('email_templates').insert(req.body).select().single();
+    if (error) throw error;
+    res.json({ template: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.patch('/api/email-templates/:id', requireSecret, async (req, res) => {
+  try {
+    const { data, error } = await supabase.from('email_templates').update(req.body).eq('id', req.params.id).select().single();
+    if (error) throw error;
+    res.json({ template: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/email-templates/:id', requireSecret, async (req, res) => {
+  try {
+    const { error } = await supabase.from('email_templates').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Email Campaigns ──────────────────────────────────────────
+app.get('/api/email-campaigns', async (_req, res) => {
+  try {
+    const { data, error } = await supabase.from('email_campaigns').select('*').order('created_at', { ascending: false });
+    if (error) throw error;
+    res.json({ campaigns: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/email-campaigns', requireSecret, async (req, res) => {
+  try {
+    const { name, template_id, lead_ids, min_delay_sec = 10, max_delay_sec = 30 } = req.body;
+    if (!name || !template_id || !lead_ids?.length) {
+      return res.status(400).json({ error: 'name, template_id and lead_ids required' });
+    }
+
+    const { data: tpl, error: tErr } = await supabase.from('email_templates').select('*').eq('id', template_id).single();
+    if (tErr || !tpl) return res.status(404).json({ error: 'Template not found' });
+
+    const { data: leads, error: lErr } = await supabase.from('leads').select('*').in('id', lead_ids);
+    if (lErr) throw lErr;
+
+    // Only leads with valid email
+    const validLeads = leads.filter(l => l.email && l.email.includes('@'));
+    const skipped = leads.length - validLeads.length;
+
+    const { data: campaign, error: cErr } = await supabase.from('email_campaigns')
+      .insert({ name, template_id, total_leads: validLeads.length, min_delay_sec, max_delay_sec })
+      .select().single();
+    if (cErr) throw cErr;
+
+    // Build queue with rendered messages
+    const queueRows = validLeads.map(lead => ({
+      campaign_id: campaign.id,
+      lead_id:     lead.id,
+      to_email:    lead.email,
+      to_name:     lead.name,
+      subject:     renderTemplate(tpl.subject, lead),
+      body:        renderTemplate(tpl.body, lead),
+      status:      'Pending',
+    }));
+
+    const { error: qErr } = await supabase.from('email_queue').insert(queueRows);
+    if (qErr) throw qErr;
+
+    await supabase.from('email_templates').update({ times_used: (tpl.times_used || 0) + validLeads.length }).eq('id', template_id);
+
+    res.json({ campaign, queued: queueRows.length, skipped_no_email: skipped });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/email-campaigns/:id', requireSecret, async (req, res) => {
+  try {
+    await cancelEmailCampaign(req.params.id).catch(() => {});
+    await supabase.from('email_queue').delete().eq('campaign_id', req.params.id);
+    await supabase.from('email_logs').delete().eq('campaign_id', req.params.id);
+    const { error } = await supabase.from('email_campaigns').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ─── Email Campaign Actions ────────────────────────────────────
+app.post('/api/email-campaigns/:id/start', requireSecret, async (req, res) => {
+  try {
+    const result = await startEmailCampaign(req.params.id);
+    if (result.error) return res.status(400).json({ error: result.error });
+    res.json(result);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.post('/api/email-campaigns/:id/pause', requireSecret, async (req, res) => {
+  const result = await pauseEmailCampaign(req.params.id);
+  result.error ? res.status(400).json(result) : res.json(result);
+});
+
+app.post('/api/email-campaigns/:id/resume', requireSecret, async (req, res) => {
+  const result = await resumeEmailCampaign(req.params.id);
+  result.error ? res.status(400).json(result) : res.json(result);
+});
+
+app.post('/api/email-campaigns/:id/cancel', requireSecret, async (req, res) => {
+  const result = await cancelEmailCampaign(req.params.id);
+  res.json(result);
+});
+
+// ─── Email Live Progress (SSE) ─────────────────────────────────
+app.get('/api/email-campaigns/:id/progress', (req, res) => {
+  const campaignId = req.params.id;
+  res.setHeader('Content-Type',  'text/event-stream');
+  res.setHeader('Cache-Control', 'no-cache');
+  res.setHeader('Connection',    'keep-alive');
+  res.setHeader('X-Accel-Buffering', 'no');
+  res.flushHeaders();
+  res.write(`data: ${JSON.stringify({ event: 'connected', campaignId })}\n\n`);
+  addEmailSseClient(campaignId, res);
+  const hb = setInterval(() => { try { res.write(': ping\n\n'); } catch { clearInterval(hb); } }, 25000);
+  req.on('close', () => { clearInterval(hb); removeEmailSseClient(campaignId, res); });
+});
+
+// ─── Email Logs ───────────────────────────────────────────────
+app.get('/api/email-logs', async (req, res) => {
+  try {
+    let query = supabase.from('email_logs').select('*').order('sent_at', { ascending: false }).limit(300);
+    if (req.query.search) query = query.or(`lead_name.ilike.%${req.query.search}%,to_email.ilike.%${req.query.search}%`);
+    const { data, error } = await query;
+    if (error) throw error;
+    res.json({ logs: data });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.delete('/api/email-logs/:id', requireSecret, async (req, res) => {
+  try {
+    const { error } = await supabase.from('email_logs').delete().eq('id', req.params.id);
+    if (error) throw error;
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
 });
 
 // ── Template variable renderer ────────────────────────────────

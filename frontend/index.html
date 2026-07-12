@@ -662,7 +662,7 @@ function openLeadForm(lead){
       <div class="field" style="grid-column:1/-1"><label>Name *</label><input id="lf-n" value="${esc(v.name)}"></div>
       <div class="field"><label>Company</label><input id="lf-c" value="${esc(v.company||'')}"></div>
       <div class="field"><label>WhatsApp * (+country code)</label><input id="lf-p" value="${esc(v.phone)}" placeholder="+91XXXXXXXXXX"></div>
-      <div class="field"><label>Email</label><input id="lf-e" value="${esc(v.email||'')}"></div>
+      <div class="field"><label>Email <span class="muted sm">(required for Email Campaigns)</span></label><input id="lf-e" value="${esc(v.email||'')}" placeholder="buyer@company.com"></div>
       <div class="field"><label>Product</label><input id="lf-pr" value="${esc(v.product||'')}"></div>
       <div class="field"><label>Quantity</label><input id="lf-q" value="${esc(v.quantity||'')}"></div>
       <div class="field"><label>Country</label><input id="lf-ct" value="${esc(v.country||'')}"></div>
@@ -1641,11 +1641,12 @@ async function openEmailWizard(){
     GET('/api/settings').catch(()=>({settings:{}})),
   ]);
   const tpls = tR.templates||[];
-  const leads = (lR.leads||[]).filter(l=>l.email && l.email.includes('@'));
   const allLeads = lR.leads||[];
+  const withEmail = allLeads.filter(l=>l.email && l.email.includes('@'));
+  const noEmail   = allLeads.filter(l=>!l.email || !l.email.includes('@'));
   const s = sR.settings||{};
   openModal(`<div class="modal-title">📧 New Email Campaign</div>
-    <div class="modal-sub">${leads.length} of ${allLeads.length} leads have valid email addresses</div>
+    <div class="modal-sub">${withEmail.length} leads have email · ${noEmail.length} leads without email (will be auto-skipped)</div>
     <div class="field"><label>Campaign Name</label><input id="ewn" placeholder="e.g. Product Inquiry — July 2026"></div>
     <div class="grid-2">
       <div class="field"><label>Email Template</label><select id="ewt" onchange="emailWizPrev()">
@@ -1658,23 +1659,48 @@ async function openEmailWizard(){
     </div>
     <div class="field">
       <div style="display:flex;justify-content:space-between;margin-bottom:6px">
-        <label style="margin:0">Select Leads (${leads.length} with email)</label>
-        <button class="btn-ghost btn-sm" onclick="ewizAll()">Select all</button>
+        <label style="margin:0">Select Leads (${allLeads.length} total)</label>
+        <div class="row" style="gap:6px">
+          <button class="btn-ghost btn-sm" onclick="ewizSelectEmail()">✉️ Select email only</button>
+          <button class="btn-ghost btn-sm" onclick="ewizAll()">Select all</button>
+        </div>
       </div>
-      <div style="max-height:200px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px">
-        ${!leads.length?'<p class="muted sm" style="padding:8px">No leads with email addresses. Add emails to leads first.</p>':
-          leads.map(l=>`<label style="display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;font-size:13px">
+      <div style="max-height:220px;overflow-y:auto;border:1px solid var(--border);border-radius:var(--radius-sm);padding:6px">
+        ${!allLeads.length?'<p class="muted sm" style="padding:8px">No leads yet. Add leads first.</p>':[
+          ...withEmail.map(l=>`<label style="display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;font-size:13px">
             <input type="checkbox" class="ewcb" value="${l.id}" onchange="ewizChk('${l.id}',this.checked)">
-            <span>${esc(l.name)}</span><span class="muted sm">— ${esc(l.email)}</span>
-          </label>`).join('')}
+            <span>${esc(l.name)}</span>
+            <span class="muted sm">— ${esc(l.email)}</span>
+            <span class="badge b-sent" style="font-size:10px">✉️</span>
+          </label>`),
+          ...noEmail.map(l=>`<label style="display:flex;align-items:center;gap:8px;padding:6px;border-radius:6px;cursor:pointer;font-size:13px;opacity:.6">
+            <input type="checkbox" class="ewcb" value="${l.id}" onchange="ewizChk('${l.id}',this.checked)">
+            <span>${esc(l.name)}</span>
+            <span class="muted sm">— ${esc(l.company||'—')}</span>
+            <span class="badge b-noreply" style="font-size:10px">No email — skip</span>
+          </label>`)
+        ].join('')}
       </div>
       <div class="muted sm" id="ewsel" style="margin-top:5px">0 selected</div>
     </div>
-    <div id="ewprev-wrap" style="display:none" class="field"><label>Subject Preview</label><div id="ewprev" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:13px"></div></div>
+    <div id="ewprev-wrap" style="display:none" class="field"><label>Subject Preview</label>
+      <div id="ewprev" style="background:var(--surface2);border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px;font-size:13px"></div>
+    </div>
     <div class="modal-foot">
       <button class="btn-outline" onclick="closeModal()">Cancel</button>
       <button class="btn-primary" onclick="createEmailCamp()">📧 Create & Start</button>
     </div>`);
+}
+
+function ewizSelectEmail(){
+  // Select only leads that have email
+  document.querySelectorAll('.ewcb').forEach(cb=>{
+    const label = cb.closest('label');
+    const hasEmail = label && !label.textContent.includes('No email');
+    if(hasEmail){ cb.checked=true; _ewiz.lids.add(cb.value); }
+    else { cb.checked=false; _ewiz.lids.delete(cb.value); }
+  });
+  const el=document.getElementById('ewsel'); if(el)el.textContent=_ewiz.lids.size+' selected';
 }
 function ewizChk(id,on){ on?_ewiz.lids.add(id):_ewiz.lids.delete(id); const el=document.getElementById('ewsel'); if(el)el.textContent=_ewiz.lids.size+' selected'; }
 function ewizAll(){ document.querySelectorAll('.ewcb').forEach(c=>{c.checked=true;_ewiz.lids.add(c.value);}); const el=document.getElementById('ewsel'); if(el)el.textContent=_ewiz.lids.size+' selected'; }

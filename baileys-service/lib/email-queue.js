@@ -46,13 +46,13 @@ async function loadPending(campaignId) {
 }
 
 async function markItem(id, status, errorMsg = null) {
-  await supabase.from('email_queue').update({
+  const update = {
     status,
-    sent_at: status === 'Sent' ? new Date().toISOString() : null,
-    error_msg: errorMsg || null,
-    attempt_count: supabase.raw ? undefined : undefined,
     updated_at: new Date().toISOString(),
-  }).eq('id', id);
+    error_msg: errorMsg || null,
+  };
+  if (status === 'Sent') update.sent_at = new Date().toISOString();
+  await supabase.from('email_queue').update(update).eq('id', id);
 }
 
 async function setCampaignStatus(campaignId, status) {
